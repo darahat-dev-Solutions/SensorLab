@@ -1,0 +1,99 @@
+name: sensorlab
+description: "Measure ambient light, detect sound levels, and sense nearby objects using your phone’s built-in sensors. This app provides a simple and intuitive interface for accessing and visualizing sensor data, making it easy to monitor your environment and gather information about the world around you."
+publish_to: "none"
+version: 2.0.0+0
+
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # --- State Management ---
+  flutter_riverpod: ^2.6.1
+
+  # --- Permissions & System Services ---
+  permission_handler: ^12.0.1
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
+  flutter_background_service: ^5.1.0
+  flutter_background_service_android: ^6.3.1
+  pedometer: ^4.1.1
+  vibration: ^3.1.4
+  torch_light: ^1.1.0
+
+  # --- Sensors ---
+  light: ^4.1.0
+  sensors_plus: ^7.0.0
+  proximity_sensor: ^1.3.9
+  noise_meter: ^5.1.0
+  flutter_compass: ^0.8.1
+  mobile_scanner: ^7.1.2
+  camera: ^0.11.2
+
+  # --- Database & Storage ---
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  shared_preferences: ^2.3.3
+  path_provider: ^2.1.2
+
+  # --- Network & API ---
+  http: ^1.5.0
+  flutter_dotenv: ^6.0.0
+
+  # --- UI & Visualization ---
+  fl_chart: ^1.1.1
+  font_awesome_flutter: ^10.10.0
+  iconsax: ^0.0.8
+  liquid_pull_to_refresh: ^3.0.1
+  google_mobile_ads: ^6.0.0
+  url_launcher: ^6.3.2
+  go_router: ^16.3.0
+  flutter_file_dialog: ^3.0.2
+  share_plus: ^10.0.2
+  pdf: ^3.11.0
+
+  # --- Localization & Utils ---
+  flutter_localization: ^0.3.3
+  logger: ^2.6.2
+  json_annotation: ^4.9.0
+  freezed_annotation: ^2.4.1
+  uuid: ^4.5.1
+
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  excel: ^4.0.6
+  lottie: ^3.3.0
+  # rive: ^0.13.20
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  mockito: ^5.4.4
+
+  # --- Code Generation ---
+  build_runner: ^2.4.13
+  hive_generator: ^2.0.1
+  json_serializable: ^6.8.0
+  freezed: ^2.5.2
+
+  # --- App Icon Generation ---
+  flutter_launcher_icons: ^0.14.1
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/images/compass.png
+    - assets/icons/icon.png
+    - assets/lottie/
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/icon.png"
+  remove_alpha_ios: true
+  min_sdk_android: 23

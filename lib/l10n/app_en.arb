@@ -1,0 +1,1029 @@
+{
+  "@@locale": "en",
+  "appName": "SensorLab",
+  "signInToContinue": "Sign in to continue",
+  "welcome": "Welcome",
+  "home": "Home",
+  "cancel": "Cancel",
+  "done": "Done",
+  "save": "Save",
+  "delete": "Delete",
+  "search": "Search",
+  "settings": "Settings",
+  "retry": "Retry",
+  "error": "Error",
+  "loading": "Loading",
+  "failedToLoadSettings": "Failed to load settings",
+  "appearance": "Appearance",
+  "darkMode": "Dark Mode",
+  "switchBetweenLightAndDarkThemes": "Switch between light and dark themes",
+  "system": "System",
+  "light": "Light",
+  "dark": "Dark",
+  "language": "Language",
+  "languageSubtitle": "Choose your preferred language",
+  "notificationsAndFeedback": "Notifications & Feedback",
+  "notifications": "Notifications",
+  "receiveAppNotifications": "Receive app notifications",
+  "vibration": "Vibration",
+  "hapticFeedbackForInteractions": "Haptic feedback for interactions",
+  "soundEffects": "Sound Effects",
+  "audioFeedbackForAppActions": "Audio feedback for app actions",
+  "sensorSettings": "Sensor Settings",
+  "autoScan": "Auto Scan",
+  "automaticallyScanWhenOpeningScanner": "Automatically scan when opening scanner",
+  "sensorUpdateFrequency": "Sensor Update Frequency",
+  "sensorUpdateFrequencySubtitle": "{frequency}ms intervals",
+  "@sensorUpdateFrequencySubtitle": {
+    "placeholders": {
+      "frequency": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyAndData": "Privacy & Data",
+  "dataCollection": "Data Collection",
+  "allowAnonymousUsageAnalytics": "Allow anonymous usage analytics",
+  "privacyMode": "Privacy Mode",
+  "enhancedPrivacyProtection": "Enhanced privacy protection",
+  "appSupport": "App Support",
+  "showAds": "Show Ads",
+  "supportAppDevelopment": "Support app development",
+  "resetSettings": "Reset Settings",
+  "resetAllSettingsToDefaultValues": "Reset all settings to their default values. This action cannot be undone.",
+  "resetToDefaults": "Reset to Defaults",
+  "chooseSensorUpdateFrequency": "Choose how often sensors should update:",
+  "fastUpdate": "50ms (Fast)",
+  "normalUpdate": "100ms (Normal)",
+  "slowUpdate": "200ms (Slow)",
+  "verySlowUpdate": "500ms (Very Slow)",
+  "apply": "Apply",
+  "confirmReset": "Confirm Reset",
+  "areYouSureResetSettings": "Are you sure you want to reset all settings to their default values?",
+  "thisActionCannotBeUndone": "This action cannot be undone.",
+  "reset": "Reset",
+  "accelerometer": "Accelerometer",
+  "compass": "Compass",
+  "flashlight": "Flashlight",
+  "gyroscope": "Gyroscope",
+  "health": "Health",
+  "humidity": "Humidity",
+  "lightMeter": "Light Meter",
+  "magnetometer": "Magnetometer",
+  "noiseMeter": "Noise Meter",
+  "proximity": "Proximity",
+  "speedMeter": "Speed Meter",
+  "heartRate": "Heart Rate",
+  "calorieBurn": "Calorie Burn",
+  "scanner": "Scanner",
+  "qrCode": "QR Code",
+  "barcode": "Barcode",
+  "qrCodeScanner": "QR Code Scanner",
+  "barcodeScanner": "Barcode Scanner",
+  "scanResult": "Scan Result",
+  "plainText": "Plain Text",
+  "websiteUrl": "Website URL",
+  "emailAddress": "Email Address",
+  "phoneNumber": "Phone Number",
+  "smsMessage": "SMS Message",
+  "wifiNetwork": "WiFi Network",
+  "contactInfo": "Contact Info",
+  "location": "Location",
+  "product": "Product",
+  "calendarEvent": "Calendar Event",
+  "quickResponseCode": "Quick Response Code",
+  "europeanArticleNumber13": "European Article Number (13 digits)",
+  "europeanArticleNumber8": "European Article Number (8 digits)",
+  "universalProductCode12": "Universal Product Code (12 digits)",
+  "universalProductCode8": "Universal Product Code (8 digits)",
+  "code128": "Code 128 (Variable length)",
+  "code39": "Code 39 (Alphanumeric)",
+  "code93": "Code 93 (Alphanumeric)",
+  "codabar": "Codabar (Numeric with special chars)",
+  "interleaved2of5": "Interleaved 2 of 5",
+  "dataMatrix": "Data Matrix (2D)",
+  "aztecCode": "Aztec Code (2D)",
+  "torchNotAvailableOnDevice": "Torch not available on this device",
+  "failedToInitializeFlashlight": "Failed to initialize flashlight",
+  "failedToToggleFlashlight": "Failed to toggle flashlight",
+  "cameraIsInUse": "Camera is in use",
+  "torchNotAvailable": "Torch not available",
+  "failedToEnableTorch": "Failed to enable torch",
+  "failedToDisableTorch": "Failed to disable torch",
+  "intensityControlNotSupported": "Intensity control not supported by torch_light package",
+  "failedToSetMode": "Failed to set mode",
+  "failedToPerformQuickFlash": "Failed to perform quick flash",
+  "noCamerasFound": "No cameras found",
+  "readyCoverCameraWithFinger": "Ready - Cover camera with finger",
+  "cameraError": "Camera error",
+  "placeFingerFirmlyOnCamera": "Place finger firmly on camera",
+  "pressFingerFirmlyOnCamera": "Press finger firmly on camera",
+  "fingerMovedPlaceFirmlyOnCamera": "Finger moved! Place firmly on camera",
+  "heartRateBpm": "Heart rate: {bpm} BPM",
+  "@heartRateBpm": {
+    "placeholders": {
+      "bpm": {
+        "type": "int"
+      }
+    }
+  },
+  "holdStill": "Hold still...",
+  "adjustFingerPressure": "Adjust finger pressure",
+  "flashError": "Flash error",
+  "editProfile": "Edit Profile",
+  "weightKg": "Weight (kg)",
+  "heightCm": "Height (cm)",
+  "male": "Male",
+  "female": "Female",
+  "other": "Other",
+  "saveProfile": "Save Profile",
+  "enterYourDetails": "Enter Your Details",
+  "initializationFailed": "Initialization failed",
+  "allYourSensorsInOnePlace": "All your sensors in one place",
+  "noSensorsAvailable": "No sensors available",
+  "active": "ACTIVE",
+  "moveYourDevice": "MOVE YOUR DEVICE",
+  "accelerationUnit": "Acceleration (m/s²)",
+  "axis": "Axis",
+  "current": "Current",
+  "max": "Max",
+  "xAxis": "X",
+  "yAxis": "Y",
+  "zAxis": "Z",
+  "calibrate": "Calibrate",
+  "calibrating": "Calibrating...",
+  "magneticHeading": "Magnetic Heading",
+  "highAccuracy": "High Accuracy",
+  "compassError": "Compass Error",
+  "resetSession": "Reset Session",
+  "flashlightNotAvailable": "Flashlight Not Available",
+  "initializingFlashlight": "Initializing Flashlight...",
+  "deviceDoesNotHaveFlashlight": "Device does not have a flashlight or it's not accessible",
+  "tryAgain": "Try Again",
+  "quickFlash": "Quick Flash",
+  "turnOff": "Turn Off",
+  "turnOn": "Turn On",
+  "intensityControl": "Intensity Control",
+  "currentIntensity": "Current: {intensity}",
+  "@currentIntensity": {
+    "placeholders": {
+      "intensity": {
+        "type": "String"
+      }
+    }
+  },
+  "flashlightModes": "Flashlight Modes",
+  "normal": "Normal",
+  "strobe": "Strobe",
+  "sos": "SOS",
+  "sessionStatistics": "Session Statistics",
+  "sessionTime": "Session Time",
+  "toggles": "Toggles",
+  "onTime": "On Time",
+  "batteryUsage": "Battery Usage",
+  "batteryUsageWarning": "Battery Usage Warning",
+  "flashlightOnFor": "Flashlight has been on for {time}. Consider turning it off to save battery.",
+  "@flashlightOnFor": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "usageTips": "Usage Tips",
+  "normalMode": "Normal Mode",
+  "normalModeDescription": "Standard flashlight operation",
+  "strobeMode": "Strobe Mode",
+  "strobeModeDescription": "Flashing light for attention",
+  "sosMode": "SOS Mode",
+  "sosModeDescription": "Emergency signal (... --- ...)",
+  "battery": "Battery",
+  "batteryTip": "Monitor usage to preserve battery life",
+  "intensity": "Intensity",
+  "intensityTip": "Adjust brightness to save power",
+  "pressButtonToGetLocation": "Press the button to get location",
+  "addressWillAppearHere": "Address will appear here",
+  "locationServicesDisabled": "Location services are disabled",
+  "locationPermissionDenied": "Location permission denied",
+  "locationPermissionsPermanentlyDenied": "Location permissions are permanently denied",
+  "errorGettingLocation": "Error getting location: {error}",
+  "@errorGettingLocation": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToGetAddress": "Failed to get address: {error}",
+  "@failedToGetAddress": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "noAppToOpenMaps": "No app available to open maps",
+  "geolocator": "Geolocator",
+  "accuracy": "Accuracy: {accuracy}",
+  "@accuracy": {
+    "placeholders": {
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "pleaseEnableLocationServices": "Please enable location services",
+  "pleaseGrantLocationPermissions": "Please grant location permissions",
+  "locating": "Locating...",
+  "getCurrentLocation": "Get Current Location",
+  "openInMaps": "Open in Maps",
+  "aboutGeolocator": "About Geolocator",
+  "geolocatorDescription": "This tool shows your current location using your device's GPS.\n\nFeatures:\n• Precise latitude/longitude coordinates\n• Estimated accuracy measurement\n• Reverse geocoding to get address\n• Open location in maps\n\nFor best results, ensure you have:\n• Location services enabled\n• Clear view of the sky\n• Internet connection for address lookup",
+  "ok": "OK",
+  "tracking": "Tracking",
+  "waitingForGps": "Waiting for GPS...",
+  "maxSpeed": "Max Speed",
+  "avgSpeed": "Avg Speed",
+  "motionIntensity": "Motion Intensity",
+  "liveSensorGraph": "Live Sensor Graph (X - Red, Y - Green, Z - Blue)",
+  "angularVelocity": "Angular velocity (rad/s)",
+  "healthTracker": "Health Tracker",
+  "helloUser": "Hello, {name}!",
+  "@helloUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "readyToTrackSession": "Ready to track your {activity} session?",
+  "@readyToTrackSession": {
+    "placeholders": {
+      "activity": {
+        "type": "String"
+      }
+    }
+  },
+  "bmi": "BMI",
+  "bmr": "BMR",
+  "steps": "Steps",
+  "distance": "Distance",
+  "duration": "Duration",
+  "activityType": "Activity Type",
+  "stop": "Stop",
+  "resume": "Resume",
+  "start": "Start",
+  "pause": "Pause",
+  "liveSensorData": "Live Sensor Data",
+  "avgIntensity": "Avg Intensity",
+  "peakIntensity": "Peak Intensity",
+  "movements": "Movements",
+  "caloriesBurned": "Calories Burned",
+  "bmrPerDay": "BMR: {bmr} cal/day",
+  "@bmrPerDay": {
+    "placeholders": {
+      "bmr": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSettings": "Profile Settings",
+  "name": "Name",
+  "age": "Age",
+  "weight": "Weight",
+  "height": "Height",
+  "heartRateMonitor": "Heart Rate Monitor",
+  "toggleFlash": "Toggle flash",
+  "quietEnvironmentNeeded": "Quiet environment needed ({seconds} s)",
+  "@quietEnvironmentNeeded": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "estimatedHeartRate": "Estimated Heart Rate",
+  "flashOff": "Flash Off",
+  "flashOn": "Flash On",
+  "stableMeasurement": "Stable measurement",
+  "resetData": "Reset Data",
+  "noHumiditySensor": "No Humidity Sensor Detected",
+  "noHumiditySensorDescription": "Most smartphones don't have humidity sensors. Showing simulated data for demonstration.",
+  "checkAgain": "Check Again",
+  "measuring": "Measuring",
+  "stopped": "Stopped",
+  "singleReading": "Single Reading",
+  "continuous": "Continuous",
+  "comfortAssessment": "Comfort Assessment",
+  "readings": "Readings",
+  "average": "Average",
+  "realTimeHumidityLevels": "Real-time Humidity Levels",
+  "humidityLevelGuide": "Humidity Level Guide",
+  "veryDry": "Very Dry",
+  "dry": "Dry",
+  "comfortable": "Comfortable",
+  "humid": "Humid",
+  "veryHumid": "Very Humid",
+  "proximitySensor": "Proximity Sensor",
+  "permissionRequired": "Permission Required",
+  "sensorNotAvailable": "Sensor Not Available",
+  "grantPermission": "Grant Permission",
+  "permissionGranted": "Permission Granted",
+  "microphonePermissionDenied": "Microphone permission denied",
+  "microphonePermissionPermanentlyDenied": "Microphone permission was permanently denied. Please enable it in your device settings to use the noise meter.",
+  "openSettings": "Open Settings",
+  "microphoneAccessNeeded": "Microphone Access Needed",
+  "microphoneAccessDescription": "To measure and analyze sound levels accurately, we need access to your device's microphone. Your audio is never recorded or stored.",
+  "measureNoiseLevels": "Measure noise levels in real-time",
+  "analyzeAcoustics": "Analyze acoustic environment",
+  "generateReports": "Generate detailed reports",
+  "allowMicrophoneAccess": "Allow Microphone Access",
+  "audioNotRecorded": "Audio is never recorded or stored",
+  "inactive": "Inactive",
+  "monitor": "Monitor",
+  "totalReadings": "Total Readings",
+  "near": "Near",
+  "far": "Far",
+  "proximityActivityTimeline": "Proximity Activity Timeline",
+  "howProximitySensorWorks": "How Proximity Sensor Works",
+  "scanBarcode": "Scan Barcode",
+  "positionBarcodeInFrame": "Position the barcode within the frame",
+  "scanningForBarcodes": "Scanning for UPC, EAN, Code 128, Code 39, and other linear barcodes",
+  "scanQrCode": "Scan QR Code",
+  "positionQrCodeInFrame": "Position the QR code within the frame",
+  "scanningForQrCodes": "Scanning for QR codes, Data Matrix, PDF417, and Aztec codes",
+  "scannedOn": "Scanned {timestamp}",
+  "@scannedOn": {
+    "placeholders": {
+      "timestamp": {
+        "type": "String"
+      }
+    }
+  },
+  "content": "Content",
+  "quickActions": "Quick Actions",
+  "technicalDetails": "Technical Details",
+  "format": "Format",
+  "description": "Description",
+  "dataLength": "Data Length",
+  "scanType": "Scan Type",
+  "contentType": "Content Type",
+  "copyAll": "Copy All",
+  "share": "Share",
+  "scanAnother": "Scan Another",
+  "copiedToClipboard": "Copied to clipboard",
+  "contentCopied": "Content copied to clipboard for sharing",
+  "cannotOpenUrl": "Cannot open URL",
+  "chooseScannerType": "Choose Scanner Type",
+  "selectScannerDescription": "Select the type of code you want to scan",
+  "commonUses": "Common uses:",
+  "scanningTips": "Scanning Tips",
+  "scanningTipsDescription": "Hold your device steady and ensure the code is well-lit and clearly visible within the scanner frame.",
+  "minStat": "Min",
+  "maxStat": "Max",
+  "gender": "Gender",
+  "selectActivity": "Select Activity",
+  "walking": "Walking",
+  "running": "Running",
+  "cycling": "Cycling",
+  "sitting": "Sitting",
+  "standing": "Standing",
+  "stairs": "Stairs",
+  "workout": "Workout",
+  "environment": "Environment",
+  "navigation": "Navigation",
+  "motion": "Motion",
+  "magnetic": "Magnetic",
+  "device": "Device",
+  "utility": "Utility",
+  "menu": "Menu",
+  "kmh": "km/h",
+  "moving": "MOVING",
+  "stationary": "STATIONARY",
+  "feet": "Feet",
+  "inches": "Inches",
+  "productBarcodes": "Product barcodes",
+  "isbnNumbers": "ISBN numbers",
+  "upcCodes": "UPC codes",
+  "eanCodes": "EAN codes",
+  "code128_39": "Code 128/39",
+  "websiteUrls": "Website URLs",
+  "wifiPasswords": "WiFi passwords",
+  "contactInformation": "Contact information",
+  "locationCoordinates": "Location coordinates",
+  "calendarEvents": "Calendar events",
+  "nearDetection": "Near Detection",
+  "objectDetectedClose": "Object detected close to sensor",
+  "usuallyWithin5cm": "Usually when something is within 5cm of the sensor",
+  "farDetection": "Far Detection",
+  "noObjectDetected": "No object detected nearby",
+  "clearAreaAroundSensor": "Clear area around the proximity sensor",
+  "tooDryIrritation": "Too dry - may cause skin and respiratory irritation",
+  "somewhatDryHumidifier": "Somewhat dry - consider using a humidifier",
+  "idealHumidityLevel": "Ideal humidity level for comfort and health",
+  "somewhatHumidSticky": "Somewhat humid - may feel sticky",
+  "tooHumidMold": "Too humid - may promote mold growth",
+  "flashlightOn": "Flashlight ON",
+  "flashlightOff": "Flashlight OFF",
+  "meters": "meters",
+  "realTimeLightLevels": "Real-time Light Levels",
+  "lightLevelGuide": "Light Level Guide",
+  "darkLevel": "Dark",
+  "dimLevel": "Dim",
+  "indoorLevel": "Indoor",
+  "officeLevel": "Office",
+  "brightLevel": "Bright",
+  "daylightLevel": "Daylight",
+  "darkRange": "0-10 lux",
+  "dimRange": "10-200 lux",
+  "indoorRange": "200-500 lux",
+  "officeRange": "500-1000 lux",
+  "brightRange": "1000-10000 lux",
+  "daylightRange": "10000+ lux",
+  "darkExample": "Night, no moonlight",
+  "dimExample": "Moonlight, candle",
+  "indoorExample": "Living room lighting",
+  "officeExample": "Office workspace",
+  "brightExample": "Bright room, cloudy day",
+  "daylightExample": "Direct sunlight",
+  "grantSensorPermission": "Grant sensor permission to access proximity sensor",
+  "deviceNoProximitySensor": "Device does not have a proximity sensor",
+  "proximitySensorLocation": "The proximity sensor is typically located near the earpiece and is used to turn off the screen during phone calls.",
+  "pausedCameraInUse": "Paused - Camera in use by another feature",
+  "generalError": "Error: {error}",
+  "@generalError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "currentMode": "Current mode: {mode}",
+  "@currentMode": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "noiseLevelGuide": "Noise Level Guide",
+  "quiet": "Quiet",
+  "moderate": "Moderate",
+  "loud": "Loud",
+  "veryLoud": "Very Loud",
+  "dangerous": "Dangerous",
+  "whisperLibrary": "Whisper, library",
+  "normalConversation": "Normal conversation",
+  "trafficOffice": "Traffic, office",
+  "motorcycleShouting": "Motorcycle, shouting",
+  "rockConcertChainsaw": "Rock concert, chainsaw",
+  "qrBarcodeScanner": "QR/Barcode Scanner",
+  "scannedData": "Scanned Data",
+  "copy": "Copy",
+  "clear": "Clear",
+  "pageNotFound": "Page Not Found",
+  "goHome": "Go Home",
+  "pageNotFoundMessage": "Page not found: {uri}",
+  "@pageNotFoundMessage": {
+    "placeholders": {
+      "uri": {
+        "type": "String"
+      }
+    }
+  },
+  "more": "More",
+  "theme": "Theme",
+  "about": "About",
+  "allSettings": "All Settings",
+  "getNotifiedAboutSensorReadings": "Get notified about sensor readings",
+  "themeChangeRequiresRestart": "Theme switching requires app restart",
+  "quickSettings": "Quick Settings",
+  "darkModeActive": "Dark mode active",
+  "lightModeActive": "Light mode active",
+  "sensorData": "SENSOR DATA",
+  "stepsLabel": "Steps",
+  "accelX": "Accel X",
+  "accelY": "Accel Y",
+  "accelZ": "Accel Z",
+  "gyroX": "Gyro X",
+  "gyroY": "Gyro Y",
+  "gyroZ": "Gyro Z",
+  "qrScannerSubtitle": "Scan QR codes, Data Matrix, PDF417, and Aztec codes",
+  "barcodeScannerSubtitle": "Scan product barcodes like UPC, EAN, Code 128, and more",
+  "activity": "Activity",
+  "startTracking": "START TRACKING",
+  "stopTracking": "STOP TRACKING",
+  "trackingActive": "Tracking Active",
+  "sessionPaused": "Session Paused",
+  "updateYourPersonalInformation": "Update your personal information",
+  "personalInformation": "Personal Information",
+  "physicalMeasurements": "Physical Measurements",
+  "enterYourFullName": "Enter your full name",
+  "pleaseEnterYourName": "Please enter your name",
+  "enterYourAge": "Enter your age",
+  "pleaseEnterYourAge": "Please enter your age",
+  "pleaseEnterValidNumber": "Please enter a valid number",
+  "selectYourGender": "Select your gender",
+  "enterYourWeightInKg": "Enter your weight in kg",
+  "pleaseEnterYourWeight": "Please enter your weight",
+  "enterYourHeightInCm": "Enter your height in cm",
+  "pleaseEnterYourHeight": "Please enter your height",
+  "pedometer": "Pedometer",
+  "dailyGoal": "Daily Goal",
+  "stepsToGo": "to go",
+  "goalReached": "Goal Reached!",
+  "calories": "Calories",
+  "pace": "Pace",
+  "cadence": "Cadence",
+  "setDailyGoal": "Set Daily Goal",
+  "resetSessionConfirmation": "Are you sure you want to reset your current session? All progress will be lost.",
+  "barometer": "Barometer",
+  "waitingForSensor": "Waiting for sensor...",
+  "clearWeather": "Clear Weather",
+  "cloudyWeather": "Cloudy Weather",
+  "stableWeather": "Stable Weather",
+  "pressureRising": "Rising",
+  "pressureFalling": "Falling",
+  "pressureSteady": "Steady",
+  "maximum": "Maximum",
+  "minimum": "Minimum",
+  "altitude": "Altitude",
+  "altimeter": "Altimeter",
+  "altimeterWaiting": "Waiting for GPS and barometer data...",
+  "aboveSeaLevel": "Above Sea Level",
+  "climbing": "Climbing",
+  "descending": "Descending",
+  "stable": "Stable",
+  "usingGpsOnly": "Using GPS data only",
+  "usingBarometerOnly": "Using barometer data only",
+  "usingFusedData": "Combining GPS and barometer for accuracy",
+  "dataSource": "Data Source",
+  "sensorReadings": "Sensor Readings",
+  "gpsAltitude": "GPS Altitude",
+  "baroAltitude": "Baro Altitude",
+  "pressure": "Pressure",
+  "statistics": "Statistics",
+  "gain": "Gain",
+  "loss": "Loss",
+  "calibrateAltimeter": "Calibrate Altimeter",
+  "calibrateDescription": "Enter your current known altitude in meters to calibrate the barometric sensor for better accuracy.",
+  "knownAltitude": "Known Altitude",
+  "calibrationComplete": "Calibration complete!",
+  "statsReset": "Statistics reset!",
+  "vibrationMeter": "Vibration Meter",
+  "vibrationWaiting": "Waiting for accelerometer data...",
+  "vibrationMagnitude": "Vibration Magnitude",
+  "vibrationLevel": "Vibration Level",
+  "realtimeWaveform": "Real-time Waveform",
+  "pattern": "Pattern",
+  "frequency": "Frequency",
+  "axisBreakdown": "Axis Breakdown",
+  "advancedMetrics": "Advanced Metrics",
+  "rms": "RMS",
+  "peakToPeak": "Peak-to-Peak",
+  "crestFactor": "Crest Factor",
+  "acousticAnalyzer": "Acoustic Analyzer",
+  "acousticAnalyzerTitle": "Acoustic Environment Analyzer",
+  "acousticEnvironment": "Acoustic Environment",
+  "noiseLevel": "Noise Level",
+  "decibelUnit": "dB",
+  "presetSelectTitle": "Choose Recording Preset",
+  "presetSelectSubtitle": "Select a preset to analyze your acoustic environment over time",
+  "presetSleep": "Sleep",
+  "presetSleepTitle": "Analyze Sleep Environment",
+  "presetSleepDuration": "8 hours",
+  "presetSleepDescription": "Monitor bedroom noise throughout the night to improve sleep quality",
+  "presetWork": "Work",
+  "presetWorkTitle": "Monitor Office Environment",
+  "presetWorkDuration": "1 hour",
+  "presetWorkDescription": "Track workplace noise levels and identify distractions",
+  "presetFocus": "Focus",
+  "presetFocusTitle": "Focus Session Analysis",
+  "presetFocusDuration": "30 minutes",
+  "presetFocusDescription": "Analyze your study or focus session environment",
+  "presetCustom": "Custom",
+  "presetSleepAnalysis": "Sleep Analysis (8h)",
+  "presetWorkEnvironment": "Work Environment (1h)",
+  "presetFocusSession": "Focus Session (30m)",
+  "presetCustomRecording": "Custom Recording",
+  "monitoringTitle": "Monitoring",
+  "monitoringActive": "Recording Active",
+  "monitoringStopped": "Recording Stopped",
+  "monitoringProgress": "Progress",
+  "monitoringCurrentLevel": "Current Level",
+  "monitoringLiveChart": "Live Monitoring",
+  "monitoringEnvironment": "Monitoring acoustic environment...",
+  "recordingStart": "Start Recording",
+  "recordingStop": "Stop Recording",
+  "recordingCompleted": "Recording completed",
+  "reportGeneratedSuccess": "Report generated successfully!",
+  "stopRecordingTooltip": "Stop Recording",
+  "stopRecordingConfirmTitle": "Stop Recording?",
+  "stopRecordingConfirmMessage": "Are you sure you want to stop the recording? The report will be generated with the current data.",
+  "continueRecording": "Continue",
+  "reportsTitle": "Acoustic Reports",
+  "reportsEmpty": "No Reports Yet",
+  "reportsEmptyDescription": "Start an acoustic analysis session to generate your first report",
+  "reportsSelectedCount": "{count} Selected",
+  "@reportsSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reportExportCSV": "Export as CSV",
+  "reportExportAll": "Export All",
+  "reportDelete": "Delete",
+  "reportDeleteSelected": "Delete Selected",
+  "reportDeleteConfirmTitle": "Delete Reports?",
+  "reportDeleteConfirmMessage": "Are you sure you want to delete {count} report(s)? This action cannot be undone.",
+  "@reportDeleteConfirmMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reportDeleteSuccess": "Reports deleted",
+  "reportFilterByPreset": "Filter by Preset",
+  "reportFilterAll": "All Presets",
+  "reportStartAnalysis": "Start Analysis",
+  "csvCopiedToClipboard": "CSV data copied to clipboard!",
+  "reportDetailTitle": "Acoustic Report",
+  "reportQualityTitle": "Environment Quality",
+  "reportQualityScore": "Quality Score",
+  "reportAverage": "Average",
+  "reportPeak": "Peak",
+  "reportHourlyBreakdown": "Hourly Breakdown",
+  "reportNoiseEvents": "Noise Events",
+  "reportNoEventsTitle": "No Interruptions Detected",
+  "reportNoEventsMessage": "Your environment was consistently quiet",
+  "reportShare": "Share Report",
+  "reportRecommendations": "Recommendations",
+  "reportDuration": "Duration",
+  "reportEvents": "events",
+  "durationHours": "{hours}h",
+  "@durationHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "durationMinutes": "{minutes}m",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationSeconds": "{seconds}s",
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHoursMinutes": "{hours}h {minutes}m",
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "qualityExcellent": "Excellent",
+  "qualityGood": "Good",
+  "qualityFair": "Fair",
+  "qualityPoor": "Poor",
+  "unitDecibels": "dB",
+  "unitHours": "hours",
+  "unitMinutes": "minutes",
+  "unitSeconds": "seconds",
+  "actionOk": "OK",
+  "actionContinue": "Continue",
+  "actionStop": "Stop",
+  "actionStart": "Start",
+  "actionView": "View",
+  "actionExport": "Export",
+  "actionShare": "Share",
+  "viewHistoricalReports": "View Historical Reports",
+  "csvHeaderID": "ID",
+  "csvHeaderStartTime": "Start Time",
+  "csvHeaderEndTime": "End Time",
+  "csvHeaderDuration": "Duration (min)",
+  "csvHeaderPreset": "Preset",
+  "csvHeaderAverageDB": "Average dB",
+  "csvHeaderMinDB": "Min dB",
+  "csvHeaderMaxDB": "Max dB",
+  "csvHeaderEvents": "Events",
+  "csvHeaderQualityScore": "Quality Score",
+  "csvHeaderQuality": "Quality",
+  "csvHeaderRecommendation": "Recommendation",
+  "sleepAnalysis": "Sleep Analysis",
+  "workEnvironment": "Work Environment",
+  "focusSession": "Focus Session",
+  "recordingComplete": "Recording Complete",
+  "presetName": "Preset Name",
+  "duration": "Duration",
+  "averageDecibels": "Average Decibels",
+  "peakDecibels": "Peak Decibels",
+  "environmentQuality": "Environment Quality",
+  "viewReport": "View Report",
+  "noiseMeterGuide": "Noise Meter Guide",
+  "environmentAnalyzer": "Environment Analyzer",
+  "environmentAnalyzerSubtitle": "Preset-based acoustic analysis",
+  "acousticReportsSubtitle": "View saved analyses and history",
+  "exportReports": "Export Reports",
+  "exportChooseMethod": "Choose how you want to export the reports:",
+  "exportCopyToClipboard": "Copy to Clipboard",
+  "exportSaveAsFile": "Save as File",
+  "exportSuccess": "Export Successful",
+  "exportSuccessMessage": "{count} report(s) exported successfully!",
+  "@exportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "savedTo": "Saved to:",
+  "deletePreset": "Delete Preset?",
+  "deletePresetMessage": "Delete \"{title}\"? This cannot be undone.",
+  "@deletePresetMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "acousticReport": "Acoustic Report",
+  "createCustomPreset": "Create Custom Preset",
+  "durationMustBeGreaterThanZero": "Duration must be greater than 0",
+  "allPresets": "All Presets",
+  "consistency": "Consistency",
+  "peakManagement": "Peak Mgmt",
+  "level": "Level",
+  "avg": "Avg",
+  "realtimeNoiseLevels": "Real-time Noise Levels",
+  "decibelStatistics": "Decibel Statistics",
+  "quietEnvironment": "Quiet Environment",
+  "moderateNoise": "Moderate Noise",
+  "loudEnvironment": "Loud Environment",
+  "veryLoudCaution": "Very Loud - Caution",
+  "dangerousLevels": "Dangerous Levels",
+  "keyStatistics": "Key Statistics",
+  "noiseEvents": "Noise Events",
+  "noInterruptionsDetected": "No Interruptions Detected",
+  "environmentConsistentlyQuiet": "Your environment was consistently quiet",
+  "expertAdvice": "Expert Advice",
+  "quickTips": "Quick Tips",
+  "dataPoints": "Data Points",
+  "grantMicrophonePermission": "Grant microphone permission to measure noise levels",
+  "hourlyBreakdown": "Hourly Breakdown",
+  "eventTimeline": "Event Timeline",
+  "noEventsRecorded": "No events recorded",
+  "sessionDetails": "Session Details",
+  "date": "Date",
+  "preset": "Preset",
+  "recommendation": "Recommendation",
+  "noInterruptions": "No Interruptions",
+  "quietQuiet": "Quiet (0-30 dB)",
+  "quietModerate": "Moderate (30-60 dB)",
+  "quietLoud": "Loud (60-85 dB)",
+  "quietVeryLoud": "Very Loud (85-100 dB)",
+  "quietDangerous": "Dangerous (100+ dB)",
+  "anErrorOccurred": "An error occurred.",
+  "failedToLoadPresets": "Failed to load presets: {error}",
+  "@failedToLoadPresets": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "createdPreset": "Created \"{title}\"!",
+  "@createdPreset": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToSavePreset": "Failed to save preset: {error}",
+  "@failedToSavePreset": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteReportsQuestion": "Delete Reports?",
+  "deleteReportsConfirmMessage": "Are you sure you want to delete the selected report(s)? This action cannot be undone.",
+  "reportsDeleted": "Reports deleted",
+  "presetDetails": "Preset Details",
+  "mustBeAtLeast3Chars": "Must be at least 3 characters",
+  "mustBeAtLeast10Chars": "Must be at least 10 characters",
+  "chooseIcon": "Choose Icon",
+  "chooseColor": "Choose Color",
+  "customLabs": "Custom Labs",
+  "allLabs": "All Labs",
+  "myLabs": "My Labs",
+  "noLabsYet": "No labs yet",
+  "createFirstLabMessage": "Create your first custom lab to get started",
+  "noCustomLabsYet": "No custom labs yet",
+  "tapPlusToCreateLab": "Tap the + button to create your first custom lab",
+  "newLab": "New Lab",
+  "presetLabs": "Preset Labs",
+  "myCustomLabs": "My Custom Labs",
+  "errorLoadingLabs": "Error loading labs",
+  "createLab": "Create Lab",
+  "editLab": "Edit Lab",
+  "deleteLab": "Delete Lab",
+  "labName": "Lab Name",
+  "labNameHint": "e.g., Motion Analysis",
+  "descriptionHint": "Describe what this lab measures",
+  "recordingIntervalMs": "Recording Interval (ms)",
+  "recordingIntervalSec": "Recording Interval (seconds)",
+  "recordingIntervalHint": "1",
+  "intervalMustBeBetween": "Interval must be between 0.1-10 seconds",
+  "pleaseEnterInterval": "Please enter an interval",
+  "pleaseEnterLabName": "Please enter a lab name",
+  "labColor": "Lab Color",
+  "selectSensors": "Select Sensors",
+  "sensors": "Sensors",
+  "interval": "Interval",
+  "created": "Created",
+  "sessions": "Sessions",
+  "notes": "Notes",
+  "export": "Export",
+  "chooseAtLeastOneSensor": "Choose at least one sensor to record",
+  "labCreatedSuccessfully": "Lab created successfully",
+  "labUpdatedSuccessfully": "Lab updated successfully",
+  "labDeletedSuccessfully": "Lab deleted successfully",
+  "deleteLabConfirm": "Are you sure you want to delete \"{labName}\"?",
+  "@deleteLabConfirm": {
+    "placeholders": {
+      "labName": {
+        "type": "String"
+      }
+    }
+  },
+  "cannotModifyPresetLabs": "Cannot modify preset labs",
+  "cannotDeletePresetLabs": "Cannot delete preset labs",
+  "pleaseSelectAtLeastOneSensor": "Please select at least one sensor",
+  "sensorsCount": "{count} sensors",
+  "@sensorsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "intervalMs": "{interval}ms interval",
+  "@intervalMs": {
+    "placeholders": {
+      "interval": {
+        "type": "int"
+      }
+    }
+  },
+  "presetBadge": "PRESET",
+  "labDetails": "Lab Details",
+  "sessionHistory": "Session History",
+  "startRecording": "Start Recording",
+  "stopRecording": "Stop Recording",
+  "pauseRecording": "Pause Recording",
+  "recordingStatus": "RECORDING",
+  "pausedStatus": "PAUSED",
+  "completedStatus": "COMPLETED",
+  "failedStatus": "FAILED",
+  "idleStatus": "IDLE",
+  "elapsedTime": "Elapsed Time",
+  "collectingSensorData": "Collecting sensor data...",
+  "stopRecordingQuestion": "Stop Recording?",
+  "stopRecordingConfirm": "Do you want to stop and save this recording session?",
+  "continueRecordingAction": "Continue Recording",
+  "stopAndSave": "Stop & Save",
+  "recordingSavedSuccessfully": "Recording saved successfully",
+  "failedToStartRecording": "Failed to start recording session",
+  "dataPoints": "{count} points",
+  "@dataPoints": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noRecordingSessionsYet": "No recording sessions yet",
+  "startRecordingToCreateSession": "Start recording to create your first session",
+  "errorLoadingSessions": "Error loading sessions",
+  "sessionDetailsTitle": "Session Details",
+  "exportAndShare": "Export & Share",
+  "deleteSession": "Delete Session",
+  "deleteSessionConfirm": "Are you sure you want to delete this recording session? This action cannot be undone.",
+  "sessionDeletedSuccessfully": "Session deleted successfully",
+  "recordingTime": "Recording Time",
+  "startTime": "Start Time",
+  "endTime": "End Time",
+  "recordingData": "Recording Data",
+  "dataPointsCount": "Data Points",
+  "sensorsUsed": "Sensors Used",
+  "sessionExportedToCSV": "Session has been exported to CSV",
+  "sessionNotYetExported": "Session not yet exported",
+  "errorCheckingExportStatus": "Error checking export status",
+  "dataPreview": "Data Preview",
+  "noDataPointsRecorded": "No data points recorded",
+  "showingDataPoints": "Showing {showing} of {total} data points",
+  "@showingDataPoints": {
+    "placeholders": {
+      "showing": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "pointNumber": "Point",
+  "errorLoadingDataPoints": "Error loading data points: {error}",
+  "@errorLoadingDataPoints": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "exportToCSV": "Export to CSV",
+  "exportingStatus": "Exporting...",
+  "exportedTo": "Exported to: {path}",
+  "@exportedTo": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "sharingNotYetImplemented": "(Sharing not yet implemented)",
+  "failedToExportSession": "Failed to export session",
+  "exportedLabel": "Exported",
+  "sensorAccelerometer": "Accelerometer",
+  "sensorGyroscope": "Gyroscope",
+  "sensorMagnetometer": "Magnetometer",
+  "sensorBarometer": "Barometer",
+  "sensorLightMeter": "Light",
+  "sensorNoiseMeter": "Noise",
+  "sensorGPS": "GPS",
+  "sensorProximity": "Proximity",
+  "sensorTemperature": "Temp",
+  "sensorHumidity": "Humidity",
+  "sensorPedometer": "Pedometer",
+  "sensorCompass": "Compass",
+  "sensorAltimeter": "Altimeter",
+  "sensorSpeedMeter": "Speed",
+  "sensorHeartBeat": "Heart Rate",
+  "environmentMonitor": "Environment Monitor",
+  "motionAnalysis": "Motion Analysis",
+  "indoorQuality": "Indoor Quality",
+  "outdoorExplorer": "Outdoor Explorer",
+  "vehicleDynamics": "Vehicle Dynamics",
+  "healthTrackerLab": "Health Tracker",
+  "customLabCard": "Custom Lab",
+  "sensorLabCompanion": "Sensor Lab - Your Personal Lab Companion",
+  "quickAccessViewAll": "Quick Access - View All",
+  "magnetometerMax": "Max",
+  "proximityMainCircle": "Proximity",
+  "pedometerSedentary": "Sedentary",
+  "presets": "Presets",
+  "vehicleDynamics": "Vehicle Dynamics",
+  "motionAnalysis": "Motion Analysis",
+  "indoorQuality": "Indoor Quality",
+  "environmentMonitor": "Environment Monitor",
+  "lightLevel": "Light Level",
+  "noiseLevel": "Noise Level",
+  "heartRate": "Heart Rate",
+  "historyList": "History",
+  "historyDetails": "History Details",
+  "userOnboardingLanguage": "Language",
+  "userOnboardingChangeLanguage": "Change Language",
+  "userOnboardingWelcome": "Welcome to SensorLab!",
+  "userOnboardingGetStarted": "Get Started",
+  "userOnboardingNext": "Next",
+  "userOnboardingPrevious": "Previous",
+  "userOnboardingSkip": "Skip",
+  "userOnboardingFinish": "Finish",
+  "onboardingTitleSuperpowers": "Your Phone Has Superpowers",
+  "onboardingDescSuperpowers": "It's not just a phone; it's a powerful sensor suite. Let's uncover the hidden genius you hold in your hand.",
+  "onboardingTitleSenseWorld": "Sense the Unseen World",
+  "onboardingDescSenseWorld": "Measure sound, light, magnetism, and motion. See your environment in a way you never have before.",
+  "onboardingTitleLaboratory": "Your Pocket-Sized Laboratory",
+  "onboardingDescLaboratory": "From simple curiosity to serious experiments, build your custom lab to discover, record, and understand the world.",
+  "onboardingTitleDiscovery": "Begin Your Journey of Discovery",
+  "onboardingDescDiscovery": "All set. Start exploring, experimenting, and seeing the world differently. Your lab awaits."
+}

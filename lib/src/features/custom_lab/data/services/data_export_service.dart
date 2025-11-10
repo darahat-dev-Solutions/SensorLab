@@ -1,0 +1,249 @@
+import 'dart:io';
+
+import 'package:excel/excel.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sensorlab/src/core/utils/logger.dart';
+
+/// Service responsible for exporting session data to various formats
+class DataExportService {
+  /// Exports session data to CSV format
+  Future<String> exportToCSV(
+    String sessionId,
+    List<Map<String, dynamic>> dataPoints,
+  ) async {
+    AppLogger.log(
+      'Starting single session export for session $sessionId with ${dataPoints.length} data points',
+    );
+
+    if (dataPoints.isEmpty) {
+      AppLogger.log(
+        'No data points to export for session $sessionId',
+        level: LogLevel.warning,
+      );
+      throw Exception('No data points to export for session $sessionId');
+    }
+
+    final csv = _generateCSV(dataPoints);
+    AppLogger.log('Generated CSV with ${csv.length} characters');
+
+    final path = await _saveToDisk(sessionId, csv);
+
+    AppLogger.log('Exported session $sessionId to CSV: $path');
+
+    return path;
+  }
+
+  /// Generates CSV content from data points
+  String _generateCSV(List<Map<String, dynamic>> dataPoints) {
+    // Determine all unique keys (column headers)
+    final Set<String> headers = {};
+    for (final dp in dataPoints) {
+      headers.addAll(dp.keys);
+    }
+    final sortedHeaders = headers.toList()..sort();
+
+    // Build CSV manually
+    final csvLines = <String>[];
+
+    // Add header row
+    csvLines.add('timestamp,${sortedHeaders.join(',')}');
+
+    // Add data rows
+    for (var i = 0; i < dataPoints.length; i++) {
+      final dp = dataPoints[i];
+      final row = <String>[
+        i.toString(),
+        ...sortedHeaders.map((header) => _escapeCsvValue(dp[header])),
+      ];
+      csvLines.add(row.join(','));
+    }
+
+    return csvLines.join('\n');
+  }
+
+  /// Escapes CSV value to handle commas, quotes, and newlines
+  String _escapeCsvValue(dynamic value) {
+    if (value == null) {
+      return '';
+    }
+    final str = value.toString();
+    if (str.contains(',') || str.contains('"') || str.contains('\n')) {
+      return '"${str.replaceAll('"', '""')}"';
+    }
+    return str;
+  }
+
+  /// Saves CSV content to disk using Storage Access Framework
+  Future<String> _saveToDisk(String sessionId, String csvContent) async {
+    // Generate filename with timestamp
+    final timestamp = DateTime.now();
+    final filename =
+        'lab_session_${sessionId}_${timestamp.year}${timestamp.month.toString().padLeft(2, '0')}${timestamp.day.toString().padLeft(2, '0')}_${timestamp.hour.toString().padLeft(2, '0')}${timestamp.minute.toString().padLeft(2, '0')}.csv';
+
+    AppLogger.log('Attempting to save file: $filename');
+
+    String? savedPath;
+
+    if (Platform.isAndroid || Platform.isIOS) {
+      // Use Storage Access Framework / native saver with proper permissions
+      try {
+        AppLogger.log('Using FlutterFileDialog for mobile platform');
+
+        final params = SaveFileDialogParams(
+          fileName: filename,
+          data: Uint8List.fromList(csvContent.codeUnits),
+        );
+        savedPath = await FlutterFileDialog.saveFile(params: params);
+
+        if (savedPath == null) {
+          // User cancelled the save dialog
+          AppLogger.log(
+            'User cancelled file save dialog',
+            level: LogLevel.warning,
+          );
+          throw Exception('File save cancelled by user');
+        }
+
+        AppLogger.log(
+          'File saved successfully via FlutterFileDialog: $savedPath',
+        );
+      } on MissingPluginException catch (e) {
+        // Fallback to app documents directory if plugin channel not registered
+        AppLogger.log(
+          'FlutterFileDialog plugin not available, using fallback: $e',
+          level: LogLevel.warning,
+        );
+        final directory = await getApplicationDocumentsDirectory();
+        savedPath = '${directory.path}/$filename';
+        final file = File(savedPath);
+        await file.writeAsString(csvContent);
+        AppLogger.log('File saved to app directory: $savedPath');
+      } catch (e) {
+        AppLogger.log(
+          'Error saving file via FlutterFileDialog: $e',
+          level: LogLevel.error,
+        );
+        rethrow;
+      }
+    } else {
+      // Desktop platforms - save to documents directory
+      AppLogger.log('Using documents directory for desktop platform');
+      final directory = await getApplicationDocumentsDirectory();
+      savedPath = '${directory.path}/$filename';
+      final file = File(savedPath);
+      await file.writeAsString(csvContent);
+      AppLogger.log('File saved to documents: $savedPath');
+    }
+
+    return savedPath;
+  }
+}
+
+extension DataExportServiceMultiSession on DataExportService {
+  /// Exports multiple sessions to a single Excel (.xlsx) file
+  Future<String> exportMultipleSessionsToExcel(
+    Map<String, List<Map<String, dynamic>>> sessionDataMap,
+    // Map<String, List<Map<String, dynamic>>> sessionsData,
+  ) async {
+    if (sessionDataMap.isEmpty) {
+      AppLogger.log('No sessions provided for export', level: LogLevel.warning);
+      throw Exception('No session data to export.');
+    }
+
+    final excel = Excel.createExcel();
+    excel.delete('Sheet1'); // remove default sheet
+
+    for (final entry in sessionDataMap.entries) {
+      final sessionId = entry.key;
+      final dataPoints = entry.value;
+
+      AppLogger.log(
+        'Adding sheet for session $sessionId with ${dataPoints.length} rows',
+      );
+
+      if (dataPoints.isEmpty) {
+        continue;
+      }
+
+      final sheet = excel[sessionId];
+
+      // Get sorted headers (like your CSV)
+      final headers = <String>{};
+      for (final dp in dataPoints) {
+        headers.addAll(dp.keys);
+      }
+      final sortedHeaders = headers.toList()..sort();
+
+      // ✅ Add header row using TextCellValue
+      sheet.appendRow([
+        TextCellValue('timestamp'),
+        ...sortedHeaders.map((h) => TextCellValue(h)),
+      ]);
+
+      // ✅ Add data rows using TextCellValue
+      for (var i = 0; i < dataPoints.length; i++) {
+        final dp = dataPoints[i];
+        final row = <CellValue?>[
+          TextCellValue(i.toString()),
+          ...sortedHeaders.map((h) => TextCellValue(dp[h]?.toString() ?? '')),
+        ];
+        sheet.appendRow(row);
+      }
+    }
+
+    // Save file to disk
+    final timestamp = DateTime.now();
+    final filename =
+        'lab_sessions_${timestamp.year}${timestamp.month.toString().padLeft(2, '0')}${timestamp.day.toString().padLeft(2, '0')}_${timestamp.hour.toString().padLeft(2, '0')}${timestamp.minute.toString().padLeft(2, '0')}.xlsx';
+
+    String? savedPath;
+
+    try {
+      final excelBytes = Uint8List.fromList(excel.encode()!);
+      if (Platform.isAndroid || Platform.isIOS) {
+        try {
+          final params = SaveFileDialogParams(
+            fileName: filename,
+            data: excelBytes,
+          );
+          AppLogger.log(
+            'Attempting to save multi-session Excel via FlutterFileDialog: $filename',
+          );
+          savedPath = await FlutterFileDialog.saveFile(params: params);
+
+          if (savedPath == null) {
+            AppLogger.log(
+              'User cancelled multi-session Excel save dialog',
+              level: LogLevel.warning,
+            );
+            throw Exception('File save cancelled by user');
+          }
+        } on MissingPluginException catch (e) {
+          // Fallback to application documents dir
+          AppLogger.log(
+            'FlutterFileDialog plugin not available for Excel, fallback to app dir: $e',
+            level: LogLevel.warning,
+          );
+          final directory = await getApplicationDocumentsDirectory();
+          savedPath = '${directory.path}/$filename';
+          final file = File(savedPath);
+          await file.writeAsBytes(excelBytes);
+        }
+      } else {
+        final directory = await getApplicationDocumentsDirectory();
+        savedPath = '${directory.path}/$filename';
+        final file = File(savedPath);
+        await file.writeAsBytes(excelBytes);
+      }
+
+      AppLogger.log('Multi-session Excel saved: $savedPath');
+    } catch (e) {
+      AppLogger.log('Error saving Excel file: $e', level: LogLevel.error);
+      rethrow;
+    }
+
+    return savedPath;
+  }
+}
