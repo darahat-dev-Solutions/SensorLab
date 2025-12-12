@@ -13,7 +13,7 @@ Future<void> main() async {
   runApp(
     UncontrolledProviderScope(
       container: container,
-      child: MaterialApp(
+      child: const MaterialApp(
         home: Scaffold(
           backgroundColor: Colors.white,
           body: Center(
