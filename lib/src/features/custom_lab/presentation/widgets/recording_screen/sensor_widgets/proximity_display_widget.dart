@@ -19,7 +19,6 @@ class ProximityDisplayWidget extends ConsumerWidget {
       dataPoints: dataPoints,
       title: 'Proximity (${proximityData.isNear ? "Near" : "Far"})',
       lineColor: Colors.amber,
-      minY: 0,
       maxY: 10,
       horizontalInterval: 2,
       leftTitleBuilder: (value) => '${value.toInt()}',

@@ -47,7 +47,7 @@ void showSettings(BuildContext context) {
                   Expanded(
                     child: SingleChildScrollView(
                       controller: scrollController,
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(5),
                       physics: const BouncingScrollPhysics(),
                       child: const SettingsPage(),
                     ),

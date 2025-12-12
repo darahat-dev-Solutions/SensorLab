@@ -42,7 +42,7 @@ class ExportNotifier extends StateNotifier<ExportState> {
 
   /// Export a session to CSV
   Future<String?> exportSession(String sessionId) async {
-    state = state.copyWith(isExporting: true, errorMessage: null);
+    state = state.copyWith(isExporting: true);
 
     try {
       final csvPath = await _useCase.exportToCSV(sessionId);
@@ -56,7 +56,7 @@ class ExportNotifier extends StateNotifier<ExportState> {
 
   /// Export a session for sharing
   Future<String?> exportForSharing(String sessionId) async {
-    state = state.copyWith(isExporting: true, errorMessage: null);
+    state = state.copyWith(isExporting: true);
 
     try {
       final csvPath = await _useCase.exportForSharing(sessionId);
@@ -72,10 +72,9 @@ class ExportNotifier extends StateNotifier<ExportState> {
     String labId,
     List<String> sessionIds,
   ) async {
-    state = state.copyWith(isExporting: true, errorMessage: null);
+    state = state.copyWith(isExporting: true);
     AppLogger.log(
       '📦 [ExportProvider] exportMultipleForSharing invoked. Lab: $labId, sessions: ${sessionIds.length}',
-      level: LogLevel.info,
     );
 
     try {
@@ -85,7 +84,6 @@ class ExportNotifier extends StateNotifier<ExportState> {
       );
       AppLogger.log(
         '✅ [ExportProvider] Multi-session export complete: $filePath',
-        level: LogLevel.info,
       );
       state = state.copyWith(isExporting: false, exportedFilePath: filePath);
       return filePath;
@@ -103,7 +101,7 @@ class ExportNotifier extends StateNotifier<ExportState> {
   Future<bool> deleteExportedFile(String sessionId) async {
     try {
       await _useCase.deleteExportedFile(sessionId);
-      state = state.copyWith(exportedFilePath: null);
+      state = state.copyWith();
       return true;
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString());
@@ -118,7 +116,7 @@ class ExportNotifier extends StateNotifier<ExportState> {
 
   /// Clear error message
   void clearError() {
-    state = state.copyWith(errorMessage: null);
+    state = state.copyWith();
   }
 }
 

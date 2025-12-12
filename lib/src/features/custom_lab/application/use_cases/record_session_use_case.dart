@@ -29,12 +29,8 @@ class RecordSessionUseCase {
       labId: labId,
       labName: lab.name,
       startTime: DateTime.now(),
-      endTime: null,
       status: RecordingStatus.recording,
-      dataPointsCount: 0,
-      duration: 0,
       notes: notes ?? '',
-      exportPath: null,
       sensorTypes: lab.sensors,
     );
 
@@ -282,6 +278,6 @@ class RecordSessionUseCase {
 
   /// Get data points for a session
   Future<List<SensorDataPoint>> getSessionDataPoints(String sessionId) async {
-    return _repository.getDataPointsBySessionId(sessionId);
+    return await _repository.getDataPointsBySessionId(sessionId);
   }
 }

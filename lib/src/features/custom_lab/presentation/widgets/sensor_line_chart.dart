@@ -25,8 +25,6 @@ class SensorLineChart extends StatelessWidget {
         return '°C';
       case SensorType.humidity:
         return '%';
-      case SensorType.barometer:
-        return 'hPa';
       case SensorType.accelerometer:
       case SensorType.gyroscope:
         return 'm/s²';
@@ -36,10 +34,6 @@ class SensorLineChart extends StatelessWidget {
         return 'm';
       case SensorType.speedMeter:
         return 'km/h';
-      case SensorType.heartBeat:
-        return 'bpm';
-      case SensorType.pedometer:
-        return 'steps';
       case SensorType.proximity:
         return 'cm';
       default:
@@ -108,7 +102,7 @@ class SensorLineChart extends StatelessWidget {
               child: data.isEmpty
                   ? Center(
                       child: Text(
-                        'Collecting data...',
+                        'Collecting datad...',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.grey,
                         ),
@@ -191,7 +185,9 @@ class _LineChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (data.isEmpty) return;
+    if (data.isEmpty) {
+      return;
+    }
     final paint = Paint()
       ..color = color
       ..strokeWidth = 2

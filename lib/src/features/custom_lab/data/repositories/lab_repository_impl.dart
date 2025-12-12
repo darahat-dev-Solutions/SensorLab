@@ -106,6 +106,7 @@ class LabRepositoryImpl implements LabRepository {
 
   // ==================== Legacy Session Methods (Compatibility) ====================
 
+  @override
   Future<void> saveLabSession(LabSession session) async {
     await _sessionDataSource.create(session);
   }
@@ -137,12 +138,10 @@ class LabRepositoryImpl implements LabRepository {
   ) async {
     AppLogger.log(
       '🔍 [Repository] Getting data points for session: $sessionId',
-      level: LogLevel.info,
     );
     final dataPoints = await _sessionDataSource.getDataPoints(sessionId);
     AppLogger.log(
       '🔍 [Repository] Retrieved ${dataPoints.length} data points from datasource',
-      level: LogLevel.info,
     );
     if (dataPoints.isNotEmpty) {
       AppLogger.log(
@@ -229,7 +228,6 @@ class LabRepositoryImpl implements LabRepository {
   ) async {
     AppLogger.log(
       '📦 [Repository] Preparing multi-session export for lab "$labName" with ${sessionsData.length} sessions',
-      level: LogLevel.info,
     );
     final nonEmpty = sessionsData.entries
         .where((e) => e.value.isNotEmpty)
@@ -237,7 +235,6 @@ class LabRepositoryImpl implements LabRepository {
         .toList();
     AppLogger.log(
       '🧮 [Repository] Non-empty sessions to include: ${nonEmpty.length} -> $nonEmpty',
-      level: LogLevel.info,
     );
 
     return await _exportService.exportMultipleSessionsToExcel(

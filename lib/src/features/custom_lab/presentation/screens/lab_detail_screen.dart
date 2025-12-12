@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/lab_management_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/recording_session_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/screens/create_lab_screen.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/screens/recording_screen.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/screens/session_history_screen.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/lab_detail_screen/lab_info_card.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/lab_detail_screen/sensor_chip_list.dart';
 
@@ -69,11 +67,11 @@ class LabDetailScreen extends ConsumerWidget {
         );
       },
       loading: () => Scaffold(
-        appBar: AppBar(title: Text(l10n.labDetails ?? 'Lab Details')),
+        appBar: AppBar(title: Text(l10n.labDetails)),
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (error, stack) => Scaffold(
-        appBar: AppBar(title: Text(l10n.labDetails ?? 'Lab Details')),
+        appBar: AppBar(title: Text(l10n.labDetails)),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -127,17 +125,8 @@ class LabDetailScreen extends ConsumerWidget {
             builder: (context, ref, _) {
               return IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () async {
-                  final result = await Navigator.of(context).push<Lab>(
-                    MaterialPageRoute(
-                      builder: (context) => CreateLabScreen(labToEdit: lab),
-                    ),
-                  );
-
-                  // The provider will automatically update, no need to manually refresh
-                  if (result != null) {
-                    // Optionally show a snackbar or do something with the result
-                  }
+                onPressed: () {
+                  context.pushNamed('create-lab', extra: lab);
                 },
                 tooltip: l10n.editLab,
               );
@@ -146,14 +135,23 @@ class LabDetailScreen extends ConsumerWidget {
         IconButton(
           icon: const Icon(Icons.history),
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SessionHistoryScreen(lab: lab),
-              ),
+            context.pushNamed(
+              'lab-session-history',
+              pathParameters: {'labId': lab.id},
             );
           },
           tooltip: l10n.sessionHistory,
         ),
+        if (!lab.isPreset)
+          Consumer(
+            builder: (context, ref, _) {
+              return IconButton(
+                icon: const Icon(Icons.delete_outline),
+                onPressed: () => _showDeleteDialog(context, ref, lab, l10n),
+                tooltip: l10n.delete,
+              );
+            },
+          ),
       ],
     );
   }
@@ -236,10 +234,9 @@ class LabDetailScreen extends ConsumerWidget {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SessionHistoryScreen(lab: lab),
-                    ),
+                  context.pushNamed(
+                    'lab-session-history',
+                    pathParameters: {'labId': lab.id},
                   );
                 },
                 child: sessionsAsync.when(
@@ -253,7 +250,7 @@ class LabDetailScreen extends ConsumerWidget {
                     label: l10n.sessions,
                     value: '...',
                   ),
-                  error: (_, __) => LabInfoCard(
+                  error: (_, _) => LabInfoCard(
                     icon: Icons.history,
                     label: l10n.sessions,
                     value: '0',
@@ -270,8 +267,10 @@ class LabDetailScreen extends ConsumerWidget {
   Widget _buildFAB(BuildContext context, Lab lab, AppLocalizations l10n) {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => RecordingScreen(lab: lab)),
+        context.pushNamed(
+          'lab-recording',
+          pathParameters: {'labId': lab.id},
+          extra: lab,
         );
       },
       icon: const Icon(Icons.play_arrow),
@@ -301,5 +300,55 @@ class LabDetailScreen extends ConsumerWidget {
       default:
         return Icons.science;
     }
+  }
+
+  void _showDeleteDialog(
+    BuildContext context,
+    WidgetRef ref,
+    Lab lab,
+    AppLocalizations l10n,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(l10n.delete),
+          content: Text('${l10n.delete} "${lab.name}"?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(dialogContext).pop();
+
+                // Call deleteLab from labManagementProvider
+                final success = await ref
+                    .read(labManagementProvider.notifier)
+                    .deleteLab(lab.id);
+
+                if (success && context.mounted) {
+                  // Navigate to home after successful deletion
+                  context.go('/');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${l10n.delete} successful')),
+                  );
+                } else if (!success && context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${l10n.delete} failed'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: Text(l10n.delete),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

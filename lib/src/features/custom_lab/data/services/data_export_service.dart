@@ -15,7 +15,6 @@ class DataExportService {
   ) async {
     AppLogger.log(
       'Starting single session export for session $sessionId with ${dataPoints.length} data points',
-      level: LogLevel.info,
     );
 
     if (dataPoints.isEmpty) {
@@ -27,17 +26,11 @@ class DataExportService {
     }
 
     final csv = _generateCSV(dataPoints);
-    AppLogger.log(
-      'Generated CSV with ${csv.length} characters',
-      level: LogLevel.info,
-    );
+    AppLogger.log('Generated CSV with ${csv.length} characters');
 
     final path = await _saveToDisk(sessionId, csv);
 
-    AppLogger.log(
-      'Exported session $sessionId to CSV: $path',
-      level: LogLevel.info,
-    );
+    AppLogger.log('Exported session $sessionId to CSV: $path');
 
     return path;
   }
@@ -72,7 +65,9 @@ class DataExportService {
 
   /// Escapes CSV value to handle commas, quotes, and newlines
   String _escapeCsvValue(dynamic value) {
-    if (value == null) return '';
+    if (value == null) {
+      return '';
+    }
     final str = value.toString();
     if (str.contains(',') || str.contains('"') || str.contains('\n')) {
       return '"${str.replaceAll('"', '""')}"';
@@ -87,17 +82,14 @@ class DataExportService {
     final filename =
         'lab_session_${sessionId}_${timestamp.year}${timestamp.month.toString().padLeft(2, '0')}${timestamp.day.toString().padLeft(2, '0')}_${timestamp.hour.toString().padLeft(2, '0')}${timestamp.minute.toString().padLeft(2, '0')}.csv';
 
-    AppLogger.log('Attempting to save file: $filename', level: LogLevel.info);
+    AppLogger.log('Attempting to save file: $filename');
 
     String? savedPath;
 
     if (Platform.isAndroid || Platform.isIOS) {
       // Use Storage Access Framework / native saver with proper permissions
       try {
-        AppLogger.log(
-          'Using FlutterFileDialog for mobile platform',
-          level: LogLevel.info,
-        );
+        AppLogger.log('Using FlutterFileDialog for mobile platform');
 
         final params = SaveFileDialogParams(
           fileName: filename,
@@ -116,7 +108,6 @@ class DataExportService {
 
         AppLogger.log(
           'File saved successfully via FlutterFileDialog: $savedPath',
-          level: LogLevel.info,
         );
       } on MissingPluginException catch (e) {
         // Fallback to app documents directory if plugin channel not registered
@@ -128,10 +119,7 @@ class DataExportService {
         savedPath = '${directory.path}/$filename';
         final file = File(savedPath);
         await file.writeAsString(csvContent);
-        AppLogger.log(
-          'File saved to app directory: $savedPath',
-          level: LogLevel.info,
-        );
+        AppLogger.log('File saved to app directory: $savedPath');
       } catch (e) {
         AppLogger.log(
           'Error saving file via FlutterFileDialog: $e',
@@ -141,18 +129,12 @@ class DataExportService {
       }
     } else {
       // Desktop platforms - save to documents directory
-      AppLogger.log(
-        'Using documents directory for desktop platform',
-        level: LogLevel.info,
-      );
+      AppLogger.log('Using documents directory for desktop platform');
       final directory = await getApplicationDocumentsDirectory();
       savedPath = '${directory.path}/$filename';
       final file = File(savedPath);
       await file.writeAsString(csvContent);
-      AppLogger.log(
-        'File saved to documents: $savedPath',
-        level: LogLevel.info,
-      );
+      AppLogger.log('File saved to documents: $savedPath');
     }
 
     return savedPath;
@@ -179,10 +161,11 @@ extension DataExportServiceMultiSession on DataExportService {
 
       AppLogger.log(
         'Adding sheet for session $sessionId with ${dataPoints.length} rows',
-        level: LogLevel.info,
       );
 
-      if (dataPoints.isEmpty) continue;
+      if (dataPoints.isEmpty) {
+        continue;
+      }
 
       final sheet = excel[sessionId];
 
@@ -227,7 +210,6 @@ extension DataExportServiceMultiSession on DataExportService {
           );
           AppLogger.log(
             'Attempting to save multi-session Excel via FlutterFileDialog: $filename',
-            level: LogLevel.info,
           );
           savedPath = await FlutterFileDialog.saveFile(params: params);
 
@@ -256,10 +238,7 @@ extension DataExportServiceMultiSession on DataExportService {
         await file.writeAsBytes(excelBytes);
       }
 
-      AppLogger.log(
-        'Multi-session Excel saved: $savedPath',
-        level: LogLevel.info,
-      );
+      AppLogger.log('Multi-session Excel saved: $savedPath');
     } catch (e) {
       AppLogger.log('Error saving Excel file: $e', level: LogLevel.error);
       rethrow;

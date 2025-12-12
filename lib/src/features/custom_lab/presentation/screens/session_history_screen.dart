@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
 import 'package:sensorlab/src/core/utils/logger.dart';
@@ -7,7 +8,6 @@ import 'package:sensorlab/src/features/custom_lab/application/providers/export_p
 import 'package:sensorlab/src/features/custom_lab/application/providers/recording_session_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab_session.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/screens/session_detail_screen.dart';
 
 /// Screen showing session history for a lab
 class SessionHistoryScreen extends ConsumerStatefulWidget {
@@ -53,13 +53,17 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
   }
 
   Future<void> _exportSelected() async {
-    if (_selectedSessions.isEmpty) return;
+    if (_selectedSessions.isEmpty) {
+      return;
+    }
 
     final exportNotifier = ref.read(exportProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
 
     // Show progress dialog
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -77,6 +81,7 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
 
     String? exportedFilePath;
     String? errorMessage;
+    // Remove localContext and wasMounted; use mounted and context directly after async gap
     try {
       exportedFilePath = await exportNotifier.exportMultipleForSharing(
         widget.lab.id,
@@ -89,11 +94,14 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
         level: LogLevel.error,
       );
     } finally {
-      if (!mounted) return;
-      Navigator.of(context).pop(); // Close progress dialog
+      if (mounted) {
+        Navigator.of(context).pop(); // Close progress dialog
+      }
     }
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     if (exportedFilePath != null) {
       _showExportResultDialog([exportedFilePath], {}, l10n);
       _deselectAll();
@@ -318,11 +326,13 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                     if (_isSelectionMode) {
                       _toggleSelection(session.id);
                     } else {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              SessionDetailScreen(session: session),
-                        ),
+                      context.pushNamed(
+                        'lab-session-detail',
+                        pathParameters: {
+                          'labId': widget.lab.id, // <-- Add this line!
+                          'sessionId': session.id,
+                        },
+                        // Optionally pass extra: session if needed for details
                       );
                     }
                   },
@@ -474,7 +484,7 @@ class SessionCard extends ConsumerWidget {
                         return const SizedBox.shrink();
                       },
                       loading: () => const SizedBox.shrink(),
-                      error: (_, __) => const SizedBox.shrink(),
+                      error: (_, _) => const SizedBox.shrink(),
                     ),
 
                     // Notes preview

@@ -11,10 +11,7 @@ class ExportSessionUseCase {
 
   /// Export a session to CSV file
   Future<String> exportToCSV(String sessionId) async {
-    AppLogger.log(
-      '📋 [ExportUseCase] Starting export for session: $sessionId',
-      level: LogLevel.info,
-    );
+    AppLogger.log('📋 [ExportUseCase] Starting export for session: $sessionId');
 
     final session = await _repository.getSessionById(sessionId);
     if (session == null) {
@@ -25,24 +22,18 @@ class ExportSessionUseCase {
       throw Exception('Session not found: $sessionId');
     }
 
-    AppLogger.log(
-      '✅ [ExportUseCase] Session found: $sessionId',
-      level: LogLevel.info,
-    );
+    AppLogger.log('✅ [ExportUseCase] Session found: $sessionId');
     AppLogger.log(
       '   Lab name: ${session.labName}, Duration: ${session.duration}s, Data points count: ${session.dataPointsCount}',
-      level: LogLevel.info,
     );
 
     // Get the data points for the session
     AppLogger.log(
       '📊 [ExportUseCase] Fetching data points for session: $sessionId',
-      level: LogLevel.info,
     );
     final dataPoints = await _repository.getSensorDataPoints(sessionId);
     AppLogger.log(
       '📊 [ExportUseCase] Retrieved ${dataPoints.length} data points',
-      level: LogLevel.info,
     );
 
     if (dataPoints.isEmpty) {
@@ -57,23 +48,14 @@ class ExportSessionUseCase {
       );
     }
 
-    AppLogger.log(
-      '💾 [ExportUseCase] Calling repository to export to CSV',
-      level: LogLevel.info,
-    );
+    AppLogger.log('💾 [ExportUseCase] Calling repository to export to CSV');
     final csvPath = await _repository.exportSessionToCSV(sessionId, dataPoints);
-    AppLogger.log(
-      '✅ [ExportUseCase] CSV exported to: $csvPath',
-      level: LogLevel.info,
-    );
+    AppLogger.log('✅ [ExportUseCase] CSV exported to: $csvPath');
 
     // Update session with export path
     final updatedSession = session.copyWith(exportPath: csvPath);
     await _repository.updateSession(updatedSession);
-    AppLogger.log(
-      '✅ [ExportUseCase] Session updated with export path',
-      level: LogLevel.info,
-    );
+    AppLogger.log('✅ [ExportUseCase] Session updated with export path');
 
     return csvPath;
   }
@@ -137,7 +119,6 @@ class ExportSessionUseCase {
   ) async {
     AppLogger.log(
       '📦 [ExportUseCase] Starting multi-session export. Lab: $labId, sessions: ${sessionIds.length}',
-      level: LogLevel.info,
     );
 
     final lab = await _repository.getLabById(labId);
@@ -151,12 +132,10 @@ class ExportSessionUseCase {
     for (final sessionId in sessionIds) {
       AppLogger.log(
         '📊 [ExportUseCase] Collecting data points for session: $sessionId',
-        level: LogLevel.info,
       );
       final dataPoints = await _repository.getSensorDataPoints(sessionId);
       AppLogger.log(
         '📊 [ExportUseCase] Session $sessionId has ${dataPoints.length} data points',
-        level: LogLevel.info,
       );
       sessionsData[sessionId] = dataPoints;
     }
@@ -164,7 +143,6 @@ class ExportSessionUseCase {
     final nonEmptyCount = sessionsData.values.where((v) => v.isNotEmpty).length;
     AppLogger.log(
       '🧮 [ExportUseCase] Completed collection. Non-empty sessions: $nonEmptyCount / ${sessionsData.length}',
-      level: LogLevel.info,
     );
     if (nonEmptyCount == 0) {
       AppLogger.log(
@@ -176,17 +154,13 @@ class ExportSessionUseCase {
 
     AppLogger.log(
       '💾 [ExportUseCase] Invoking repository to build multi-session file',
-      level: LogLevel.info,
     );
 
     final filePath = await _repository.exportMultipleSessionsToFile(
       lab.name,
       sessionsData,
     );
-    AppLogger.log(
-      '✅ [ExportUseCase] Multi-session export complete: $filePath',
-      level: LogLevel.info,
-    );
+    AppLogger.log('✅ [ExportUseCase] Multi-session export complete: $filePath');
     return filePath;
   }
 }

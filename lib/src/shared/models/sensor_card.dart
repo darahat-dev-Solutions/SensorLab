@@ -13,5 +13,8 @@ class SensorCard {
     required this.color,
     required this.screen,
     required this.category,
+    required String title,
+    required String description,
+    required bool isDark,
   });
 }

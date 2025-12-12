@@ -11,20 +11,12 @@ import '../../models/plant_light_data.dart';
 /// Enum for light meter modes
 enum LightMeterMode { standard, plantAssistant, photoAssistant }
 
-/// Provider for light meter functionality
-final lightMeterProvider =
-    StateNotifierProvider<LightMeterNotifier, LightMeterData>((ref) {
-      return LightMeterNotifier();
-    });
-
 /// State notifier for managing light meter data and operations
 class LightMeterNotifier extends StateNotifier<LightMeterData> {
-  LightMeterNotifier() : super(const LightMeterData());
-
-  StreamSubscription<int>? _lightSubscription;
-  Timer? _sessionTimer;
-  Timer? _plantTrackingTimer;
+  LightMeterNotifier(this._ref) : super(const LightMeterData());
   final List<double> _allReadings = [];
+  final Ref _ref;
+  Timer? _plantTrackingTimer;
   final List<LightReading> _plantReadings = [];
 
   // Plant tracking state
@@ -40,7 +32,9 @@ class LightMeterNotifier extends StateNotifier<LightMeterData> {
 
   /// Get plant tracking data
   PlantLightData? get plantTrackingData {
-    if (_selectedPlantType == null) return null;
+    if (_selectedPlantType == null) {
+      return null;
+    }
 
     final plantInfo = PlantDatabase.getPlantInfo(_selectedPlantType!);
     return PlantLightData(
@@ -56,36 +50,66 @@ class LightMeterNotifier extends StateNotifier<LightMeterData> {
 
   /// Get camera settings for current lux
   CameraSettingsData? getCameraSettings() {
-    if (state.currentLux == 0) return null;
+    if (state.currentLux == 0) {
+      return null;
+    }
     return CameraSettingsData.fromLux(state.currentLux);
+  }
+
+  /// Update light meter data from sensor dataPoints
+  void updateFromDataPoints(List<double> dataPoints) {
+    if (dataPoints.isEmpty) {
+      return;
+    }
+
+    try {
+      final currentLux = dataPoints.last; // Latest reading
+      final minLux = dataPoints.reduce((a, b) => a < b ? a : b);
+      final maxLux = dataPoints.reduce((a, b) => a > b ? a : b);
+      final averageLux = dataPoints.isNotEmpty
+          ? dataPoints.reduce((a, b) => a + b) / dataPoints.length
+          : 0.0;
+
+      // Determine light level
+      final lightLevel = LightMeterData.getLightLevel(currentLux);
+
+      // Keep only recent 50 readings for chart
+      final recentReadings = dataPoints.length > 50
+          ? dataPoints.sublist(dataPoints.length - 50)
+          : dataPoints;
+
+      // Update state
+      state = state.copyWith(
+        currentLux: currentLux,
+        minLux: minLux,
+        maxLux: maxLux,
+        averageLux: averageLux,
+        lightLevel: lightLevel,
+        recentReadings: recentReadings,
+        totalReadings: dataPoints.length,
+        isReading: true,
+      );
+
+      // Accumulate DLI if plant tracking is active
+      if (_selectedPlantType != null) {
+        _accumulateDLI();
+      }
+    } catch (e) {
+      state = state.copyWith(errorMessage: 'Error processing light data: $e');
+    }
   }
 
   /// Start light measurement
   Future<void> startMeasurement() async {
     try {
-      // Reset session data
-      _allReadings.clear();
       state = state.copyWith(
         isReading: true,
         minLux: double.infinity,
         maxLux: double.negativeInfinity,
         averageLux: 0.0,
         totalReadings: 0,
-        sessionDuration: 0,
         recentReadings: [],
       );
-
-      // Start listening to light sensor readings
-      _lightSubscription = Light().lightSensorStream.listen(
-        _onLightData,
-        onError: _onLightError,
-        cancelOnError: false,
-      );
-
-      // Start session timer
-      _sessionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        state = state.copyWith(sessionDuration: state.sessionDuration + 1);
-      });
     } catch (e) {
       state = state.copyWith(
         isReading: false,
@@ -96,17 +120,14 @@ class LightMeterNotifier extends StateNotifier<LightMeterData> {
 
   /// Stop light measurement
   void stopMeasurement() {
-    _lightSubscription?.cancel();
-    _lightSubscription = null;
-    _sessionTimer?.cancel();
-    _sessionTimer = null;
-
     state = state.copyWith(isReading: false);
   }
 
   /// Handle incoming light data
   void _onLightData(int luxValue) {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     try {
       // Convert to double for calculations
@@ -158,7 +179,9 @@ class LightMeterNotifier extends StateNotifier<LightMeterData> {
 
   /// Handle light reading errors
   void _onLightError(dynamic error) {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     state = state.copyWith(
       errorMessage: 'Light measurement error: $error',
@@ -203,7 +226,6 @@ class LightMeterNotifier extends StateNotifier<LightMeterData> {
 
   @override
   void dispose() {
-    stopMeasurement();
     _plantTrackingTimer?.cancel();
     super.dispose();
   }
@@ -247,7 +269,9 @@ class LightMeterNotifier extends StateNotifier<LightMeterData> {
 
   /// Accumulate DLI from current lux reading
   void _accumulateDLI() {
-    if (!mounted || state.currentLux == 0) return;
+    if (!mounted || state.currentLux == 0) {
+      return;
+    }
 
     // Convert lux to PPFD (μmol/m²/s)
     // Approximate conversion: PPFD ≈ Lux / 54
@@ -277,7 +301,9 @@ class LightMeterNotifier extends StateNotifier<LightMeterData> {
 
   /// Get plant recommendations
   List<String> getPlantRecommendations() {
-    if (_selectedPlantType == null) return [];
+    if (_selectedPlantType == null) {
+      return [];
+    }
 
     final plantData = PlantDatabase.getPlantInfo(_selectedPlantType!);
     final currentPPFD = state.currentLux / 54.0;
@@ -339,9 +365,16 @@ class LightMeterNotifier extends StateNotifier<LightMeterData> {
   /// Get EV (Exposure Value)
   double getExposureValue() {
     final settings = getCameraSettings();
-    if (settings == null) return 0.0;
+    if (settings == null) {
+      return 0.0;
+    }
 
     // EV = log2(lux / 2.5) for ISO 100
     return log(settings.lux / 2.5) / ln2;
   }
 }
+
+final lightMeterProvider =
+    StateNotifierProvider<LightMeterNotifier, LightMeterData>(
+      (ref) => LightMeterNotifier(ref),
+    );

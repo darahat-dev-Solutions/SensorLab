@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
+import 'package:sensorlab/src/features/gyroscope/presentation/screens/gyroscope_display_widget.dart';
 
 import '../providers/gyroscope_provider.dart';
 
@@ -236,11 +237,9 @@ class _GyroscopeScreenState extends ConsumerState<GyroscopeScreen>
                             ),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            height: 200,
-                            child: LineChart(
-                              _buildLineChart(xSpots, ySpots, zSpots),
-                            ),
+                          const SizedBox(
+                            height: 400,
+                            child: GyroscopeDisplayWidget(),
                           ),
                         ],
                       ),

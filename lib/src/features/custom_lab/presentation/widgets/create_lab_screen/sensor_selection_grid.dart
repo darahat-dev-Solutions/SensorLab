@@ -6,8 +6,13 @@ import 'package:sensorlab/src/features/custom_lab/presentation/notifiers/create_
 /// Reusable sensor selection grid widget
 class SensorSelectionGrid extends ConsumerWidget {
   final bool enabled;
+  final Map<SensorType, String>? sensorDescriptions;
 
-  const SensorSelectionGrid({this.enabled = true, super.key});
+  const SensorSelectionGrid({
+    this.enabled = true,
+    this.sensorDescriptions,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +26,7 @@ class SensorSelectionGrid extends ConsumerWidget {
         crossAxisCount: 3,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        childAspectRatio: 1.2,
+        childAspectRatio: 1,
       ),
       itemCount: SensorType.values.length,
       itemBuilder: (context, index) {
@@ -35,24 +40,26 @@ class SensorSelectionGrid extends ConsumerWidget {
           onTap: () {
             ref.read(createLabNotifierProvider.notifier).toggleSensor(sensor);
           },
+          description: sensorDescriptions?[sensor] ?? '',
         );
       },
     );
   }
 }
 
-/// Individual sensor item widget
 class _SensorItem extends StatelessWidget {
   final SensorType sensor;
   final bool isSelected;
   final bool enabled;
   final VoidCallback onTap;
+  final String description; // <-- Add this
 
   const _SensorItem({
     required this.sensor,
     required this.isSelected,
     required this.enabled,
     required this.onTap,
+    required this.description, // <-- Add this
   });
 
   @override
@@ -61,6 +68,7 @@ class _SensorItem extends StatelessWidget {
       onTap: enabled ? onTap : null,
       borderRadius: BorderRadius.circular(12),
       child: Container(
+        height: 3,
         decoration: BoxDecoration(
           color: isSelected
               ? Colors.blue.withOpacity(0.1)
@@ -76,10 +84,10 @@ class _SensorItem extends StatelessWidget {
           children: [
             Icon(
               _getSensorIcon(sensor),
-              size: 32,
+              size: 20,
               color: isSelected ? Colors.blue : Colors.grey,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 3),
             Text(
               sensor.name,
               textAlign: TextAlign.center,
@@ -89,6 +97,14 @@ class _SensorItem extends StatelessWidget {
                 color: isSelected ? Colors.blue : Colors.grey,
               ),
             ),
+            if (description.isNotEmpty) ...[
+              const SizedBox(height: 3),
+              Text(
+                description,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+              ),
+            ],
           ],
         ),
       ),
@@ -103,16 +119,12 @@ class _SensorItem extends StatelessWidget {
         return Icons.rotate_right;
       case SensorType.magnetometer:
         return Icons.explore;
-      case SensorType.barometer:
-        return Icons.speed;
       case SensorType.compass:
         return Icons.explore;
       case SensorType.lightMeter:
         return Icons.lightbulb;
       case SensorType.noiseMeter:
         return Icons.volume_up;
-      case SensorType.pedometer:
-        return Icons.directions_walk;
       case SensorType.gps:
         return Icons.gps_fixed;
       case SensorType.altimeter:
@@ -124,10 +136,6 @@ class _SensorItem extends StatelessWidget {
       case SensorType.humidity:
         return Icons.water_drop;
       case SensorType.proximity:
-        return Icons.sensors;
-      case SensorType.heartBeat:
-        return Icons.favorite;
-      default:
         return Icons.sensors;
     }
   }

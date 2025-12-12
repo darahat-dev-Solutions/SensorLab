@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab_session.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/screens/session_detail_screen.dart';
 
 class SessionCompleteDialog {
   static Future<void> show({
@@ -62,11 +62,8 @@ class SessionCompleteDialog {
             FilledButton.icon(
               onPressed: () {
                 Navigator.of(ctx).pop();
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => SessionDetailScreen(session: session),
-                  ),
-                );
+                // Use GoRouter for navigation to session detail
+                context.goNamed('session-detail', extra: session);
               },
               icon: const Icon(Icons.visibility),
               label: Text(l10n.viewReport),

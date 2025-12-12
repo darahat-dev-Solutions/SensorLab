@@ -76,10 +76,14 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
                         res.permissionStatuses,
                       );
                       if (allGranted) {
-                        if (!context.mounted) return;
+                        if (!context.mounted) {
+                          return;
+                        }
                         Navigator.of(context).pop(true);
                       } else {
-                        if (!context.mounted) return;
+                        if (!context.mounted) {
+                          return;
+                        }
                         _showPermissionsHelp(context);
                       }
                     },
@@ -117,13 +121,12 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
 
     for (final s in sensors) {
       switch (s) {
-        case SensorType.barometer:
-          await check(s, barometerEventStream().first);
-          break;
         case SensorType.compass:
           // If events is null, sensor not present
           final events = FlutterCompass.events;
-          if (events == null) unavailable.add(s);
+          if (events == null) {
+            unavailable.add(s);
+          }
           break;
         case SensorType.lightMeter:
           await check(s, Light().lightSensorStream.first);
@@ -138,14 +141,12 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
           await check(s, magnetometerEventStream().first);
           break;
         case SensorType.noiseMeter:
-        case SensorType.pedometer:
         case SensorType.gps:
         case SensorType.altimeter:
         case SensorType.speedMeter:
         case SensorType.temperature:
         case SensorType.humidity:
         case SensorType.proximity:
-        case SensorType.heartBeat:
           unchecked.add(s);
           break;
       }
@@ -166,15 +167,9 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
         case SensorType.noiseMeter:
           set.add(Permission.microphone);
           break;
-        case SensorType.pedometer:
-          // Skip - handled via platform-specific mechanisms
-          break;
         case SensorType.gps:
         case SensorType.speedMeter:
           set.add(Permission.locationWhenInUse);
-          break;
-        case SensorType.heartBeat:
-          set.add(Permission.camera);
           break;
         default:
           break;
@@ -191,7 +186,9 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
       if (!entry.value.isGranted) {
         try {
           final result = await entry.key.request();
-          if (!result.isGranted) allGranted = false;
+          if (!result.isGranted) {
+            allGranted = false;
+          }
         } catch (e) {
           AppLogger.log(
             'Permission request failed: ${entry.key} $e',
@@ -218,7 +215,9 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
           FilledButton(
             onPressed: () async {
               await openAppSettings();
-              if (context.mounted) Navigator.of(context).pop();
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
             child: const Text('Open settings'),
           ),
@@ -283,10 +282,18 @@ class _PermissionList extends StatelessWidget {
   }
 
   String _permissionLabel(Permission p) {
-    if (p == Permission.microphone) return 'Microphone';
-    if (p == Permission.activityRecognition) return 'Activity recognition';
-    if (p == Permission.locationWhenInUse) return 'Location';
-    if (p == Permission.camera) return 'Camera';
+    if (p == Permission.microphone) {
+      return 'Microphone';
+    }
+    if (p == Permission.activityRecognition) {
+      return 'Activity recognition';
+    }
+    if (p == Permission.locationWhenInUse) {
+      return 'Location';
+    }
+    if (p == Permission.camera) {
+      return 'Camera';
+    }
     return p.toString();
   }
 }

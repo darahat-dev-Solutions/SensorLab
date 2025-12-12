@@ -46,7 +46,7 @@ class RealtimeLineChart extends StatelessWidget {
               child: dataPoints.isEmpty
                   ? Center(
                       child: Text(
-                        'Collecting data...',
+                        'Collecting datra...',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.grey,
                         ),

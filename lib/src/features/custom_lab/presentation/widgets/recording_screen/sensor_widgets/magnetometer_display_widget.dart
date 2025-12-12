@@ -21,7 +21,6 @@ class MagnetometerDisplayWidget extends ConsumerWidget {
           'Magnetic Field (${magnetometerData.strength.toStringAsFixed(1)} µT)',
       lineColor: Colors.purple,
       minY: -100,
-      maxY: 100,
       horizontalInterval: 50,
       leftTitleBuilder: (value) => '${value.toInt()}',
     );

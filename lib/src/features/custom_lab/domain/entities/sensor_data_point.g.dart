@@ -58,8 +58,9 @@ _$SensorDataPointImpl _$$SensorDataPointImplFromJson(
     _$SensorDataPointImpl(
       sessionId: json['sessionId'] as String,
       timestamp: DateTime.parse(json['timestamp'] as String),
-      sensorValues:
-          _sensorValuesFromJson(json['sensorValues'] as Map<String, dynamic>),
+      sensorValues: (json['sensorValues'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry($enumDecode(_$SensorTypeEnumMap, k), e),
+      ),
       sequenceNumber: (json['sequenceNumber'] as num?)?.toInt() ?? 0,
     );
 
@@ -68,6 +69,22 @@ Map<String, dynamic> _$$SensorDataPointImplToJson(
     <String, dynamic>{
       'sessionId': instance.sessionId,
       'timestamp': instance.timestamp.toIso8601String(),
-      'sensorValues': _sensorValuesToJson(instance.sensorValues),
+      'sensorValues': instance.sensorValues
+          .map((k, e) => MapEntry(_$SensorTypeEnumMap[k]!, e)),
       'sequenceNumber': instance.sequenceNumber,
     };
+
+const _$SensorTypeEnumMap = {
+  SensorType.accelerometer: 'accelerometer',
+  SensorType.gyroscope: 'gyroscope',
+  SensorType.magnetometer: 'magnetometer',
+  SensorType.lightMeter: 'lightMeter',
+  SensorType.noiseMeter: 'noiseMeter',
+  SensorType.gps: 'gps',
+  SensorType.proximity: 'proximity',
+  SensorType.temperature: 'temperature',
+  SensorType.humidity: 'humidity',
+  SensorType.compass: 'compass',
+  SensorType.altimeter: 'altimeter',
+  SensorType.speedMeter: 'speedMeter',
+};

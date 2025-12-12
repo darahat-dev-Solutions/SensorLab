@@ -57,10 +57,15 @@ class _PlantLightAssistantScreenState
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     // Removed unused local l10n to satisfy analyzer
-    final lightState = ref.watch(lightMeterProvider);
-    final notifier = ref.read(lightMeterProvider.notifier);
-    final plantData = notifier.plantTrackingData;
+    final lightState = ref.watch(
+      lightMeterProvider,
+    ); // The LightMeterData state
+    final notifier = ref.read(
+      lightMeterProvider.notifier,
+    ); // The LightMeterNotifier instance
 
+    final plantData = notifier.plantTrackingData;
+    // Correct usage
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plant Light Assistant'),
@@ -92,7 +97,7 @@ class _PlantLightAssistantScreenState
               const SizedBox(height: 24),
 
               // Plant Type Selector
-              _buildPlantSelector(theme),
+              _buildPlantSelector(theme, lightState),
               const SizedBox(height: 24),
 
               // Show data if plant is selected
@@ -103,7 +108,7 @@ class _PlantLightAssistantScreenState
 
                 // DLI Progress
                 if (plantData != null) ...[
-                  _buildDLIProgressCard(theme, plantData),
+                  _buildDLIProgressCard(theme, plantData, lightState),
                   const SizedBox(height: 24),
 
                   // Statistics Row
@@ -111,7 +116,7 @@ class _PlantLightAssistantScreenState
                   const SizedBox(height: 24),
 
                   // Recommendations
-                  _buildRecommendationsCard(theme, notifier),
+                  _buildRecommendationsCard(theme, notifier, lightState),
                   const SizedBox(height: 24),
                 ],
 
@@ -125,7 +130,7 @@ class _PlantLightAssistantScreenState
     );
   }
 
-  Widget _buildPlantSelector(ThemeData theme) {
+  Widget _buildPlantSelector(ThemeData theme, state) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -175,7 +180,7 @@ class _PlantLightAssistantScreenState
                   child: Row(
                     children: [
                       Text(
-                        _getPlantIcon(type),
+                        state.getPlantIcon(type),
                         style: const TextStyle(fontSize: 20),
                       ),
                       const SizedBox(width: 8),
@@ -245,8 +250,11 @@ class _PlantLightAssistantScreenState
   }
 
   Widget _buildCurrentLightCard(ThemeData theme, state) {
+    // The LightMeterData state
+    // The LightMeterNotifier instance
+
     final ppfd = state.currentLux / 54.0;
-    final color = _getLightLevelColor(state.currentLux);
+    final color = state.getProgressColor(state.currentLux);
 
     return Card(
       elevation: 2,
@@ -303,9 +311,13 @@ class _PlantLightAssistantScreenState
     );
   }
 
-  Widget _buildDLIProgressCard(ThemeData theme, PlantLightData plantData) {
+  Widget _buildDLIProgressCard(
+    ThemeData theme,
+    PlantLightData plantData,
+    lightState,
+  ) {
     final progress = plantData.progressPercentage / 100;
-    final color = _getProgressColor(plantData.progressPercentage);
+    final color = lightState.getProgressColor(plantData.progressPercentage);
 
     return Card(
       elevation: 2,
@@ -370,7 +382,7 @@ class _PlantLightAssistantScreenState
             BadgeWidget(
               label: plantData.status,
               color: color,
-              icon: _getStatusIcon(plantData.status),
+              icon: lightState.getStatusIcon(plantData.status),
             ),
           ],
         ),
@@ -406,7 +418,7 @@ class _PlantLightAssistantScreenState
     );
   }
 
-  Widget _buildRecommendationsCard(ThemeData theme, notifier) {
+  Widget _buildRecommendationsCard(ThemeData theme, notifier, state) {
     final recommendations = notifier.getPlantRecommendations();
 
     if (recommendations.isEmpty) {
@@ -482,63 +494,5 @@ class _PlantLightAssistantScreenState
               color: Colors.green,
             ),
     );
-  }
-
-  String _getPlantIcon(PlantType type) {
-    switch (type) {
-      case PlantType.snake:
-        return '🌿';
-      case PlantType.fern:
-        return '🍀';
-      case PlantType.orchid:
-        return '🌸';
-      case PlantType.cactus:
-        return '🌵';
-      case PlantType.tomato:
-        return '🍅';
-      case PlantType.lettuce:
-        return '🥬';
-      case PlantType.pothos:
-        return '�';
-      case PlantType.basil:
-        return '🌿';
-      case PlantType.spider:
-        return '🕷️';
-      case PlantType.fiddle:
-        return '🎻';
-      case PlantType.peace:
-        return '☮️';
-      case PlantType.monstera:
-        return '🍃';
-      case PlantType.rubber:
-        return '🌳';
-      case PlantType.succulent:
-        return '🌿';
-      case PlantType.croton:
-        return '🌺';
-      case PlantType.custom:
-        return '🪴';
-    }
-  }
-
-  Color _getLightLevelColor(double lux) {
-    if (lux < 200) return Colors.blue;
-    if (lux < 1000) return Colors.green;
-    if (lux < 10000) return Colors.orange;
-    return Colors.amber;
-  }
-
-  Color _getProgressColor(double percentage) {
-    if (percentage < 50) return Colors.red;
-    if (percentage < 80) return Colors.orange;
-    if (percentage < 100) return Colors.blue;
-    return Colors.green;
-  }
-
-  IconData _getStatusIcon(String status) {
-    if (status.contains('Dark')) return Iconsax.moon;
-    if (status.contains('Optimal')) return Iconsax.tick_circle;
-    if (status.contains('Excess')) return Iconsax.warning_2;
-    return Iconsax.sun_1;
   }
 }

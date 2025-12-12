@@ -9,7 +9,6 @@ import 'package:sensorlab/src/features/humidity/presentation/screens/humidity_sc
 import 'package:sensorlab/src/features/light_meter/presentation/screens/light_meter_screen.dart';
 import 'package:sensorlab/src/features/magnetometer/presentation/screens/magnetometer_screen.dart';
 import 'package:sensorlab/src/features/noise_meter/presentation/screens/noise_meter_screen.dart';
-import 'package:sensorlab/src/features/pedometer/presentation/screens/pedometer_screen.dart';
 import 'package:sensorlab/src/features/proximity/presentation/screens/proximity_screen.dart';
 import 'package:sensorlab/src/features/speed_meter/presentation/screens/speed_meter_screen.dart';
 import 'package:sensorlab/src/shared/models/sensor_card.dart';
@@ -36,6 +35,9 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.teal,
       screen: const NoiseMeterScreen(),
       category: l10n.health,
+      title: '',
+      description: '',
+      isDark: true,
     ),
     SensorCard(
       icon: Iconsax.sun_1,
@@ -43,6 +45,9 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.amber,
       screen: const LightMeterScreen(),
       category: l10n.environment,
+      title: '',
+      description: '',
+      isDark: true,
     ),
     SensorCard(
       icon: Icons.compass_calibration_rounded,
@@ -50,6 +55,9 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.deepPurple,
       screen: const CompassScreen(),
       category: l10n.navigation,
+      title: '',
+      description: '',
+      isDark: true,
     ),
     SensorCard(
       icon: Iconsax.activity,
@@ -57,6 +65,9 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.pink,
       screen: const AccelerometerScreen(),
       category: l10n.motion,
+      title: '',
+      description: '',
+      isDark: true,
     ),
     SensorCard(
       icon: Iconsax.cpu,
@@ -64,6 +75,9 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.blue,
       screen: const GyroscopeScreen(),
       category: l10n.motion,
+      title: '',
+      description: '',
+      isDark: true,
     ),
     SensorCard(
       icon: FontAwesomeIcons.magnet,
@@ -71,6 +85,9 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.red,
       screen: const MagnetometerScreen(),
       category: l10n.magnetic,
+      title: '',
+      description: '',
+      isDark: true,
     ),
     SensorCard(
       icon: Iconsax.radar,
@@ -78,6 +95,9 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.green,
       screen: const ProximityScreen(),
       category: l10n.device,
+      title: '',
+      description: '',
+      isDark: true,
     ),
     // SensorCard(
     //   icon: Iconsax.heart,
@@ -92,6 +112,9 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.orange,
       screen: const HumidityScreen(),
       category: l10n.environment,
+      title: '',
+      description: '',
+      isDark: true,
     ),
     SensorCard(
       icon: Iconsax.speedometer,
@@ -99,14 +122,11 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       color: Colors.indigo,
       screen: const SpeedMeterScreen(),
       category: l10n.navigation,
+      title: '',
+      description: '',
+      isDark: true,
     ),
-    SensorCard(
-      icon: Iconsax.man,
-      label: l10n.pedometer,
-      color: Colors.green,
-      screen: const PedometerScreen(),
-      category: l10n.health,
-    ),
+
     // SensorCard(
     //   icon: Iconsax.flash,
     //   label: l10n.flashlight,

@@ -35,13 +35,27 @@ class CameraSettingsData {
   }
 
   static LightingCondition _getLightingCondition(double lux) {
-    if (lux < 10) return LightingCondition.darkNight;
-    if (lux < 50) return LightingCondition.dimIndoor;
-    if (lux < 400) return LightingCondition.indoor;
-    if (lux < 1000) return LightingCondition.overcast;
-    if (lux < 10000) return LightingCondition.brightIndoor;
-    if (lux < 32000) return LightingCondition.shade;
-    if (lux < 100000) return LightingCondition.fullDaylight;
+    if (lux < 10) {
+      return LightingCondition.darkNight;
+    }
+    if (lux < 50) {
+      return LightingCondition.dimIndoor;
+    }
+    if (lux < 400) {
+      return LightingCondition.indoor;
+    }
+    if (lux < 1000) {
+      return LightingCondition.overcast;
+    }
+    if (lux < 10000) {
+      return LightingCondition.brightIndoor;
+    }
+    if (lux < 32000) {
+      return LightingCondition.shade;
+    }
+    if (lux < 100000) {
+      return LightingCondition.fullDaylight;
+    }
     return LightingCondition.brightSunlight;
   }
 
@@ -196,7 +210,9 @@ class CameraSettingsData {
 
   String get evValue {
     // Calculate Exposure Value: EV = log2(lux / 2.5)
-    if (lux <= 0) return 'N/A';
+    if (lux <= 0) {
+      return 'N/A';
+    }
     final ev = log2(lux / 2.5);
     return ev.toStringAsFixed(1);
   }

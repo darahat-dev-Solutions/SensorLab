@@ -1,6 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod/src/framework.dart';
-import 'package:sensorlab/l10n/app_localizations.dart';
 import 'package:sensorlab/src/features/custom_lab/data/providers/create_lab_state_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart';
 
@@ -20,47 +18,42 @@ class CreateLabValidationState {
 }
 
 final createLabValidationProvider =
-    Provider.family<CreateLabValidationState, CreateLabFormData>(
-      (ref, context, formData) {
-            String? nameError;
-            String? intervalError;
-            bool hasSensorError = false;
-            // Removed unused variable to satisfy analyzer
-            final l10n = AppLocalizations.of(context)!;
-            // Name validation
-            if (formData.name.trim().isEmpty) {
-              nameError = l10n.pleaseEnterLabName;
-            }
+    Provider.family<CreateLabValidationState, CreateLabFormData>((
+      ref,
+      formData,
+    ) {
+      String? nameError;
+      String? intervalError;
+      bool hasSensorError = false;
 
-            // Interval validation
-            if (formData.interval.isEmpty) {
-              intervalError = l10n.pleaseEnterInterval;
-            } else {
-              final intervalValue = double.tryParse(formData.interval);
-              if (intervalValue == null ||
-                  intervalValue < 0.1 ||
-                  intervalValue > 10) {
-                intervalError = l10n.intervalMustBeBetween;
-              }
-            }
+      // Name validation
+      if (formData.name.trim().isEmpty) {
+        nameError = 'Please enter a lab name.';
+      }
 
-            // Sensor validation
-            if (formData.selectedSensors.isEmpty) {
-              hasSensorError = true;
-            }
+      // Interval validation
+      if (formData.interval.isEmpty) {
+        intervalError = 'Please enter an interval.';
+      } else {
+        final intervalValue = double.tryParse(formData.interval);
+        if (intervalValue == null ||
+            intervalValue < 0.1 ||
+            intervalValue > 10) {
+          intervalError = 'Interval must be between 0.1 and 10.';
+        }
+      }
 
-            return CreateLabValidationState(
-              nameError: nameError,
-              intervalError: intervalError,
-              hasSensorError: hasSensorError,
-            );
-          }
-          as FamilyCreate<
-            CreateLabValidationState,
-            ProviderRef<CreateLabValidationState>,
-            CreateLabFormData
-          >,
-    );
+      // Sensor validation
+      if (formData.selectedSensors.isEmpty) {
+        hasSensorError = true;
+      }
+
+      return CreateLabValidationState(
+        nameError: nameError,
+        intervalError: intervalError,
+        hasSensorError: hasSensorError,
+      );
+    });
 
 class CreateLabFormData {
   final String name;

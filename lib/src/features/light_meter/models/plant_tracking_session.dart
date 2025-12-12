@@ -122,7 +122,9 @@ class PlantTrackingSession {
 
   /// Calculate progress percentage
   double get progressPercentage {
-    if (targetDLI == 0) return 0;
+    if (targetDLI == 0) {
+      return 0;
+    }
     return (currentDLI / targetDLI * 100).clamp(0, 100);
   }
 
@@ -134,7 +136,9 @@ class PlantTrackingSession {
 
   /// Get average lux during session
   double get averageLux {
-    if (readings.isEmpty) return 0;
+    if (readings.isEmpty) {
+      return 0;
+    }
     final sum = readings.fold<double>(0, (sum, r) => sum + r.lux);
     return sum / readings.length;
   }
@@ -311,7 +315,9 @@ class DailyLightSummary {
 
   /// Get daylight hours
   int get daylightHours {
-    if (sunsetHour <= sunriseHour) return 0;
+    if (sunsetHour <= sunriseHour) {
+      return 0;
+    }
     return sunsetHour - sunriseHour;
   }
 }

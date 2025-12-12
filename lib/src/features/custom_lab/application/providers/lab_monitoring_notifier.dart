@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sensorlab/src/core/providers.dart'; // Import core sensor providers
 import 'package:sensorlab/src/core/utils/logger.dart';
+import 'package:sensorlab/src/features/accelerometer/application/providers/accelerometer_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/recording_session_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/sensor_data_providers.dart';
 import 'package:sensorlab/src/features/custom_lab/application/state/lab_monitoring_state.dart';
@@ -49,7 +50,9 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
   ) : super(const LabMonitoringState());
 
   Future<bool> startSession({required Lab lab}) async {
-    if (state.isRecording) return false;
+    if (state.isRecording) {
+      return false;
+    }
 
     try {
       final sessionId = DateTime.now().millisecondsSinceEpoch.toString();
@@ -82,7 +85,6 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
 
     AppLogger.log(
       'Starting sensor data collection for ${lab.sensors.length} sensors: ${lab.sensors.map((s) => s.name).join(", ")}',
-      level: LogLevel.info,
     );
 
     // Initialize sensors that need explicit setup
@@ -122,7 +124,6 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
 
     AppLogger.log(
       'Sensor poll timer started with interval: $_sensorThrottleMs ms',
-      level: LogLevel.info,
     );
   }
 
@@ -142,7 +143,6 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
     const heavySensors = {
       SensorType.noiseMeter, // Uses microphone constantly
       SensorType.gps, // GPS drains battery
-      SensorType.heartBeat, // Uses camera + flashlight
     };
 
     for (final sensor in sensors) {
@@ -196,11 +196,6 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
               now,
             );
             break;
-          case SensorType.barometer:
-            // Barometer uses altimeter data
-            final altimeter = _ref.read(altimeterProvider);
-            _processSensorValue(sensor, 'barometer', altimeter.pressure, now);
-            break;
           case SensorType.compass:
             sensorData = _ref.read(compassProvider);
             final headingValue = sensorData.heading ?? 0.0;
@@ -215,31 +210,11 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
               now,
             );
             break;
-          case SensorType.pedometer:
-            sensorData = _ref.read(pedometerProvider);
-            _processSensorValue(
-              sensor,
-              'pedometer',
-              sensorData.steps.toDouble(),
-              now,
-            );
-            break;
-          case SensorType.heartBeat:
-            sensorData = _ref.read(heartBeatProvider);
-            _processSensorValue(
-              sensor,
-              'heartBeat',
-              sensorData.currentBPM.toDouble(),
-              now,
-            );
-            break;
           case SensorType.gps:
             final geolocatorState = _ref.read(geolocatorProvider);
             final locationData = geolocatorState.currentLocation;
             // GPS needs special handling - store multiple values
-            if (locationData != null &&
-                locationData.latitude != null &&
-                locationData.longitude != null) {
+            if (locationData != null) {
               _currentSensorData['gps_latitude'] = locationData.latitude;
               _currentSensorData['gps_longitude'] = locationData.longitude;
               _currentSensorData['gps_altitude'] = locationData.altitude;
@@ -316,7 +291,9 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
   }
 
   Future<void> _collectAndSaveSensorData() async {
-    if (state.activeSession == null) return;
+    if (state.activeSession == null) {
+      return;
+    }
     AppLogger.log(
       'Collecting and saving sensor data...',
       level: LogLevel.debug,
@@ -366,7 +343,9 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
   }
 
   Future<void> toggleSession() async {
-    if (!state.isRecording || state.activeSession == null) return;
+    if (!state.isRecording || state.activeSession == null) {
+      return;
+    }
 
     if (state.isPaused) {
       // Resume logic
@@ -478,8 +457,12 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
   }
 
   Future<void> stopSession() async {
-    if (!state.isRecording && !state.isPaused) return;
-    if (state.activeSession == null) return;
+    if (!state.isRecording && !state.isPaused) {
+      return;
+    }
+    if (state.activeSession == null) {
+      return;
+    }
 
     try {
       // Save labId before clearing state

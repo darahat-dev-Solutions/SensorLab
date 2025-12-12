@@ -44,9 +44,9 @@ class _CompassDisplayWidgetState extends ConsumerState<CompassDisplayWidget>
     final l10n = AppLocalizations.of(context)!;
 
     // Consistent color scheme from LabMonitoringContent
-    final Color recordingColor = Colors.red;
-    final Color pausedColor = Colors.orange;
-    final Color completedColor = Colors.green;
+    const Color recordingColor = Colors.red;
+    const Color pausedColor = Colors.orange;
+    const Color completedColor = Colors.green;
 
     // Pick base color dynamically depending on accuracy state
     final baseColor = compassData.hasError

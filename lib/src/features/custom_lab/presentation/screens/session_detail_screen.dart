@@ -5,281 +5,304 @@ import 'package:sensorlab/l10n/app_localizations.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/export_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/recording_session_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab_session.dart';
-import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart'; // Import SensorType
+import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart';
 
-/// Screen showing details of a recording session
 class SessionDetailScreen extends ConsumerWidget {
-  final LabSession session;
+  final String sessionId;
 
-  const SessionDetailScreen({required this.session, super.key});
+  const SessionDetailScreen({required this.sessionId, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final dataPointsAsync = ref.watch(sessionDataPointsProvider(session.id));
     final exportState = ref.watch(exportProvider);
+    final sessionAsync = ref.watch(sessionByIdProvider(sessionId));
+    final dataPointsAsync = ref.watch(sessionDataPointsProvider(sessionId));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.sessionDetailsTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: exportState.isExporting
-                ? null
-                : () => _exportAndShare(context, ref),
-            tooltip: l10n.exportAndShare,
-          ),
-          PopupMenuButton<String>(
-            onSelected: (value) async {
-              if (value == 'delete') {
-                _showDeleteConfirmation(context, ref);
-              }
-            },
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 'delete',
-                child: Row(
-                  children: [
-                    const Icon(Icons.delete, color: Colors.red),
-                    const SizedBox(width: 8),
-                    Text(l10n.deleteSession),
-                  ],
-                ),
+    return sessionAsync.when(
+      data: (session) {
+        if (session == null) {
+          return Scaffold(
+            appBar: AppBar(title: Text(l10n.sessionDetailsTitle)),
+            body: Center(child: Text(l10n.sessionNotYetExported)),
+          );
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(l10n.sessionDetailsTitle),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.share),
+                onPressed: exportState.isExporting
+                    ? null
+                    : () => _exportAndShare(context, ref, session),
+                tooltip: l10n.exportAndShare,
+              ),
+              PopupMenuButton<String>(
+                onSelected: (value) async {
+                  if (value == 'delete') {
+                    _showDeleteConfirmation(context, ref, session);
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete, color: Colors.red),
+                        const SizedBox(width: 8),
+                        Text(l10n.deleteSession),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Lab name
-          Text(
-            session.labName,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-
-          // Status badge
-          _buildStatusBadge(theme),
-          const SizedBox(height: 24),
-
-          // Time info card
-          _buildInfoSection(theme, l10n.recordingTime, [
-            _buildInfoRow(
-              theme,
-              Icons.play_arrow,
-              l10n.startTime,
-              DateFormat('MMM d, y • HH:mm:ss').format(session.startTime),
-            ),
-            if (session.endTime != null)
-              _buildInfoRow(
-                theme,
-                Icons.stop,
-                l10n.endTime,
-                DateFormat('MMM d, y • HH:mm:ss').format(session.endTime!),
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              // Lab name
+              Text(
+                session.labName,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            _buildInfoRow(
-              theme,
-              Icons.timer,
-              l10n.duration,
-              _formatDuration(session.duration),
-            ),
-          ]),
-          const SizedBox(height: 16),
+              const SizedBox(height: 8),
 
-          // Data info card
-          _buildInfoSection(theme, l10n.recordingData, [
-            _buildInfoRow(
-              theme,
-              Icons.show_chart,
-              l10n.dataPointsCount,
-              '${session.dataPointsCount}',
-            ),
-            _buildInfoRow(
-              theme,
-              Icons.sensors,
-              l10n.sensorsUsed,
-              '${session.sensorTypes.length}',
-            ),
-          ]),
-          const SizedBox(height: 16),
+              // Status badge
+              _buildStatusBadge(theme, session),
+              const SizedBox(height: 24),
 
-          // Sensors list
-          _buildInfoSection(theme, l10n.sensors, [
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: session.sensorTypes.map((sensorType) {
-                return Chip(
-                  avatar: Icon(_getSensorIcon(sensorType), size: 18),
-                  label: Text(
-                    sensorType.name.replaceAll('_', ' ').toUpperCase(),
-                    style: theme.textTheme.bodySmall,
+              // Time info
+              _buildInfoSection(theme, l10n.recordingTime, [
+                _buildInfoRow(
+                  theme,
+                  Icons.play_arrow,
+                  l10n.startTime,
+                  DateFormat('MMM d, y • HH:mm:ss').format(session.startTime),
+                ),
+                if (session.endTime != null)
+                  _buildInfoRow(
+                    theme,
+                    Icons.stop,
+                    l10n.endTime,
+                    DateFormat('MMM d, y • HH:mm:ss').format(session.endTime!),
                   ),
-                );
-              }).toList(),
-            ),
-          ]),
-          const SizedBox(height: 16),
+                _buildInfoRow(
+                  theme,
+                  Icons.timer,
+                  l10n.duration,
+                  _formatDuration(session.duration),
+                ),
+              ]),
+              const SizedBox(height: 16),
 
-          // Notes
-          if (session.notes != null && session.notes!.isNotEmpty) ...[
-            _buildInfoSection(theme, l10n.notes, [
-              Text(session.notes!, style: theme.textTheme.bodyMedium),
-            ]),
-            const SizedBox(height: 16),
-          ],
+              // Data info
+              _buildInfoSection(theme, l10n.recordingData, [
+                _buildInfoRow(
+                  theme,
+                  Icons.show_chart,
+                  l10n.dataPointsCount,
+                  '${session.dataPointsCount}',
+                ),
+                _buildInfoRow(
+                  theme,
+                  Icons.sensors,
+                  l10n.sensorsUsed,
+                  '${session.sensorTypes.length}',
+                ),
+              ]),
+              const SizedBox(height: 16),
 
-          // Export status
-          _buildInfoSection(theme, l10n.export, [
-            Consumer(
-              builder: (context, ref, child) {
-                final isExportedAsync = ref.watch(
-                  isSessionExportedProvider(session.id),
-                );
-                return isExportedAsync.when(
-                  data: (isExported) {
-                    if (isExported) {
-                      return Row(
-                        children: [
-                          const Icon(Icons.check_circle, color: Colors.green),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              l10n.sessionExportedToCSV,
-                              style: theme.textTheme.bodyMedium,
-                            ),
+              // Sensors list
+              _buildInfoSection(theme, l10n.sensors, [
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: session.sensorTypes.map((sensorType) {
+                    return Chip(
+                      avatar: Icon(_getSensorIcon(sensorType), size: 18),
+                      label: Text(
+                        sensorType.name.replaceAll('_', ' ').toUpperCase(),
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ]),
+              const SizedBox(height: 16),
+
+              // Notes
+              if (session.notes != null && session.notes!.isNotEmpty)
+                _buildInfoSection(theme, l10n.notes, [
+                  Text(session.notes!, style: theme.textTheme.bodyMedium),
+                ]),
+
+              const SizedBox(height: 16),
+
+              // Export status
+              _buildInfoSection(theme, l10n.export, [
+                Consumer(
+                  builder: (context, ref, child) {
+                    final isExportedAsync = ref.watch(
+                      isSessionExportedProvider(session.id),
+                    );
+                    return isExportedAsync.when(
+                      data: (isExported) {
+                        if (isExported) {
+                          return Row(
+                            children: [
+                              const Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l10n.sessionExportedToCSV,
+                                  style: theme.textTheme.bodyMedium,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        return Text(
+                          l10n.sessionNotYetExported,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurface.withOpacity(0.6),
                           ),
-                        ],
-                      );
-                    } else {
+                        );
+                      },
+                      loading: () => const CircularProgressIndicator(),
+                      error: (_, __) => Text(l10n.errorCheckingExportStatus),
+                    );
+                  },
+                ),
+              ]),
+              const SizedBox(height: 16),
+
+              // Data points preview
+              _buildInfoSection(theme, l10n.dataPreview, [
+                dataPointsAsync.when(
+                  data: (dataPoints) {
+                    if (dataPoints.isEmpty) {
                       return Text(
-                        l10n.sessionNotYetExported,
+                        l10n.noDataPointsRecorded,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurface.withOpacity(0.6),
                         ),
                       );
                     }
-                  },
-                  loading: () => const CircularProgressIndicator(),
-                  error: (_, __) => Text(l10n.errorCheckingExportStatus),
-                );
-              },
-            ),
-          ]),
-          const SizedBox(height: 16),
 
-          // Data points preview
-          _buildInfoSection(theme, l10n.dataPreview, [
-            dataPointsAsync.when(
-              data: (dataPoints) {
-                if (dataPoints.isEmpty) {
-                  return Text(
-                    l10n.noDataPointsRecorded,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                  );
-                }
-
-                // Show first 5 data points
-                final preview = dataPoints.take(5).toList();
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.showingDataPoints(preview.length, dataPoints.length),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ...preview.map((point) {
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                    final preview = dataPoints.take(5).toList();
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.showingDataPoints(
+                            preview.length,
+                            dataPoints.length,
+                          ),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ...preview.map((point) {
+                          return Card(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '${l10n.pointNumber} #${point.sequenceNumber}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${l10n.pointNumber} #${point.sequenceNumber}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        DateFormat(
+                                          'HH:mm:ss.SSS',
+                                        ).format(point.timestamp),
+                                        style: theme.textTheme.bodySmall,
+                                      ),
+                                    ],
                                   ),
+                                  const SizedBox(height: 8),
                                   Text(
-                                    DateFormat(
-                                      'HH:mm:ss.SSS',
-                                    ).format(point.timestamp),
-                                    style: theme.textTheme.bodySmall,
+                                    _formatSensorValues(point.sensorValues),
+                                    style: const TextStyle(
+                                      fontFamily: 'monospace',
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                _formatSensorValues(point.sensorValues),
-                                style: const TextStyle(
-                                  fontFamily: 'monospace',
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          );
+                        }),
+                      ],
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, _) => Text(
+                    l10n.errorLoadingDataPoints(error.toString()),
+                    style: TextStyle(color: theme.colorScheme.error),
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 24),
+              // Export button
+              FilledButton.icon(
+                onPressed: exportState.isExporting
+                    ? null
+                    : () => _exportSession(context, ref, session),
+                icon: exportState.isExporting
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
                         ),
-                      );
-                    }).toList(),
-                  ],
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) => Text(
-                l10n.errorLoadingDataPoints(error.toString()),
-                style: TextStyle(color: theme.colorScheme.error),
+                      )
+                    : const Icon(Icons.download),
+                label: Text(
+                  exportState.isExporting
+                      ? l10n.exportingStatus
+                      : l10n.exportToCSV,
+                ),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.all(16),
+                ),
               ),
-            ),
-          ]),
-          const SizedBox(height: 24),
-
-          // Export button
-          FilledButton.icon(
-            onPressed: exportState.isExporting
-                ? null
-                : () => _exportSession(context, ref),
-            icon: exportState.isExporting
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : const Icon(Icons.download),
-            label: Text(
-              exportState.isExporting ? l10n.exportingStatus : l10n.exportToCSV,
-            ),
-            style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
+            ],
           ),
-        ],
-      ),
+        );
+      },
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (error, _) =>
+          Scaffold(body: Center(child: Text(l10n.errorLoadingSessions))),
     );
   }
 
-  Widget _buildStatusBadge(ThemeData theme) {
+  // 🟢 Helper Methods
+  Widget _buildStatusBadge(ThemeData theme, LabSession session) {
     Color color;
     IconData icon;
     String label;
-
     switch (session.status) {
       case RecordingStatus.completed:
         color = Colors.green;
@@ -388,19 +411,15 @@ class SessionDetailScreen extends ConsumerWidget {
     );
   }
 
-  String _formatDuration(int milliseconds) {
-    final duration = Duration(milliseconds: milliseconds);
-    final hours = duration.inHours;
-    final minutes = duration.inMinutes.remainder(60);
-    final seconds = duration.inSeconds.remainder(60);
+  String _formatDuration(int ms) {
+    final d = Duration(milliseconds: ms);
+    final h = d.inHours;
+    final m = d.inMinutes.remainder(60);
+    final s = d.inSeconds.remainder(60);
 
-    if (hours > 0) {
-      return '$hours hour${hours != 1 ? 's' : ''} $minutes min';
-    } else if (minutes > 0) {
-      return '$minutes min $seconds sec';
-    } else {
-      return '$seconds sec';
-    }
+    if (h > 0) return '$h hr ${m} min';
+    if (m > 0) return '$m min $s sec';
+    return '$s sec';
   }
 
   String _formatSensorValues(Map<SensorType, dynamic> values) {
@@ -418,12 +437,8 @@ class SessionDetailScreen extends ConsumerWidget {
         .join('\n');
   }
 
-  String _formatNumber(dynamic value) {
-    if (value is num) {
-      return value.toStringAsFixed(2);
-    }
-    return value.toString();
-  }
+  String _formatNumber(dynamic value) =>
+      value is num ? value.toStringAsFixed(2) : value.toString();
 
   IconData _getSensorIcon(SensorType sensorType) {
     switch (sensorType) {
@@ -433,8 +448,6 @@ class SessionDetailScreen extends ConsumerWidget {
         return Icons.screen_rotation;
       case SensorType.magnetometer:
         return Icons.explore;
-      case SensorType.barometer:
-        return Icons.compress;
       case SensorType.lightMeter:
         return Icons.light_mode;
       case SensorType.noiseMeter:
@@ -447,73 +460,61 @@ class SessionDetailScreen extends ConsumerWidget {
         return Icons.thermostat;
       case SensorType.humidity:
         return Icons.water_drop;
-      case SensorType.pedometer:
-        return Icons.directions_walk;
       case SensorType.compass:
         return Icons.compass_calibration;
       case SensorType.altimeter:
         return Icons.terrain;
       case SensorType.speedMeter:
         return Icons.speed;
-      case SensorType.heartBeat:
-        return Icons.favorite;
     }
   }
 
-  Future<void> _exportSession(BuildContext context, WidgetRef ref) async {
-    final exportNotifier = ref.read(exportProvider.notifier);
-    final csvPath = await exportNotifier.exportSession(session.id);
+  Future<void> _exportSession(
+    BuildContext context,
+    WidgetRef ref,
+    LabSession session,
+  ) async {
+    final notifier = ref.read(exportProvider.notifier);
+    final csvPath = await notifier.exportSession(session.id);
+    final l10n = AppLocalizations.of(context)!;
 
-    if (csvPath != null && context.mounted) {
-      final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.exportedTo(csvPath)),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 3),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          csvPath != null
+              ? l10n.exportedTo(csvPath)
+              : l10n.failedToExportSession,
         ),
-      );
-    } else if (context.mounted) {
-      final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.failedToExportSession),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+        backgroundColor: csvPath != null ? Colors.green : Colors.red,
+      ),
+    );
   }
 
-  Future<void> _exportAndShare(BuildContext context, WidgetRef ref) async {
-    final exportNotifier = ref.read(exportProvider.notifier);
-    final csvPath = await exportNotifier.exportForSharing(session.id);
+  Future<void> _exportAndShare(
+    BuildContext context,
+    WidgetRef ref,
+    LabSession session,
+  ) async {
+    final notifier = ref.read(exportProvider.notifier);
+    final csvPath = await notifier.exportForSharing(session.id);
+    final l10n = AppLocalizations.of(context)!;
 
-    if (csvPath != null && context.mounted) {
-      final l10n = AppLocalizations.of(context)!;
-      // TODO: Implement sharing via share_plus package
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${l10n.exportedTo(csvPath)}\n${l10n.sharingNotYetImplemented}',
-          ),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 3),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          csvPath != null
+              ? '${l10n.exportedTo(csvPath)}\n${l10n.sharingNotYetImplemented}'
+              : l10n.failedToExportSession,
         ),
-      );
-    } else if (context.mounted) {
-      final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.failedToExportSession),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+        backgroundColor: csvPath != null ? Colors.green : Colors.red,
+      ),
+    );
   }
 
   Future<void> _showDeleteConfirmation(
     BuildContext context,
     WidgetRef ref,
+    LabSession session,
   ) async {
     final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
@@ -523,11 +524,11 @@ class SessionDetailScreen extends ConsumerWidget {
         content: Text(l10n.deleteSessionConfirm),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => Navigator.pop(context, false),
             child: Text(l10n.cancel),
           ),
           FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.pop(context, true),
             style: FilledButton.styleFrom(backgroundColor: Colors.red),
             child: Text(l10n.delete),
           ),
@@ -535,11 +536,9 @@ class SessionDetailScreen extends ConsumerWidget {
       ),
     );
 
-    if (confirmed == true && context.mounted) {
-      final l10n = AppLocalizations.of(context)!;
+    if (confirmed == true) {
       final useCase = ref.read(recordSessionUseCaseProvider);
       await useCase.deleteSession(session.id);
-
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

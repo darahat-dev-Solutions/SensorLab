@@ -43,15 +43,18 @@ class PresetsInitializationNotifier
     : super(const PresetsInitializationState());
 
   Future<void> initializePresets() async {
-    print('🚀 Starting presets initialization...');
-    state = state.copyWith(isLoading: true, errorMessage: null);
+    // TODO: Replace with logger
+    // print('🚀 Starting presets initialization...');
+    state = state.copyWith(isLoading: true);
 
     try {
       await _useCase.initializePresets();
       state = state.copyWith(isInitialized: true, isLoading: false);
-      print('✅ Presets initialization completed successfully');
+      // TODO: Replace with logger
+      // print('✅ Presets initialization completed successfully');
     } catch (e) {
-      print('❌ Presets initialization failed: $e');
+      // TODO: Replace with logger
+      // print('❌ Presets initialization failed: $e');
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
@@ -59,10 +62,12 @@ class PresetsInitializationNotifier
   Future<void> checkInitialization() async {
     try {
       final isInitialized = await _useCase.arePresetsInitialized();
-      print('🔍 Presets initialization check: $isInitialized');
+      // TODO: Replace with logger
+      // print('🔍 Presets initialization check: $isInitialized');
       state = state.copyWith(isInitialized: isInitialized);
     } catch (e) {
-      print('❌ Error checking presets initialization: $e');
+      // TODO: Replace with logger
+      // print('❌ Error checking presets initialization: $e');
       state = state.copyWith(errorMessage: e.toString());
     }
   }

@@ -1,73 +1,57 @@
+// import 'package:flutter/material.dart';
+// import 'package:sensorlab/l10n/app_localizations.dart';
+// import 'package:sensorlab/src/features/onboarding/domain/entities/onboarding_page.dart';
+
+// class OnboardingData {
+//   static List<OnboardingPage> pages(BuildContext context) => [
+//     OnboardingPage(
+//       title: AppLocalizations.of(context)!.onboardingTitleSuperpowers,
+//       description: AppLocalizations.of(context)!.onboardingDescSuperpowers,
+//       lottieAsset: 'assets/lottie/superpowers.json',
+//     ),
+//     OnboardingPage(
+//       title: AppLocalizations.of(context)!.onboardingTitleSenseWorld,
+//       description: AppLocalizations.of(context)!.onboardingDescSenseWorld,
+//       lottieAsset: 'assets/lottie/sense_world.json',
+//     ),
+//     OnboardingPage(
+//       title: AppLocalizations.of(context)!.onboardingTitleLaboratory,
+//       description: AppLocalizations.of(context)!.onboardingDescLaboratory,
+//       lottieAsset: 'assets/lottie/laboratory.json',
+//     ),
+//     OnboardingPage(
+//       title: AppLocalizations.of(context)!.onboardingTitleDiscovery,
+//       description: AppLocalizations.of(context)!.onboardingDescDiscovery,
+//       lottieAsset: 'assets/lottie/discovery.json',
+//     ),
+//   ];
+// }
+import 'package:flutter/material.dart';
 import 'package:sensorlab/src/features/onboarding/domain/entities/onboarding_page.dart';
 
-/// Data for onboarding pages - Story of using SensorLab
 class OnboardingData {
-  static const List<OnboardingPage> pages = [
-    OnboardingPage(
-      title: 'Welcome to SensorLab',
+  static List<OnboardingPage> pages(BuildContext context) => [
+    const OnboardingPage(
+      title: 'Welcome to Your Sensor Lab! 🚀',
       description:
-          'Your ultimate toolkit for monitoring and analyzing device sensors. Explore 15+ sensors at your fingertips.',
-      animationAsset: 'assets/animations/welcome.json',
-      features: [
-        'Real-time sensor monitoring',
-        'Data recording & analysis',
-        'Custom lab experiments',
-      ],
+          'Turn your phone into a powerful science lab. Explore the invisible world of sensors that make your device so smart.',
+      lottieAsset: 'assets/lottie/welcome.json',
     ),
-    OnboardingPage(
-      title: 'Explore Sensors',
+    const OnboardingPage(
+      title: 'Meet Your Sensors',
       description:
-          'Access accelerometer, gyroscope, GPS, noise meter, light sensor, and 10+ more sensors. Each with live readings and beautiful visualizations.',
-      animationAsset: 'assets/animations/sensors.json',
-      features: [
-        'Motion sensors (Accelerometer, Gyroscope)',
-        'Environmental sensors (Light, Noise, Barometer)',
-        'Location sensors (GPS, Compass)',
-      ],
+          'Transform your phone into a science lab with motion, light, audio sensors and many more for real-world data analysis.',
     ),
-    OnboardingPage(
-      title: 'Record & Analyze',
+    const OnboardingPage(
+      title: 'Design Your Experiments',
       description:
-          'Start recording sensor data with a single tap. View real-time graphs, export to CSV, and track your measurements over time.',
-      animationAsset: 'assets/animations/recording.json',
-      features: [
-        'One-tap recording',
-        'Real-time graphs & charts',
-        'Export data as CSV files',
-      ],
+          'Create custom labs by mixing sensors, setting measurement intervals, and choosing data parameters for unlimited experimentation.',
     ),
-    OnboardingPage(
-      title: 'Create Custom Labs',
+    const OnboardingPage(
+      title: 'Jump Right In',
       description:
-          'Design your own experiments by combining multiple sensors. Perfect for science projects, research, or data analysis.',
-      animationAsset: 'assets/animations/custom_lab.json',
-      features: [
-        'Combine multiple sensors',
-        'Set custom recording intervals',
-        'Save and replay experiments',
-      ],
-    ),
-    OnboardingPage(
-      title: 'Track Your History',
-      description:
-          'All your recordings are automatically saved. Review past sessions, compare results, and export your data anytime.',
-      animationAsset: 'assets/animations/history.json',
-      features: [
-        'Automatic session saving',
-        'Session history & details',
-        'Batch export multiple sessions',
-      ],
-    ),
-    OnboardingPage(
-      title: 'Ready to Start!',
-      description:
-          'You\'re all set! Start exploring sensors, create custom labs, and unlock the full potential of your device.',
-      animationAsset: 'assets/animations/ready.json',
-      features: [
-        'No ads, completely free',
-        'Offline capable',
-        'Open source & privacy-focused',
-      ],
+          'Not sure where to start? We\'ve got you covered with ready-to-go experiments. Learn the basics, then create your own amazing projects!',
+      // lottieAsset: 'assets/lottie/presets.json',
     ),
   ];
 }

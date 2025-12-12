@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:light/light.dart';
 import 'package:noise_meter/noise_meter.dart';
-import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:proximity_sensor/proximity_sensor.dart';
 import 'package:sensorlab/src/core/utils/logger.dart';
@@ -61,24 +60,17 @@ class SensorStreamService {
         case SensorType.magnetometer:
           _initializeMagnetometer(sensorKey, controller);
           break;
-        case SensorType.barometer:
-          _initializeBarometer(sensorKey, controller);
-          break;
         case SensorType.compass:
           _initializeCompass(sensorKey, controller);
           break;
         case SensorType.proximity:
           _initializeProximity(sensorKey, controller);
           break;
-        case SensorType.pedometer:
-          _initializePedometer(sensorKey, controller);
-          break;
         case SensorType.temperature:
         case SensorType.humidity:
         case SensorType.gps:
         case SensorType.altimeter:
         case SensorType.speedMeter:
-        case SensorType.heartBeat:
           _handleUnsupportedSensor(sensorType, controller);
           break;
       }
@@ -157,7 +149,7 @@ class SensorStreamService {
           }
         },
         onDone: () {
-          AppLogger.log('Noise meter stream completed', level: LogLevel.info);
+          AppLogger.log('Noise meter stream completed');
         },
         cancelOnError: false,
       );
@@ -165,10 +157,7 @@ class SensorStreamService {
       // Store subscription for cleanup
       _subscriptions[sensorKey] = _noiseMeterSubscription!;
 
-      AppLogger.log(
-        'Noise meter initialized successfully',
-        level: LogLevel.info,
-      );
+      AppLogger.log('Noise meter initialized successfully');
     } catch (e) {
       AppLogger.log(
         'Failed to initialize noise meter: $e',
@@ -201,7 +190,9 @@ class SensorStreamService {
   Future<bool> _checkMicrophonePermission() async {
     try {
       final status = await Permission.microphone.status;
-      if (status.isGranted) return true;
+      if (status.isGranted) {
+        return true;
+      }
 
       final result = await Permission.microphone.request();
       return result.isGranted;
@@ -277,25 +268,6 @@ class SensorStreamService {
     );
   }
 
-  void _initializeBarometer(
-    String sensorKey,
-    StreamController<Map<String, dynamic>> controller,
-  ) {
-    _subscriptions[sensorKey] = barometerEventStream().listen(
-      (event) {
-        if (!controller.isClosed) {
-          controller.add({'barometer': event.pressure});
-        }
-      },
-      onError: (error) {
-        AppLogger.log('Barometer error: $error', level: LogLevel.error);
-        if (!controller.isClosed) {
-          controller.addError(error);
-        }
-      },
-    );
-  }
-
   void _initializeCompass(
     String sensorKey,
     StreamController<Map<String, dynamic>> controller,
@@ -340,25 +312,6 @@ class SensorStreamService {
       },
       onError: (error) {
         AppLogger.log('Proximity sensor error: $error', level: LogLevel.error);
-        if (!controller.isClosed) {
-          controller.addError(error);
-        }
-      },
-    );
-  }
-
-  void _initializePedometer(
-    String sensorKey,
-    StreamController<Map<String, dynamic>> controller,
-  ) {
-    _subscriptions[sensorKey] = Pedometer.stepCountStream.listen(
-      (event) {
-        if (!controller.isClosed) {
-          controller.add({'pedometer': event.steps.toDouble()});
-        }
-      },
-      onError: (error) {
-        AppLogger.log('Pedometer error: $error', level: LogLevel.error);
         if (!controller.isClosed) {
           controller.addError(error);
         }

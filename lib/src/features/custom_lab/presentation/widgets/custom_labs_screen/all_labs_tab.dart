@@ -47,16 +47,16 @@ class AllLabsTab extends ConsumerWidget {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          if (customs.isNotEmpty) ...[
+            Text(l10n.myCustomLabs, style: theme.textTheme.titleLarge),
+            const SizedBox(height: 12),
+            LabsGridView(labs: customs),
+          ],
           if (presets.isNotEmpty) ...[
             Text(l10n.presetLabs, style: theme.textTheme.titleLarge),
             const SizedBox(height: 12),
             LabsGridView(labs: presets),
             const SizedBox(height: 24),
-          ],
-          if (customs.isNotEmpty) ...[
-            Text(l10n.myCustomLabs, style: theme.textTheme.titleLarge),
-            const SizedBox(height: 12),
-            LabsGridView(labs: customs),
           ],
         ],
       ),

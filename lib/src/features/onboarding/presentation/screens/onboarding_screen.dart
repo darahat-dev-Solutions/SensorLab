@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sensorlab/src/features/onboarding/application/onboarding_service.dart';
 import 'package:sensorlab/src/features/onboarding/data/onboarding_data.dart';
+import 'package:sensorlab/src/features/onboarding/presentation/widgets/animated_dummy_card_designs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -15,212 +19,155 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     with TickerProviderStateMixin {
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  late AnimationController _fadeController;
-  late AnimationController _slideController;
-
-  @override
-  void initState() {
-    super.initState();
-    _fadeController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    )..forward();
-
-    _slideController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-  }
 
   @override
   void dispose() {
     _pageController.dispose();
-    _fadeController.dispose();
-    _slideController.dispose();
     super.dispose();
   }
 
-  void _nextPage() {
-    if (_currentPage < OnboardingData.pages.length - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-      );
-    } else {
-      _completeOnboarding();
-    }
-  }
-
-  void _previousPage() {
-    if (_currentPage > 0) {
-      _pageController.previousPage(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  void _skipToEnd() {
-    _pageController.animateToPage(
-      OnboardingData.pages.length - 1,
-      duration: const Duration(milliseconds: 600),
-      curve: Curves.easeInOut,
-    );
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
   }
 
   Future<void> _completeOnboarding() async {
     await ref.read(onboardingServiceProvider).completeOnboarding();
+    final prefs = await SharedPreferences.getInstance();
+    final landingShown = prefs.getBool('landing_shown') ?? false;
     if (mounted) {
-      context.go('/');
+      if (!landingShown) {
+        context.go('/landing');
+      } else {
+        context.go('/');
+      }
     }
   }
 
-  Widget _buildPageIndicator(ThemeData theme) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        OnboardingData.pages.length,
-        (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          height: 8,
-          width: _currentPage == index ? 24 : 8,
-          decoration: BoxDecoration(
-            color: _currentPage == index
-                ? theme.colorScheme.primary
-                : theme.colorScheme.outline.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ),
-      ),
-    );
+  void _goToHome() async {
+    await ref.read(onboardingServiceProvider).completeOnboarding();
+    context.go('/');
+  }
+
+  void _goToCreateLab() async {
+    await ref.read(onboardingServiceProvider).completeOnboarding();
+    context.go('/custom-labs/create');
+  }
+
+  // Updated button labels with more engaging text
+  String _getPrimaryLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'Continue Exploring';
+      case 1:
+        return 'Sounds Good!';
+      case 2:
+        return 'Next';
+      case 3:
+        return 'Continue';
+      default:
+        return 'Continue';
+    }
+  }
+
+  String _getSecondaryLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'Go To Home';
+      case 1:
+        return 'Browse All Sensors';
+      case 2:
+        return 'Create Custom Lab';
+      case 3:
+        return 'Check All Presets';
+      default:
+        return 'Skip';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final pages = OnboardingData.pages(context);
 
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              theme.colorScheme.primaryContainer.withOpacity(0.3),
-              theme.colorScheme.secondaryContainer.withOpacity(0.3),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Top bar with skip button
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if (_currentPage < OnboardingData.pages.length - 1)
+      backgroundColor: theme.colorScheme.surface,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Progress indicator with step counter
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Step ${_currentPage + 1} of ${pages.length}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        ),
+                      ),
                       TextButton(
-                        onPressed: _skipToEnd,
-                        child: Text(
-                          'Skip',
-                          style: TextStyle(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
+                        onPressed: _goToHome,
+                        child: const Text('Skip'),
                       ),
-                  ],
-                ),
-              ),
-
-              // Page content
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentPage = index;
-                    });
-                    _slideController.forward(from: 0);
-                  },
-                  itemCount: OnboardingData.pages.length,
-                  itemBuilder: (context, index) {
-                    return _OnboardingPageContent(
-                      page: OnboardingData.pages[index],
-                      pageIndex: index,
-                      fadeController: _fadeController,
-                      slideController: _slideController,
-                    );
-                  },
-                ),
-              ),
-
-              // Page indicator (Custom Dots)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: _buildPageIndicator(theme),
-              ),
-
-              // Navigation buttons
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Previous button
-                    if (_currentPage > 0)
-                      OutlinedButton.icon(
-                        onPressed: _previousPage,
-                        icon: const Icon(Icons.arrow_back),
-                        label: const Text('Previous'),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  // Animated progress dots
+                  Row(
+                    children: List.generate(pages.length, (index) {
+                      return Expanded(
+                        child: Container(
+                          height: 4,
+                          margin: const EdgeInsets.symmetric(horizontal: 2),
+                          decoration: BoxDecoration(
+                            color: _currentPage >= index
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.onSurface.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
-                      )
-                    else
-                      const SizedBox(width: 120),
-
-                    // Next/Get Started button
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      child: FilledButton.icon(
-                        onPressed: _nextPage,
-                        icon: Icon(
-                          _currentPage == OnboardingData.pages.length - 1
-                              ? Icons.check
-                              : Icons.arrow_forward,
-                        ),
-                        label: Text(
-                          _currentPage == OnboardingData.pages.length - 1
-                              ? 'Get Started'
-                              : 'Next',
-                        ),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                      );
+                    }),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: pages.length,
+                onPageChanged: _onPageChanged,
+                physics: const ClampingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final page = pages[index];
+
+                  return _OnboardingPageContent(
+                    title: page.title,
+                    description: page.description,
+                    lottieAsset: page.lottieAsset,
+                    primaryLabel: _getPrimaryLabel(index),
+                    primaryAction: index == pages.length - 1
+                        ? _completeOnboarding
+                        : () => _pageController.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          ),
+                    secondaryLabel: _getSecondaryLabel(index),
+                    secondaryAction: index == 2 ? _goToCreateLab : _goToHome,
+                    theme: theme,
+                    pageIndex: index,
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -228,158 +175,332 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
 }
 
 class _OnboardingPageContent extends StatelessWidget {
-  final dynamic page;
+  final String title;
+  final String description;
+  final String? lottieAsset;
+  final String primaryLabel;
+  final VoidCallback primaryAction;
+  final String secondaryLabel;
+  final VoidCallback secondaryAction;
+  final ThemeData theme;
   final int pageIndex;
-  final AnimationController fadeController;
-  final AnimationController slideController;
 
   const _OnboardingPageContent({
-    required this.page,
+    required this.title,
+    required this.description,
+    required this.lottieAsset,
+    required this.primaryLabel,
+    required this.primaryAction,
+    required this.secondaryLabel,
+    required this.secondaryAction,
+    required this.theme,
     required this.pageIndex,
-    required this.fadeController,
-    required this.slideController,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final size = MediaQuery.of(context).size;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Enhanced visual section with gradient background
+          Container(
+            width: 240,
+            height: 280,
 
-    return FadeTransition(
-      opacity: fadeController,
-      child: SlideTransition(
-        position: Tween<Offset>(begin: const Offset(0.1, 0), end: Offset.zero)
-            .animate(
-              CurvedAnimation(parent: slideController, curve: Curves.easeOut),
+            child: lottieAsset != null
+                ? Lottie.asset(lottieAsset!, height: 180, fit: BoxFit.contain)
+                : _buildAlternativeVisual(pageIndex, theme),
+          ),
+
+          const SizedBox(height: 48),
+
+          // Title with emoji for personality
+          Text(
+            title,
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: 24,
             ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
+            textAlign: TextAlign.center,
+          ),
 
-              // Animation/Illustration
+          const SizedBox(height: 20),
+
+          // Description with improved styling
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              description,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                height: 1.6,
+                color: theme.colorScheme.onSurface.withOpacity(0.8),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+
+          const Spacer(),
+
+          // Enhanced button section
+          Column(
+            children: [
+              // Primary button with shadow and animation
               Container(
-                height: size.height * 0.35,
+                width: double.infinity,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  color: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withOpacity(0.1),
-                      blurRadius: 20,
-                      spreadRadius: 5,
+                      color: theme.colorScheme.primary.withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
-                  child: _buildAnimation(pageIndex, theme),
+                child: FilledButton(
+                  onPressed: primaryAction,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                    minimumSize: const Size(double.infinity, 56),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(primaryLabel),
+                      if (pageIndex < 3) ...[
+                        const SizedBox(width: 8),
+                        Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 20,
+                          color: theme.colorScheme.onPrimary,
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
-              ),
-
-              const SizedBox(height: 40),
-
-              // Title
-              Text(
-                page.title,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onBackground,
-                ),
-                textAlign: TextAlign.center,
               ),
 
               const SizedBox(height: 16),
 
-              // Description
-              Text(
-                page.description,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onBackground.withOpacity(0.7),
-                  height: 1.5,
-                ),
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 32),
-
-              // Features list
-              ...page.features.map<Widget>((feature) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          Icons.check_circle,
-                          color: theme.colorScheme.primary,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          feature,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
-                      ),
-                    ],
+              // Secondary button with subtle styling
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: secondaryAction,
+                  style: TextButton.styleFrom(
+                    foregroundColor: theme.colorScheme.primary,
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                    minimumSize: const Size(double.infinity, 48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                );
-              }).toList(),
-
-              const SizedBox(height: 40),
+                  child: Text(secondaryLabel),
+                ),
+              ),
             ],
           ),
-        ),
+
+          const SizedBox(height: 32),
+        ],
       ),
     );
   }
 
-  Widget _buildAnimation(int index, ThemeData theme) {
-    // Fallback illustrations with icons when Lottie files don't exist
-    final illustrations = [
-      _buildIllustration(Icons.sensors, Colors.blue, theme),
-      _buildIllustration(Icons.speed, Colors.green, theme),
-      _buildIllustration(Icons.show_chart, Colors.orange, theme),
-      _buildIllustration(Icons.science, Colors.purple, theme),
-      _buildIllustration(Icons.history, Colors.teal, theme),
-      _buildIllustration(Icons.rocket_launch, Colors.pink, theme),
-    ];
-
-    // Use icon-based illustrations (Lottie animations can be added later)
-    return illustrations[index];
+  Widget _buildAlternativeVisual(int pageIndex, ThemeData theme) {
+    // Custom visual elements instead of icons
+    return switch (pageIndex) {
+      1 => SensorCardIcon(theme: theme), // Remove sensor grid for page 2
+      2 => CustomLabCardIcon(theme: theme, isDark: true),
+      3 => PreSetLabCardIcon(theme: theme, isDark: true, categories: {}),
+      _ => Container(), // Fallback
+    };
   }
 
-  Widget _buildIllustration(IconData icon, Color color, ThemeData theme) {
-    return Center(
-      child: TweenAnimationBuilder<double>(
-        tween: Tween(begin: 0.0, end: 1.0),
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.elasticOut,
-        builder: (context, value, child) {
-          return Transform.scale(
-            scale: value,
-            child: Container(
-              padding: const EdgeInsets.all(40),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [color.withOpacity(0.3), color.withOpacity(0.1)],
-                ),
-              ),
-              child: Icon(icon, size: 120, color: color),
+  Widget _buildSensorGrid(ThemeData theme) {
+    return GridView.count(
+      padding: const EdgeInsets.all(20),
+      crossAxisCount: 2,
+      mainAxisSpacing: 12,
+      crossAxisSpacing: 12,
+      children: [
+        _buildSensorChip('Motion', Icons.vibration, theme),
+        _buildSensorChip('Light', Icons.lightbulb, theme),
+        _buildSensorChip('Sound', Icons.mic, theme),
+        _buildSensorChip('More+', Icons.add, theme),
+      ],
+    );
+  }
+
+  Widget _buildSensorChip(String label, IconData icon, ThemeData theme) {
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 24, color: theme.colorScheme.primary),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.primary,
             ),
-          );
-        },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLabCreationVisual(ThemeData theme) {
+    return Container(
+      width: 180,
+      height: 180,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurple.withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          // Background pattern
+          Positioned(
+            top: 10,
+            right: 10,
+            child: Icon(
+              Iconsax.cpu,
+              size: 40,
+              color: Colors.white.withOpacity(0.1),
+            ),
+          ),
+          Positioned(
+            bottom: 10,
+            left: 10,
+            child: Icon(
+              Iconsax.chart_2,
+              size: 32,
+              color: Colors.white.withOpacity(0.1),
+            ),
+          ),
+
+          // Main content
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Icon container matching your card design
+                Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.3),
+                      width: 2,
+                    ),
+                  ),
+                  child: const Icon(
+                    Iconsax.additem,
+                    size: 36,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // "Create Lab" text
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    'CREATE LAB',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPresetsVisual(ThemeData theme) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildPresetCard('Fitness', theme),
+        const SizedBox(width: 8),
+        _buildPresetCard('Science', theme),
+        const SizedBox(width: 8),
+        _buildPresetCard('Fun', theme),
+      ],
+    );
+  }
+
+  Widget _buildPresetCard(String label, ThemeData theme) {
+    return Container(
+      width: 60,
+      height: 80,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.primary.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: theme.colorScheme.primary,
+          ),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }

@@ -1,96 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
-import 'package:sensorlab/src/features/custom_lab/application/providers/custom_labs_screen_provider.dart';
-import 'package:sensorlab/src/features/custom_lab/application/providers/presets_provider.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/screens/create_lab_screen.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/widgets/custom_labs_screen/all_labs_tab.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/widgets/custom_labs_screen/my_labs_tab.dart';
+import 'package:sensorlab/src/features/custom_lab/application/providers/lab_management_provider.dart';
+import 'package:sensorlab/src/features/custom_lab/presentation/widgets/custom_labs_screen/error_labs_state.dart';
+import 'package:sensorlab/src/features/custom_lab/presentation/widgets/custom_labs_screen/labs_grid_view.dart';
 
-class CustomLabsScreen extends ConsumerStatefulWidget {
+class CustomLabsScreen extends ConsumerWidget {
   const CustomLabsScreen({super.key});
 
   @override
-  ConsumerState<CustomLabsScreen> createState() => _CustomLabsScreenState();
-}
-
-class _CustomLabsScreenState extends ConsumerState<CustomLabsScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  bool _presetsInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-
-    // Initialize tab controller in provider safely
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(tabControllerProvider.notifier).state = _tabController;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final allLabsAsync = ref.watch(allLabsProvider);
 
-    // Initialize presets on first build using Future.microtask
-    if (!_presetsInitialized) {
-      _presetsInitialized = true;
-      Future.microtask(() => _verifyPresetsInitialization());
+    Widget customLabsSection;
+    Widget presetLabsSection;
+    if (allLabsAsync.isLoading) {
+      customLabsSection = const Center(child: CircularProgressIndicator());
+      presetLabsSection = const SizedBox.shrink();
+    } else if (allLabsAsync.hasError) {
+      customLabsSection = ErrorLabsState(
+        error: allLabsAsync.error!,
+        onRetry: () => ref.invalidate(allLabsProvider),
+      );
+      presetLabsSection = const SizedBox.shrink();
+    } else if (allLabsAsync.hasValue) {
+      final labs = allLabsAsync.value ?? [];
+      final customs = labs.where((lab) => !lab.isPreset).toList();
+      customs.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      if (customs.isEmpty) {
+        customLabsSection = Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            l10n.noCustomLabsYet,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        );
+      } else {
+        customLabsSection = Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: LabsGridView(
+            labs: customs,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+          ),
+        );
+      }
+      final presets = labs.where((lab) => lab.isPreset).toList();
+      if (presets.isEmpty) {
+        presetLabsSection = const SizedBox.shrink();
+      } else {
+        presetLabsSection = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text(
+                l10n.presetLabs,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: LabsGridView(
+                labs: presets,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+              ),
+            ),
+          ],
+        );
+      }
+    } else {
+      customLabsSection = const SizedBox.shrink();
+      presetLabsSection = const SizedBox.shrink();
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.customLabs),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: l10n.allLabs, icon: const Icon(Icons.science)),
-            Tab(text: l10n.myLabs, icon: const Icon(Icons.folder)),
-          ],
-        ),
+        backgroundColor: Colors.grey[100],
+        elevation: 0,
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: const [AllLabsTab(), MyLabsTab()],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _handleCreateLab,
-        icon: const Icon(Icons.add),
-        label: Text(l10n.newLab),
+      backgroundColor: Colors.grey[50],
+      body: ListView(
+        padding: const EdgeInsets.only(top: 8),
+        children: <Widget>[
+          // 1. Create New Lab Button
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ElevatedButton.icon(
+              onPressed: () => context.pushNamed('create-lab'),
+              icon: const Icon(Icons.add),
+              label: Text(l10n.newLab),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[200],
+                foregroundColor: Colors.black87,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                textStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+          ),
+
+          // 2. My Custom Labs (Quick Access)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text(
+              l10n.myCustomLabs,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          ),
+          customLabsSection,
+
+          // 3. Preset Labs (Secondary)
+          presetLabsSection,
+        ],
       ),
     );
-  }
-
-  void _verifyPresetsInitialization() async {
-    final state = ref.read(presetsInitializationProvider);
-
-    if (!state.isInitialized && !state.isLoading) {
-      print('Presets not initialized in CustomLabsScreen, retrying...');
-      try {
-        await ref
-            .read(presetsInitializationProvider.notifier)
-            .initializePresets();
-      } catch (e) {
-        print('Failed to initialize presets in screen: $e');
-      }
-    }
-  }
-
-  void _handleCreateLab() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => const CreateLabScreen()));
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    // Use Future.microtask to safely modify provider during dispose
-    Future.microtask(() {
-      ref.read(tabControllerProvider.notifier).state = null;
-    });
-    super.dispose();
   }
 }

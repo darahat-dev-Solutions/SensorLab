@@ -40,16 +40,24 @@ class PlantLightData {
 
   /// Get progress percentage (0-100)
   double get progressPercentage {
-    if (targetDLI == 0) return 0;
+    if (targetDLI == 0) {
+      return 0;
+    }
     return (currentDLI / targetDLI * 100).clamp(0, 100);
   }
 
   /// Get status of light exposure
   String get status {
     final percentage = progressPercentage;
-    if (percentage < 50) return 'Too Dark';
-    if (percentage < 80) return 'Needs More Light';
-    if (percentage <= 120) return 'Perfect Light';
+    if (percentage < 50) {
+      return 'Too Dark';
+    }
+    if (percentage < 80) {
+      return 'Needs More Light';
+    }
+    if (percentage <= 120) {
+      return 'Perfect Light';
+    }
     return 'Too Much Light';
   }
 
@@ -69,10 +77,14 @@ class PlantLightData {
 
   /// Calculate remaining hours needed at current lux level
   Duration getRemainingTimeAtCurrentLux(double currentLux) {
-    if (currentLux == 0 || progressPercentage >= 100) return Duration.zero;
+    if (currentLux == 0 || progressPercentage >= 100) {
+      return Duration.zero;
+    }
 
     final remainingDLI = targetDLI - currentDLI;
-    if (remainingDLI <= 0) return Duration.zero;
+    if (remainingDLI <= 0) {
+      return Duration.zero;
+    }
 
     // Convert lux to μmol/m²/s (approximate conversion for sunlight)
     // 1 μmol/m²/s ≈ 54 lux

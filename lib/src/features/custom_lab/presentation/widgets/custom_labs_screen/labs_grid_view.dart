@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/screens/lab_detail_screen.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/widgets_index.dart';
 
 class LabsGridView extends StatelessWidget {
@@ -38,21 +38,16 @@ class LabsGridView extends StatelessWidget {
     if (lab.isPreset) {
       final proceed = await showDialog<bool>(
         context: context,
-        barrierDismissible: true,
         builder: (_) => PresetPreflightDialog(lab: lab),
       );
       if (proceed == true && context.mounted) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => LabDetailScreen(labId: lab.id),
-          ),
-        );
+        context.pushNamed('lab-details', pathParameters: {'labId': lab.id});
       }
     } else {
-      if (!context.mounted) return;
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => LabDetailScreen(labId: lab.id)),
-      );
+      if (!context.mounted) {
+        return;
+      }
+      context.pushNamed('lab-details', pathParameters: {'labId': lab.id});
     }
   }
 }

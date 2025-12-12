@@ -231,26 +231,6 @@ class SettingsPage extends ConsumerWidget {
                   ),
 
                   const SizedBox(height: 24),
-
-                  // Monetization Section
-                  SettingsSection(
-                    title: l10n.appSupport,
-                    icon: Iconsax.heart,
-                    children: [
-                      SettingsItem(
-                        icon: Iconsax.mobile,
-                        title: l10n.showAds,
-                        subtitle: l10n.supportAppDevelopment,
-                        trailing: Switch(
-                          value: settings.adsEnabled,
-                          onChanged: (_) => ref
-                              .read(settingsControllerProvider.notifier)
-                              .toggleAds(),
-                        ),
-                      ),
-                    ],
-                  ),
-
                   const SizedBox(height: 32),
 
                   // Reset Section

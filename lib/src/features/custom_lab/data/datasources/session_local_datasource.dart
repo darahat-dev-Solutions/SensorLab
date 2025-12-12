@@ -114,15 +114,9 @@ class SessionLocalDataSource {
 
   /// Retrieves all sensor data points for a session
   Future<List<Map<String, dynamic>>> getDataPoints(String sessionId) async {
-    AppLogger.log(
-      '🔍 [Datasource] Opening box for session: $sessionId',
-      level: LogLevel.info,
-    );
+    AppLogger.log('🔍 [Datasource] Opening box for session: $sessionId');
     final box = await _openSensorDataBox(sessionId);
-    AppLogger.log(
-      '🔍 [Datasource] Box opened. Contains ${box.length} items',
-      level: LogLevel.info,
-    );
+    AppLogger.log('🔍 [Datasource] Box opened. Contains ${box.length} items');
 
     // Convert box values to List<Map<String, dynamic>> with normalized key types
     final dataPoints = <Map<String, dynamic>>[];
@@ -137,7 +131,7 @@ class SessionLocalDataSource {
         final sv = normalized['sensorValues'];
         if (sv is Map) {
           normalized['sensorValues'] = {
-            for (final e in (sv).entries) e.key.toString(): e.value,
+            for (final e in sv.entries) e.key.toString(): e.value,
           };
         }
         dataPoints.add(normalized);
@@ -151,10 +145,7 @@ class SessionLocalDataSource {
       );
     }
 
-    AppLogger.log(
-      '✅ [Datasource] Returning ${dataPoints.length} data points',
-      level: LogLevel.info,
-    );
+    AppLogger.log('✅ [Datasource] Returning ${dataPoints.length} data points');
 
     return dataPoints;
   }

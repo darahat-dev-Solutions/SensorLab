@@ -54,7 +54,7 @@ class LabManagementNotifier extends StateNotifier<LabManagementState> {
     Color? color,
     int recordingInterval = 1000,
   }) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final lab = await _useCase.createLab(
@@ -88,7 +88,7 @@ class LabManagementNotifier extends StateNotifier<LabManagementState> {
     Color? color,
     int? recordingInterval,
   }) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final lab = await _useCase.updateLab(
@@ -115,7 +115,7 @@ class LabManagementNotifier extends StateNotifier<LabManagementState> {
 
   /// Delete a lab
   Future<bool> deleteLab(String id) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       await _useCase.deleteLab(id);
@@ -137,7 +137,7 @@ class LabManagementNotifier extends StateNotifier<LabManagementState> {
 
   /// Duplicate a lab
   Future<Lab?> duplicateLab(String id) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final lab = await _useCase.duplicateLab(id);
@@ -161,12 +161,12 @@ class LabManagementNotifier extends StateNotifier<LabManagementState> {
 
   /// Clear selection
   void clearSelection() {
-    state = state.copyWith(selectedLab: null);
+    state = state.copyWith();
   }
 
   /// Clear error message
   void clearError() {
-    state = state.copyWith(errorMessage: null);
+    state = state.copyWith();
   }
 }
 

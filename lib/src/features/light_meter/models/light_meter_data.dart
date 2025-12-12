@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:sensorlab/src/features/light_meter/models/plant_light_data.dart';
+
 /// Represents light meter measurement data and state
 class LightMeterData {
   /// Current light level in lux
@@ -112,11 +116,21 @@ class LightMeterData {
 
   /// Calculate light level based on lux value
   static LightLevel getLightLevel(double lux) {
-    if (lux >= 10000) return LightLevel.daylight;
-    if (lux >= 1000) return LightLevel.bright;
-    if (lux >= 500) return LightLevel.office;
-    if (lux >= 200) return LightLevel.indoor;
-    if (lux >= 10) return LightLevel.dim;
+    if (lux >= 10000) {
+      return LightLevel.daylight;
+    }
+    if (lux >= 1000) {
+      return LightLevel.bright;
+    }
+    if (lux >= 500) {
+      return LightLevel.office;
+    }
+    if (lux >= 200) {
+      return LightLevel.indoor;
+    }
+    if (lux >= 10) {
+      return LightLevel.dim;
+    }
     return LightLevel.dark;
   }
 
@@ -153,6 +167,69 @@ class LightMeterData {
         return '☀️'; // Sun
       case LightLevel.daylight:
         return '🌞'; // Sun with Face
+    }
+  }
+
+  Color getProgressColor(double percentage) {
+    if (percentage < 50) {
+      return Colors.red;
+    }
+    if (percentage < 80) {
+      return Colors.orange;
+    }
+    if (percentage < 100) {
+      return Colors.blue;
+    }
+    return Colors.green;
+  }
+
+  IconData getStatusIcon(String status) {
+    if (status.contains('Dark')) {
+      return Iconsax.moon;
+    }
+    if (status.contains('Optimal')) {
+      return Iconsax.tick_circle;
+    }
+    if (status.contains('Excess')) {
+      return Iconsax.warning_2;
+    }
+    return Iconsax.sun_1;
+  }
+
+  String getPlantIcon(PlantType type) {
+    switch (type) {
+      case PlantType.snake:
+        return '🌿';
+      case PlantType.fern:
+        return '🍀';
+      case PlantType.orchid:
+        return '🌸';
+      case PlantType.cactus:
+        return '🌵';
+      case PlantType.tomato:
+        return '🍅';
+      case PlantType.lettuce:
+        return '🥬';
+      case PlantType.pothos:
+        return '�';
+      case PlantType.basil:
+        return '🌿';
+      case PlantType.spider:
+        return '🕷️';
+      case PlantType.fiddle:
+        return '🎻';
+      case PlantType.peace:
+        return '☮️';
+      case PlantType.monstera:
+        return '🍃';
+      case PlantType.rubber:
+        return '🌳';
+      case PlantType.succulent:
+        return '🌿';
+      case PlantType.croton:
+        return '🌺';
+      case PlantType.custom:
+        return '🪴';
     }
   }
 }

@@ -16,11 +16,15 @@ class LabLocalDataSource {
 
   /// One-time migration from legacy 'labs' box to canonical name
   Future<void> _migrateLabsBoxIfNeeded() async {
-    if (_legacyBoxName == _labsBoxName) return;
+    if (_legacyBoxName == _labsBoxName) {
+      return;
+    }
 
     try {
       final legacyExists = await Hive.boxExists(_legacyBoxName);
-      if (!legacyExists) return;
+      if (!legacyExists) {
+        return;
+      }
 
       final legacyBox = await Hive.openBox<Lab>(_legacyBoxName);
       final newBox = await Hive.openBox<Lab>(_labsBoxName);
@@ -38,10 +42,7 @@ class LabLocalDataSource {
       await legacyBox.close();
       await Hive.deleteBoxFromDisk(_legacyBoxName);
 
-      AppLogger.log(
-        'Migrated legacy labs box to $_labsBoxName',
-        level: LogLevel.info,
-      );
+      AppLogger.log('Migrated legacy labs box to $_labsBoxName');
     } catch (e) {
       AppLogger.log(
         'Labs box migration skipped/failed: $e',

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/lab_monitoring_notifier.dart';
 import 'package:sensorlab/src/features/custom_lab/application/state/lab_monitoring_state.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/screens/session_history_screen.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_component_factory.dart';
 
 class LabMonitoringContent extends ConsumerWidget {
@@ -29,12 +29,8 @@ class LabMonitoringContent extends ConsumerWidget {
         // Pop the recording screen
         Navigator.of(context).pop();
 
-        // Navigate to session history
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => SessionHistoryScreen(lab: lab),
-          ),
-        );
+        // Navigate to session history using GoRouter
+        context.goNamed('session-history', extra: lab);
       }
     });
 

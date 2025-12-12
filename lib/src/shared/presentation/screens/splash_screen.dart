@@ -51,14 +51,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _navigateAfterDelay() async {
     await Future.delayed(const Duration(seconds: 3));
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     // Check if onboarding has been completed
     final hasCompletedOnboarding = await ref
         .read(onboardingServiceProvider)
         .hasCompletedOnboarding();
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     if (hasCompletedOnboarding) {
       context.go('/');

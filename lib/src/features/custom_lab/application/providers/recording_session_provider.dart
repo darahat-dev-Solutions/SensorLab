@@ -25,6 +25,25 @@ final sessionDataPointsProvider =
       ref,
       sessionId,
     ) async {
-      final repository = ref.watch(labRepositoryProvider);
-      return repository.getDataPointsBySessionId(sessionId);
+      try {
+        final useCase = ref.read(recordSessionUseCaseProvider);
+        final dataPoints = await useCase.getSessionDataPoints(sessionId);
+
+        return dataPoints;
+      } catch (e) {
+        print('Error loading data points: $e');
+        rethrow;
+      }
     });
+// ...existing code...
+final sessionByIdProvider = FutureProvider.family<LabSession?, String>((
+  ref,
+  sessionId,
+) async {
+  final repo = ref.watch(labRepositoryProvider);
+  return await repo.getSessionById(sessionId);
+});
+
+/// Provider for the currently active recording session
+final recordingSessionProvider = StateProvider<LabSession?>((ref) => null);
+// ...existing code...

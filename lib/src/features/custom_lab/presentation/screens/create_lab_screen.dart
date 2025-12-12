@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/lab_management_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab.dart';
+import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/notifiers/create_lab_notifier.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/create_lab_screen/color_picker_widget.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/create_lab_screen/sensor_selection_grid.dart';
@@ -23,7 +25,20 @@ class _CreateLabScreenState extends ConsumerState<CreateLabScreen> {
   final _intervalController = TextEditingController();
 
   bool get isEditing => widget.labToEdit != null;
-
+  static const Map<SensorType, String> sensorDescriptions = {
+    SensorType.accelerometer: 'Measures acceleration forces.',
+    SensorType.gyroscope: 'Measures rotation rate.',
+    SensorType.magnetometer: 'Detects magnetic field strength.',
+    SensorType.compass: 'Shows direction relative to North.',
+    SensorType.lightMeter: 'Measures ambient light.',
+    SensorType.noiseMeter: 'Measures sound level.',
+    SensorType.gps: 'Tracks location.',
+    SensorType.altimeter: 'Measures altitude.',
+    SensorType.speedMeter: 'Measures speed.',
+    SensorType.temperature: 'Measures temperature.',
+    SensorType.humidity: 'Measures humidity.',
+    SensorType.proximity: 'Detects nearby objects.',
+  };
   @override
   void initState() {
     super.initState();
@@ -60,6 +75,10 @@ class _CreateLabScreenState extends ConsumerState<CreateLabScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(isEditing ? l10n.editLab : l10n.createLab),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+        ),
         actions: [
           if (isEditing && !isPreset)
             IconButton(
@@ -81,16 +100,17 @@ class _CreateLabScreenState extends ConsumerState<CreateLabScreen> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        _buildSensorSection(context, isPreset),
+        const SizedBox(height: 24),
+        _buildColorSection(context, state, isPreset),
+        const SizedBox(height: 24),
         _buildNameField(context, isPreset),
         const SizedBox(height: 16),
         _buildDescriptionField(context, isPreset),
         const SizedBox(height: 16),
         _buildIntervalField(context, isPreset),
         const SizedBox(height: 24),
-        _buildColorSection(context, state, isPreset),
-        const SizedBox(height: 24),
-        _buildSensorSection(context, isPreset),
-        const SizedBox(height: 24),
+
         if (state.errorMessage != null) ...[
           _buildErrorMessage(context, state.errorMessage!),
           const SizedBox(height: 24),
@@ -197,7 +217,10 @@ class _CreateLabScreenState extends ConsumerState<CreateLabScreen> {
           ),
         ),
         const SizedBox(height: 12),
-        SensorSelectionGrid(enabled: !isPreset),
+        SensorSelectionGrid(
+          enabled: !isPreset,
+          sensorDescriptions: sensorDescriptions, // Pass the map
+        ),
       ],
     );
   }
@@ -303,7 +326,7 @@ class _CreateLabScreenState extends ConsumerState<CreateLabScreen> {
         // Refresh the lab list and invalidate related providers
         ref.invalidate(labManagementProvider);
 
-        Navigator.of(context).pop(result); // Return the updated lab
+        context.go('/'); // Return the updated lab
       }
     } catch (e) {
       notifier.setError(e.toString());
