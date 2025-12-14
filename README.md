@@ -1,3 +1,10 @@
+<!-- Video: YouTube Short (autoplay not supported on GitHub-rendered markdown; opens in YouTube) -->
+<div align="center">
+    <a href="https://youtube.com/shorts/Cg61mOv7f5E?si=MJH5kBxqOO18PsVV" target="_blank" rel="noopener noreferrer">
+        <img src="SensorLab (3).png" alt="SensorLab demo video" width="720" />
+    </a>
+</div>
+
 # 📱 SensorLab - All-in-One Sensor Toolkit
 
 <div align="center">
