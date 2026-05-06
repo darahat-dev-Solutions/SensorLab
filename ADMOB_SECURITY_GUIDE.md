@@ -78,7 +78,7 @@ You can also use environment variables:
 
 ```bash
 # For development
-export ADMOB_APP_ID=ca-app-pub-3940256099942544~3347511713
+export ADMOB_APP_ID=ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX
 
 # For production
 export ADMOB_APP_ID=ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX
