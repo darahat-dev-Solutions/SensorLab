@@ -4,7 +4,6 @@ import 'package:flutter_compass/flutter_compass.dart';
 import 'package:light/light.dart';
 import 'package:noise_meter/noise_meter.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:proximity_sensor/proximity_sensor.dart';
 import 'package:sensorlab/src/core/utils/logger.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -63,9 +62,7 @@ class SensorStreamService {
         case SensorType.compass:
           _initializeCompass(sensorKey, controller);
           break;
-        case SensorType.proximity:
-          _initializeProximity(sensorKey, controller);
-          break;
+
         case SensorType.temperature:
         case SensorType.humidity:
         case SensorType.gps:
@@ -292,26 +289,6 @@ class SensorStreamService {
       },
       onError: (error) {
         AppLogger.log('Compass error: $error', level: LogLevel.error);
-        if (!controller.isClosed) {
-          controller.addError(error);
-        }
-      },
-    );
-  }
-
-  void _initializeProximity(
-    String sensorKey,
-    StreamController<Map<String, dynamic>> controller,
-  ) {
-    _subscriptions[sensorKey] = ProximitySensor.events.listen(
-      (event) {
-        if (!controller.isClosed) {
-          final isNear = event > 0;
-          controller.add({'proximity': isNear ? 1.0 : 0.0});
-        }
-      },
-      onError: (error) {
-        AppLogger.log('Proximity sensor error: $error', level: LogLevel.error);
         if (!controller.isClosed) {
           controller.addError(error);
         }

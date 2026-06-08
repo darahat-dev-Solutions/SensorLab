@@ -7,9 +7,6 @@ import 'package:sensorlab/src/features/custom_lab/domain/entities/lab.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/lab_session.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_data_point.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart';
-import 'package:sensorlab/src/features/health/domain/entities/activity_session.dart';
-import 'package:sensorlab/src/features/health/domain/entities/activity_type.dart';
-import 'package:sensorlab/src/features/health/domain/entities/user_profile.dart';
 import 'package:sensorlab/src/features/light_meter/models/plant_tracking_session.dart';
 import 'package:sensorlab/src/features/noise_meter/data/models/acoustic_report_hive.dart';
 import 'package:sensorlab/src/features/noise_meter/data/models/custom_preset_hive.dart';
@@ -77,41 +74,6 @@ class HiveService {
       /// Teach Hive about [AppSettings] data model
       if (!Hive.isAdapterRegistered(0)) {
         Hive.registerAdapter(AppSettingsAdapter());
-      }
-
-      /// Teach Hive about [UserProfile] data model
-      if (!Hive.isAdapterRegistered(1)) {
-        Hive.registerAdapter(UserProfileAdapter());
-      }
-
-      /// Teach Hive about [Gender] data model
-      if (!Hive.isAdapterRegistered(2)) {
-        Hive.registerAdapter(GenderAdapter());
-      }
-
-      /// Teach Hive about [ActivitySession] data model
-      if (!Hive.isAdapterRegistered(3)) {
-        Hive.registerAdapter(ActivitySessionAdapter());
-      }
-
-      /// Teach Hive about [SessionStatus] data model
-      if (!Hive.isAdapterRegistered(4)) {
-        Hive.registerAdapter(SessionStatusAdapter());
-      }
-
-      /// Teach Hive about [MovementData] data model
-      if (!Hive.isAdapterRegistered(5)) {
-        Hive.registerAdapter(MovementDataAdapter());
-      }
-
-      /// Teach Hive about [Goals] data model
-      if (!Hive.isAdapterRegistered(6)) {
-        Hive.registerAdapter(GoalsAdapter());
-      }
-
-      /// Teach Hive about [ActivityType] data model
-      if (!Hive.isAdapterRegistered(7)) {
-        Hive.registerAdapter(ActivityTypeAdapter());
       }
 
       /// Teach Hive about [AcousticEventHive] data model (typeId: 8)
@@ -187,8 +149,6 @@ class HiveService {
 
       /// Open The Database drawers to read/write data
       await Hive.openBox<AppSettings>(settingsBoxName);
-      await Hive.openBox<UserProfile>(userProfileBoxName);
-      await Hive.openBox<ActivitySession>(activitySessionBoxName);
       await Hive.openBox<AcousticReportHive>(acousticReportBoxName);
       await Hive.openBox<CustomPresetHive>(customPresetsBoxName);
       _appLogger.info('✅ Custom presets box opened: $customPresetsBoxName');
@@ -219,18 +179,6 @@ class HiveService {
   Box<AppSettings> get settingsBox {
     _checkInitialized();
     return Hive.box<AppSettings>(settingsBoxName);
-  }
-
-  ///userProfileBox initialized
-  Box<UserProfile> get userProfileBox {
-    _checkInitialized();
-    return Hive.box<UserProfile>(userProfileBoxName);
-  }
-
-  ///activitySessionBox initialized
-  Box<ActivitySession> get activitySessionBox {
-    _checkInitialized();
-    return Hive.box<ActivitySession>(activitySessionBoxName);
   }
 
   ///acousticReportBox initialized

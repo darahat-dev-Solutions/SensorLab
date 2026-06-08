@@ -146,7 +146,6 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
         case SensorType.speedMeter:
         case SensorType.temperature:
         case SensorType.humidity:
-        case SensorType.proximity:
           unchecked.add(s);
           break;
       }
@@ -291,9 +290,7 @@ class _PermissionList extends StatelessWidget {
     if (p == Permission.locationWhenInUse) {
       return 'Location';
     }
-    if (p == Permission.camera) {
-      return 'Camera';
-    }
+
     return p.toString();
   }
 }

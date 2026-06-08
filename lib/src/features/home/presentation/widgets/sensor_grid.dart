@@ -247,18 +247,15 @@ class MinimalSensorCard extends StatelessWidget {
       'Accelerometer': 'Measures motion and tilt',
       'Gyroscope': 'Detects rotation speed',
       'Magnetometer': 'Finds magnetic north',
-      'Proximity': 'Detects nearby objects',
       'Light': 'Measures brightness',
       'Pressure': 'Measures air pressure',
       'Temperature': 'Reads ambient heat',
       'Humidity': 'Measures moisture level',
       'Step Counter': 'Counts walking steps',
-      'Heart Rate': 'Measures pulse',
       'GPS': 'Shows location',
       'Compass': 'Shows direction',
       'Barometer': 'Measures altitude',
       'Microphone': 'Records sound',
-      'Camera': 'Takes photos/videos',
       'Fingerprint': 'Biometric security',
     };
 

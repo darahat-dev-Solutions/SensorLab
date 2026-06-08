@@ -135,8 +135,6 @@ class _SensorItem extends StatelessWidget {
         return Icons.thermostat;
       case SensorType.humidity:
         return Icons.water_drop;
-      case SensorType.proximity:
-        return Icons.sensors;
     }
   }
 }

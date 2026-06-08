@@ -37,7 +37,6 @@ class _CreateLabScreenState extends ConsumerState<CreateLabScreen> {
     SensorType.speedMeter: 'Measures speed.',
     SensorType.temperature: 'Measures temperature.',
     SensorType.humidity: 'Measures humidity.',
-    SensorType.proximity: 'Detects nearby objects.',
   };
   @override
   void initState() {

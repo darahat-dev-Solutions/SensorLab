@@ -24,21 +24,18 @@ enum SensorType {
   gps,
 
   @HiveField(6)
-  proximity,
-
-  @HiveField(7)
   temperature,
 
-  @HiveField(8)
+  @HiveField(7)
   humidity,
 
-  @HiveField(9)
+  @HiveField(8)
   compass,
 
-  @HiveField(10)
+  @HiveField(9)
   altimeter,
 
-  @HiveField(11)
+  @HiveField(10)
   speedMeter;
 
   /// Get display name for the sensor
@@ -56,8 +53,6 @@ enum SensorType {
         return 'Noise Meter';
       case SensorType.gps:
         return 'GPS';
-      case SensorType.proximity:
-        return 'Proximity';
       case SensorType.temperature:
         return 'Temperature';
       case SensorType.humidity:
@@ -86,8 +81,6 @@ enum SensorType {
         return 'noise_meter';
       case SensorType.gps:
         return 'gps';
-      case SensorType.proximity:
-        return 'proximity';
       case SensorType.temperature:
         return 'temperature';
       case SensorType.humidity:

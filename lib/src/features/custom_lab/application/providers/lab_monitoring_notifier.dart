@@ -201,15 +201,6 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
             final headingValue = sensorData.heading ?? 0.0;
             _processSensorValue(sensor, 'compass', headingValue, now);
             break;
-          case SensorType.proximity:
-            sensorData = _ref.read(proximityProvider);
-            _processSensorValue(
-              sensor,
-              'proximity',
-              sensorData.isNear ? 1.0 : 0.0,
-              now,
-            );
-            break;
           case SensorType.gps:
             final geolocatorState = _ref.read(geolocatorProvider);
             final locationData = geolocatorState.currentLocation;

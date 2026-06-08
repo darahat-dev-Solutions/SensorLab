@@ -14,20 +14,6 @@ import 'package:sensorlab/src/shared/models/sensor_card.dart';
 
 List<SensorCard> getSensors(AppLocalizations l10n) {
   return [
-    // SensorCard(
-    //   icon: Icons.health_and_safety,
-    //   label: l10n.calorieBurn,
-    //   color: Colors.yellow,
-    //   screen: const HealthScreen(),
-    //   category: l10n.health,
-    // ),
-    // SensorCard(
-    //   icon: Iconsax.location,
-    //   label: l10n.geolocator,
-    //   color: Colors.teal,
-    //   screen: GeolocatorPage(),
-    //   category: l10n.location,
-    // ),
     SensorCard(
       icon: Iconsax.sound,
       label: l10n.noiseMeter,
@@ -88,13 +74,6 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       description: '',
       isDark: true,
     ),
-    // SensorCard(
-    //   icon: Iconsax.heart,
-    //   label: l10n.heartRate,
-    //   color: Colors.orange,
-    //   screen: const HeartRateScreen(),
-    //   category: l10n.health,
-    // ),
     SensorCard(
       icon: FontAwesomeIcons.droplet,
       label: l10n.humidity,
@@ -115,20 +94,5 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       description: '',
       isDark: true,
     ),
-
-    // SensorCard(
-    //   icon: Iconsax.flash,
-    //   label: l10n.flashlight,
-    //   color: Colors.yellow,
-    //   screen: const FlashlightScreen(),
-    //   category: l10n.device,
-    // ),
-    // SensorCard(
-    //   icon: Iconsax.scan,
-    //   label: l10n.scanner,
-    //   color: Colors.lime,
-    //   screen: const ScannerMainScreen(),
-    //   category: l10n.utility,
-    // ),
   ];
 }

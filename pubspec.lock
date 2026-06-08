@@ -137,46 +137,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.12.0"
-  camera:
-    dependency: "direct main"
-    description:
-      name: camera
-      sha256: d6ec2cbdbe2fa8f5e0d07d8c06368fe4effa985a4a5ddade9cc58a8cd849557d
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.11.2"
-  camera_android_camerax:
-    dependency: transitive
-    description:
-      name: camera_android_camerax
-      sha256: "4b6c1bef4270c39df96402c4d62f2348c3bb2bbaefd0883b9dbd58f426306ad0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.19"
-  camera_avfoundation:
-    dependency: transitive
-    description:
-      name: camera_avfoundation
-      sha256: "71dacf6c30aee386617c2b72ad46517706f8ef625aa637313c0d4dc93ddd8d76"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.20+1"
-  camera_platform_interface:
-    dependency: transitive
-    description:
-      name: camera_platform_interface
-      sha256: "2f757024a48696ff4814a789b0bd90f5660c0fb25f393ab4564fb483327930e2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.10.0"
-  camera_web:
-    dependency: transitive
-    description:
-      name: camera_web
-      sha256: "595f28c89d1fb62d77c73c633193755b781c6d2e0ebcd8dc25b763b514e6ba8f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.5"
   characters:
     dependency: transitive
     description:
@@ -427,14 +387,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
-    description:
-      name: flutter_plugin_android_lifecycle
-      sha256: f948e346c12f8d5480d2825e03de228d0eb8c3a737e4cdaa122267b89c022b5e
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.28"
   flutter_riverpod:
     dependency: "direct main"
     description:
@@ -821,14 +773,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-  mobile_scanner:
-    dependency: "direct main"
-    description:
-      name: mobile_scanner
-      sha256: "5e7e09d904dc01de071b79b3f3789b302b0ed3c9c963109cd3f83ad90de62ecf"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.1.2"
   mockito:
     dependency: "direct dev"
     description:
@@ -1029,14 +973,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.2"
-  proximity_sensor:
-    dependency: "direct main"
-    description:
-      name: proximity_sensor
-      sha256: aea20f05a697b7e709434073f624a7682e3a7a64a20e7785cfbab87b94b9a100
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.3.9"
   pub_semver:
     dependency: transitive
     description:
@@ -1274,14 +1210,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  torch_light:
-    dependency: "direct main"
-    description:
-      name: torch_light
-      sha256: a1397443a375c6991151547cb77361085df6cf8aa59999292e683db7385a0d15
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   typed_data:
     dependency: transitive
     description:

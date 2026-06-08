@@ -106,7 +106,6 @@ const _$SensorTypeEnumMap = {
   SensorType.lightMeter: 'lightMeter',
   SensorType.noiseMeter: 'noiseMeter',
   SensorType.gps: 'gps',
-  SensorType.proximity: 'proximity',
   SensorType.temperature: 'temperature',
   SensorType.humidity: 'humidity',
   SensorType.compass: 'compass',

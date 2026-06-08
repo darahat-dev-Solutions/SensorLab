@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sensorlab/src/core/providers.dart';
+import 'package:sensorlab/src/features/accelerometer/application/providers/accelerometer_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/sensor_data_providers.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart';
 import 'package:sensorlab/src/shared/widgets/utility_widgets.dart';

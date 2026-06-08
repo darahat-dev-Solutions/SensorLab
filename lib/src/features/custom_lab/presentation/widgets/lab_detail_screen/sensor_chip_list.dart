@@ -40,8 +40,6 @@ class SensorChipList extends StatelessWidget {
         return Icons.volume_up;
       case SensorType.gps:
         return Icons.location_on;
-      case SensorType.proximity:
-        return Icons.phonelink_ring;
       case SensorType.temperature:
         return Icons.thermostat;
       case SensorType.humidity:

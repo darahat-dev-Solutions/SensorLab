@@ -26,16 +26,14 @@ class SensorTypeAdapter extends TypeAdapter<SensorType> {
       case 5:
         return SensorType.gps;
       case 6:
-        return SensorType.proximity;
-      case 7:
         return SensorType.temperature;
-      case 8:
+      case 7:
         return SensorType.humidity;
-      case 9:
+      case 8:
         return SensorType.compass;
-      case 10:
+      case 9:
         return SensorType.altimeter;
-      case 11:
+      case 10:
         return SensorType.speedMeter;
       default:
         return SensorType.accelerometer;
@@ -63,23 +61,20 @@ class SensorTypeAdapter extends TypeAdapter<SensorType> {
       case SensorType.gps:
         writer.writeByte(5);
         break;
-      case SensorType.proximity:
+      case SensorType.temperature:
         writer.writeByte(6);
         break;
-      case SensorType.temperature:
+      case SensorType.humidity:
         writer.writeByte(7);
         break;
-      case SensorType.humidity:
+      case SensorType.compass:
         writer.writeByte(8);
         break;
-      case SensorType.compass:
+      case SensorType.altimeter:
         writer.writeByte(9);
         break;
-      case SensorType.altimeter:
-        writer.writeByte(10);
-        break;
       case SensorType.speedMeter:
-        writer.writeByte(11);
+        writer.writeByte(10);
         break;
     }
   }

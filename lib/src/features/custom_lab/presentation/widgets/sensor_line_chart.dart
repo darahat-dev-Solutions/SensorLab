@@ -34,8 +34,7 @@ class SensorLineChart extends StatelessWidget {
         return 'm';
       case SensorType.speedMeter:
         return 'km/h';
-      case SensorType.proximity:
-        return 'cm';
+
       default:
         return '';
     }

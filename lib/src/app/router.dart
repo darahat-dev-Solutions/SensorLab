@@ -17,11 +17,8 @@ import '../features/custom_lab/presentation/screens/lab_detail_screen.dart';
 import '../features/custom_lab/presentation/screens/recording_screen.dart';
 import '../features/custom_lab/presentation/screens/session_detail_screen.dart';
 import '../features/custom_lab/presentation/screens/session_history_screen.dart';
-import '../features/flashlight/presentation/screens/flashlight_screen.dart';
 import '../features/geolocator/presentation/screens/geolocator_screen.dart';
 import '../features/gyroscope/presentation/screens/gyroscope_screen.dart';
-import '../features/health/presentation/screens/health_screen.dart';
-import '../features/heart_beat/presentation/screens/heart_beat_screen.dart';
 import '../features/home/presentation/home_screen.dart';
 import '../features/home/presentation/landing_page.dart';
 import '../features/humidity/presentation/screens/humidity_screen.dart';
@@ -37,11 +34,7 @@ import '../features/noise_meter/presentation/screens/noise_meter_screen.dart';
 // Shared / Onboarding / Settings / Home / Splash
 import '../features/onboarding/presentation/screens/onboarding_screen.dart';
 // Scanner
-import '../features/scanner/models/scan_result.dart';
-import '../features/scanner/presentation/screens/barcode_scanner_screen.dart';
-import '../features/scanner/presentation/screens/qr_scanner_screen.dart';
-import '../features/scanner/presentation/screens/scan_result_screen.dart';
-import '../features/scanner/presentation/screens/scanner_main_screen.dart';
+
 import '../features/speed_meter/presentation/screens/speed_meter_screen.dart';
 import '../features/vibration_meter/presentation/screens/vibration_meter_screen.dart';
 import '../shared/presentation/screens/splash_screen.dart';
@@ -125,11 +118,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'compass',
         builder: (c, s) => const CompassScreen(),
       ),
-      GoRoute(
-        path: '/flashlight',
-        name: 'flashlight',
-        builder: (c, s) => const FlashlightScreen(),
-      ),
+
       GoRoute(
         path: '/geolocator',
         name: 'geolocator',
@@ -139,11 +128,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/gyroscope',
         name: 'gyroscope',
         builder: (c, s) => const GyroscopeScreen(),
-      ),
-      GoRoute(
-        path: '/health',
-        name: 'health',
-        builder: (c, s) => const HealthScreen(),
       ),
       GoRoute(
         path: '/humidity',
@@ -171,11 +155,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'vibration-meter',
         builder: (c, s) => const VibrationMeterScreen(),
       ),
-      GoRoute(
-        path: '/heart-beat',
-        name: 'heart-beat',
-        builder: (c, s) => const HeartRateScreen(),
-      ),
+
       // === Noise Meter Routes ===
       GoRoute(
         path: '/noise-meter',
@@ -298,33 +278,6 @@ final routerProvider = Provider<GoRouter>((ref) {
                 ],
               ),
             ],
-          ),
-        ],
-      ),
-
-      // === Scanner ===
-      GoRoute(
-        path: '/scanner',
-        name: 'scanner',
-        builder: (c, s) => const ScannerMainScreen(),
-        routes: [
-          GoRoute(
-            path: 'qr',
-            name: 'qr-scanner',
-            builder: (c, s) => const QRScannerScreen(),
-          ),
-          GoRoute(
-            path: 'barcode',
-            name: 'barcode-scanner',
-            builder: (c, s) => const BarcodeScannerScreen(),
-          ),
-          GoRoute(
-            path: 'result',
-            name: 'scan-result',
-            builder: (c, s) {
-              final result = s.extra as ScanResult?;
-              return ScanResultScreen(result: result!);
-            },
           ),
         ],
       ),
