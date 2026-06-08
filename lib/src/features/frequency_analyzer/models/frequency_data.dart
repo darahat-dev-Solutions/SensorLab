@@ -151,9 +151,7 @@ class FrequencyData {
     const energyThreshold = 0.1; // 10% of max
     for (int i = 0; i < magnitudes.length; i++) {
       if (magnitudes[i] > maxMag * energyThreshold) {
-        if (minFreq == 0) {
-          minFreq = frequencies[i];
-        }
+        if (minFreq == 0) minFreq = frequencies[i];
         maxFreqBand = frequencies[i];
       }
     }
@@ -188,29 +186,17 @@ class FrequencyData {
 
   /// Get frequency category
   String get frequencyCategory {
-    if (dominantFrequency < 20) {
-      return 'Subsonic';
-    }
-    if (dominantFrequency < 250) {
-      return 'Bass';
-    }
-    if (dominantFrequency < 2000) {
-      return 'Midrange';
-    }
-    if (dominantFrequency < 6000) {
-      return 'Presence';
-    }
-    if (dominantFrequency < 20000) {
-      return 'Brilliance';
-    }
+    if (dominantFrequency < 20) return 'Subsonic';
+    if (dominantFrequency < 250) return 'Bass';
+    if (dominantFrequency < 2000) return 'Midrange';
+    if (dominantFrequency < 6000) return 'Presence';
+    if (dominantFrequency < 20000) return 'Brilliance';
     return 'Ultrasonic';
   }
 
   /// Get sound type based on spectral characteristics
   String get soundType {
-    if (!isActive || dominantMagnitude < 0.1) {
-      return 'Silence';
-    }
+    if (!isActive || dominantMagnitude < 0.1) return 'Silence';
 
     if (harmonics.length >= 3) {
       return 'Harmonic'; // Musical tone
@@ -227,9 +213,7 @@ class FrequencyData {
 
   /// Convert frequency to musical note
   static String _frequencyToNote(double frequency) {
-    if (frequency < 20 || frequency > 20000) {
-      return '--';
-    }
+    if (frequency < 20 || frequency > 20000) return '--';
 
     const noteNames = [
       'C',
@@ -254,18 +238,14 @@ class FrequencyData {
     final octave = (halfSteps / 12).floor();
     final note = halfSteps.round() % 12;
 
-    if (octave < 0 || octave > 8) {
-      return '--';
-    }
+    if (octave < 0 || octave > 8) return '--';
 
     return '${noteNames[note]}$octave';
   }
 
   /// Get cents deviation from nearest note (for tuning)
   double getCentsDeviation() {
-    if (dominantFrequency < 20 || dominantFrequency > 20000) {
-      return 0;
-    }
+    if (dominantFrequency < 20 || dominantFrequency > 20000) return 0;
 
     const a4 = 440.0;
     final c0 = a4 * math.pow(2, -4.75);

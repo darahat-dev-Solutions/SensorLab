@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:sensorlab/src/features/noise_meter/presentation/screens/acoustic_preset_selection_screen.dart';
+import 'package:sensorlab/src/features/noise_meter/presentation/screens/acoustic_reports_list_screen.dart';
 
 class NoiseMeterFeatureCards extends StatelessWidget {
   const NoiseMeterFeatureCards({super.key});
@@ -27,7 +28,12 @@ class _EnvironmentAnalyzerCard extends StatelessWidget {
       title: 'Environment Analyzer',
       subtitle: 'Preset-based acoustic analysis',
       color: Colors.blue,
-      onTap: () => context.pushNamed('acoustic-preset-selection'),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AcousticPresetSelectionScreen(),
+        ),
+      ),
     );
   }
 }
@@ -42,7 +48,12 @@ class _ReportsCard extends StatelessWidget {
       title: 'Acoustic Reports',
       subtitle: 'View saved analyses and history',
       color: Colors.purple,
-      onTap: () => context.pushNamed('acoustic-reports-list'),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AcousticReportsListScreen(),
+        ),
+      ),
     );
   }
 }

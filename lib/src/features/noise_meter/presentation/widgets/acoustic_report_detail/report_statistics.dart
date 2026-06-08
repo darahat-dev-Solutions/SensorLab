@@ -43,12 +43,14 @@ class ReportStatistics extends StatelessWidget {
                   report.averageDecibels,
                 ),
                 color: ReportFormatters.getDecibelColor(report.averageDecibels),
+                trend: null,
               ),
               _ModernStatCard(
                 icon: Iconsax.arrow_up,
                 label: l10n.peakDecibels,
                 value: ReportFormatters.formatDecibelValue(report.maxDecibels),
                 color: Colors.red,
+                trend: null,
               ),
               _ModernStatCard(
                 icon: Iconsax.sound,
@@ -57,12 +59,14 @@ class ReportStatistics extends StatelessWidget {
                 color: report.interruptionCount > 5
                     ? Colors.orange
                     : Colors.green,
+                trend: null,
               ),
               _ModernStatCard(
                 icon: Iconsax.clock,
                 label: l10n.duration,
                 value: ReportFormatters.formatDuration(report.duration),
                 color: theme.colorScheme.primary,
+                trend: null,
               ),
             ],
           ),
@@ -77,14 +81,14 @@ class _ModernStatCard extends StatelessWidget {
   final String label;
   final String value;
   final Color color;
-  // final String? trend; // Removed unused optional parameter
+  final String? trend;
 
   const _ModernStatCard({
     required this.icon,
     required this.label,
     required this.value,
     required this.color,
-    // this.trend,
+    this.trend,
   });
 
   @override
@@ -116,8 +120,24 @@ class _ModernStatCard extends StatelessWidget {
                   ),
                   child: Icon(icon, size: 18, color: color),
                 ),
-                // if (trend != null)
-                // If trend is needed, restore its usage here. Otherwise, remove this widget.
+                if (trend != null)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      trend!,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
               ],
             ),
             Column(

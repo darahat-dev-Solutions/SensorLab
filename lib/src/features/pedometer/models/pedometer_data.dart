@@ -156,35 +156,27 @@ class PedometerData {
   // Pace calculation
   /// Get average pace in minutes per kilometer
   double get paceMinPerKm {
-    if (distanceKm <= 0) {
-      return 0;
-    }
+    if (distanceKm <= 0) return 0;
     return duration.inMinutes / distanceKm;
   }
 
   /// Get average pace in minutes per mile
   double get paceMinPerMile {
-    if (distanceMiles <= 0) {
-      return 0;
-    }
+    if (distanceMiles <= 0) return 0;
     return duration.inMinutes / distanceMiles;
   }
 
   // Time tracking
   /// Get time since last step
   Duration? get timeSinceLastStep {
-    if (lastStepTime == null) {
-      return null;
-    }
+    if (lastStepTime == null) return null;
     return DateTime.now().difference(lastStepTime!);
   }
 
   /// Check if user is currently walking (step within last 5 seconds)
   bool get isWalking {
     final timeSince = timeSinceLastStep;
-    if (timeSince == null) {
-      return false;
-    }
+    if (timeSince == null) return false;
     return timeSince.inSeconds < 5;
   }
 
@@ -226,9 +218,7 @@ class PedometerData {
 
   /// Get formatted pace in min/km
   String get paceMinPerKmFormatted {
-    if (paceMinPerKm <= 0) {
-      return '--:--';
-    }
+    if (paceMinPerKm <= 0) return '--:--';
     final minutes = paceMinPerKm.floor();
     final seconds = ((paceMinPerKm - minutes) * 60).round();
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
@@ -236,9 +226,7 @@ class PedometerData {
 
   /// Get formatted pace in min/mile
   String get paceMinPerMileFormatted {
-    if (paceMinPerMile <= 0) {
-      return '--:--';
-    }
+    if (paceMinPerMile <= 0) return '--:--';
     final minutes = paceMinPerMile.floor();
     final seconds = ((paceMinPerMile - minutes) * 60).round();
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';

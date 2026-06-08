@@ -15,40 +15,31 @@ enum SensorType {
   magnetometer,
 
   @HiveField(3)
-  barometer,
-
-  @HiveField(4)
   lightMeter,
 
-  @HiveField(5)
+  @HiveField(4)
   noiseMeter,
 
-  @HiveField(6)
+  @HiveField(5)
   gps,
 
-  @HiveField(7)
+  @HiveField(6)
   proximity,
 
-  @HiveField(8)
+  @HiveField(7)
   temperature,
 
-  @HiveField(9)
+  @HiveField(8)
   humidity,
 
-  @HiveField(10)
-  pedometer,
-
-  @HiveField(11)
+  @HiveField(9)
   compass,
 
-  @HiveField(12)
+  @HiveField(10)
   altimeter,
 
-  @HiveField(13)
-  speedMeter,
-
-  @HiveField(14)
-  heartBeat;
+  @HiveField(11)
+  speedMeter;
 
   /// Get display name for the sensor
   String get displayName {
@@ -59,8 +50,6 @@ enum SensorType {
         return 'Gyroscope';
       case SensorType.magnetometer:
         return 'Magnetometer';
-      case SensorType.barometer:
-        return 'Barometer';
       case SensorType.lightMeter:
         return 'Light Meter';
       case SensorType.noiseMeter:
@@ -73,16 +62,12 @@ enum SensorType {
         return 'Temperature';
       case SensorType.humidity:
         return 'Humidity';
-      case SensorType.pedometer:
-        return 'Pedometer';
       case SensorType.compass:
         return 'Compass';
       case SensorType.altimeter:
         return 'Altimeter';
       case SensorType.speedMeter:
         return 'Speed Meter';
-      case SensorType.heartBeat:
-        return 'Heart Rate';
     }
   }
 
@@ -95,8 +80,6 @@ enum SensorType {
         return 'gyroscope';
       case SensorType.magnetometer:
         return 'magnetometer';
-      case SensorType.barometer:
-        return 'barometer';
       case SensorType.lightMeter:
         return 'light_meter';
       case SensorType.noiseMeter:
@@ -109,16 +92,12 @@ enum SensorType {
         return 'temperature';
       case SensorType.humidity:
         return 'humidity';
-      case SensorType.pedometer:
-        return 'pedometer';
       case SensorType.compass:
         return 'compass';
       case SensorType.altimeter:
         return 'altimeter';
       case SensorType.speedMeter:
         return 'speed_meter';
-      case SensorType.heartBeat:
-        return 'heart_rate';
     }
   }
 }

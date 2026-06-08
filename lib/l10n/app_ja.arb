@@ -909,13 +909,5 @@
   "indoorQuality": "室内品質",
   "outdoorExplorer": "屋外探検",
   "vehicleDynamics": "車両ダイナミクス",
-  "healthTrackerLab": "健康トラッカー",
-  "onboardingTitleSuperpowers": "あなたのスマートフォンはスーパーパワーを持っています",
-  "onboardingDescSuperpowers": "これは単なる電話ではなく、強力なセンサー群です。あなたが手にしている隠れた天才を発見しましょう。",
-  "onboardingTitleSenseWorld": "見えない世界を感じる",
-  "onboardingDescSenseWorld": "音、光、磁気、動きを測定します。今までにない方法で環境を見てみましょう。",
-  "onboardingTitleLaboratory": "ポケットサイズのラボ",
-  "onboardingDescLaboratory": "好奇心から本格的な実験まで、カスタムラボを作って世界を発見・記録・理解しましょう。",
-  "onboardingTitleDiscovery": "発見の旅を始めましょう",
-  "onboardingDescDiscovery": "準備完了。探索、実験、そして世界を違った視点で見始めましょう。あなたのラボが待っています。"
+  "healthTrackerLab": "健康トラッカー"
 }

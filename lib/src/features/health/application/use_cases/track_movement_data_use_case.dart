@@ -60,17 +60,13 @@ class TrackMovementDataUseCase {
 
   bool _detectStep(MovementData currentData, List<MovementData> history) {
     // Business Algorithm: Simple step detection
-    if (history.length < 5) {
-      return false;
-    }
+    if (history.length < 5) return false;
 
     const double stepThreshold = 2.0;
     const Duration minStepInterval = Duration(milliseconds: 300);
 
     // Check if magnitude crosses threshold
-    if (currentData.magnitude < stepThreshold) {
-      return false;
-    }
+    if (currentData.magnitude < stepThreshold) return false;
 
     // Check timing since last step
     final lastStep = history.lastWhere(

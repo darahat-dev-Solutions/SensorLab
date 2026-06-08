@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:sensorlab/src/core/utils/logger.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/recording_session_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/data/providers/sensor_stream_service_provider.dart';
@@ -34,6 +35,8 @@ class SensorTimeSeriesNotifier extends StateNotifier<List<double>> {
 }
 
 /// A family of providers for each sensor's time series data.
+// ...existing code...
+
 final sensorTimeSeriesProvider =
     StateNotifierProvider.family<
       SensorTimeSeriesNotifier,
@@ -46,23 +49,37 @@ final sensorTimeSeriesProvider =
       final sensorStreamService = ref.watch(sensorStreamServiceProvider);
 
       final subscription = sensorStreamService.getStream(sensorType).listen(
-        (Map<String, dynamic> value) {
+        (dynamic value) {
           double? dataPoint;
-          final rawValue = value[sensorType.name];
 
-          if (rawValue is num) {
-            // Direct numeric sensor value (light, noise, barometer, etc.)
-            dataPoint = rawValue.toDouble();
-          }
-          // Handle 3-axis sensors: accelerometer, gyroscope, magnetometer, etc.
-          else if (rawValue is Map) {
-            final x = (rawValue['x'] as num?) ?? 0.0;
-            final y = (rawValue['y'] as num?) ?? 0.0;
-            final z = (rawValue['z'] as num?) ?? 0.0;
-
-            // If all three exist and are non-zero, calculate vector magnitude
-            if (x != 0 || y != 0 || z != 0) {
-              dataPoint = sqrt(x * x + y * y + z * z);
+          if (sensorType == SensorType.speedMeter) {
+            // Position from geolocator
+            if (value is Position) {
+              // Explicit cast to avoid analyzer complaining about 'speed'
+              final double speedMs = (value as Position).speed ?? 0.0;
+              dataPoint = speedMs * 3.6; // convert m/s -> km/h
+            } else if (value is num) {
+              // raw numeric speed (assumed m/s)
+              dataPoint = value.toDouble() * 3.6;
+            } else if (value is Map<String, dynamic>) {
+              final speedVal = value['speed'];
+              if (speedVal is num) {
+                dataPoint = speedVal.toDouble() * 3.6;
+              }
+            }
+          } else {
+            // Other sensors: map with either a numeric value or {x,y,z}
+            if (value is Map<String, dynamic>) {
+              final rawValue = value[sensorType.name];
+              if (rawValue is num) {
+                dataPoint = rawValue.toDouble();
+              } else if (rawValue is Map<String, dynamic>) {
+                final x = (rawValue['x'] as num?)?.toDouble() ?? 0.0;
+                final y = (rawValue['y'] as num?)?.toDouble() ?? 0.0;
+                final z = (rawValue['z'] as num?)?.toDouble() ?? 0.0;
+                // compute magnitude even if zero — chart may want zeros
+                dataPoint = sqrt(x * x + y * y + z * z);
+              }
             }
           }
 

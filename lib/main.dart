@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sensorlab/app.dart';
 import 'package:sensorlab/src/core/services/initialization_service.dart';
-import 'package:sensorlab/src/core/utils/logger.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,15 +35,15 @@ Future<void> main() async {
     await container.read(initializationServiceProvider).initialize();
     initializationSuccess = true;
   } catch (e) {
-    AppLogger.log('Initialization failed: $e', level: LogLevel.error);
+    print('Initialization failed: $e');
 
     // Show error screen
     runApp(
-      const MaterialApp(
+      MaterialApp(
         home: Scaffold(
           body: Center(
             child: Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -55,13 +54,10 @@ Future<void> main() async {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
-                  Text(
-                    '',
-                    textAlign: TextAlign.center,
-                  ), // Placeholder for error text
+                  Text(e.toString(), textAlign: TextAlign.center),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: main, // Restart the app
+                    onPressed: () => main(), // Restart the app
                     child: Text('Restart App'),
                   ),
                 ],

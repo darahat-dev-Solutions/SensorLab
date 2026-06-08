@@ -163,14 +163,10 @@ class _BarcodeScannerScreenState extends ConsumerState<BarcodeScannerScreen> {
 
   void _onBarcodeDetected(BarcodeCapture capture) {
     final barcodes = capture.barcodes;
-    if (barcodes.isEmpty) {
-      return;
-    }
+    if (barcodes.isEmpty) return;
 
     final barcode = barcodes.first;
-    if (barcode.rawValue == null || barcode.rawValue!.isEmpty) {
-      return;
-    }
+    if (barcode.rawValue == null || barcode.rawValue!.isEmpty) return;
 
     // Filter only barcode-type codes
     final allowedFormats = [
@@ -185,9 +181,7 @@ class _BarcodeScannerScreenState extends ConsumerState<BarcodeScannerScreen> {
       BarcodeFormat.itf,
     ];
 
-    if (!allowedFormats.contains(barcode.format)) {
-      return;
-    }
+    if (!allowedFormats.contains(barcode.format)) return;
 
     // Stop scanning and navigate to result
     _controller.stop();

@@ -68,9 +68,7 @@ class HeartBeatNotifier extends StateNotifier<HeartBeatData> {
       state = state.copyWith(warningStartTime: DateTime.now());
 
       _warningTimer = Timer(const Duration(seconds: 5), () {
-        if (!mounted) {
-          return;
-        }
+        if (!mounted) return;
         state = state.copyWith(showSoundWarning: false);
       });
     }
@@ -120,9 +118,7 @@ class HeartBeatNotifier extends StateNotifier<HeartBeatData> {
 
       try {
         final plane = image.planes[0];
-        if (plane.bytes.isEmpty) {
-          return;
-        }
+        if (plane.bytes.isEmpty) return;
 
         final total = plane.bytes.fold<int>(0, (sum, byte) => sum + byte);
         final avg = total ~/ plane.bytes.length;
@@ -197,9 +193,7 @@ class HeartBeatNotifier extends StateNotifier<HeartBeatData> {
 
       if (bpm != null) {
         final newBpmHistory = List<double>.from(state.bpmHistory)..add(bpm);
-        if (newBpmHistory.length > 5) {
-          newBpmHistory.removeAt(0);
-        }
+        if (newBpmHistory.length > 5) newBpmHistory.removeAt(0);
 
         final smoothedBpm =
             newBpmHistory.reduce((a, b) => a + b) / newBpmHistory.length;

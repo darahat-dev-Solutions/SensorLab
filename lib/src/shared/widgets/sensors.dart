@@ -9,8 +9,6 @@ import 'package:sensorlab/src/features/humidity/presentation/screens/humidity_sc
 import 'package:sensorlab/src/features/light_meter/presentation/screens/light_meter_screen.dart';
 import 'package:sensorlab/src/features/magnetometer/presentation/screens/magnetometer_screen.dart';
 import 'package:sensorlab/src/features/noise_meter/presentation/screens/noise_meter_screen.dart';
-import 'package:sensorlab/src/features/pedometer/presentation/screens/pedometer_screen.dart';
-import 'package:sensorlab/src/features/proximity/presentation/screens/proximity_screen.dart';
 import 'package:sensorlab/src/features/speed_meter/presentation/screens/speed_meter_screen.dart';
 import 'package:sensorlab/src/shared/models/sensor_card.dart';
 
@@ -90,16 +88,6 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       description: '',
       isDark: true,
     ),
-    SensorCard(
-      icon: Iconsax.radar,
-      label: l10n.proximity,
-      color: Colors.green,
-      screen: const ProximityScreen(),
-      category: l10n.device,
-      title: '',
-      description: '',
-      isDark: true,
-    ),
     // SensorCard(
     //   icon: Iconsax.heart,
     //   label: l10n.heartRate,
@@ -127,16 +115,7 @@ List<SensorCard> getSensors(AppLocalizations l10n) {
       description: '',
       isDark: true,
     ),
-    SensorCard(
-      icon: Iconsax.man,
-      label: l10n.pedometer,
-      color: Colors.green,
-      screen: const PedometerScreen(),
-      category: l10n.health,
-      title: '',
-      description: '',
-      isDark: true,
-    ),
+
     // SensorCard(
     //   icon: Iconsax.flash,
     //   label: l10n.flashlight,

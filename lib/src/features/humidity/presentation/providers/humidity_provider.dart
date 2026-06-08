@@ -75,6 +75,7 @@ class HumidityNotifier extends StateNotifier<HumidityData> {
       _allReadings.clear();
       state = state.copyWith(
         isReading: true,
+        errorMessage: null,
         minHumidity: double.infinity,
         maxHumidity: double.negativeInfinity,
         averageHumidity: 0.0,
@@ -101,9 +102,7 @@ class HumidityNotifier extends StateNotifier<HumidityData> {
   // This remains for when a real sensor stream is integrated.
   // ignore: unused_element
   void _processHumidityReading(double humidity) {
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     try {
       // Add to all readings for average calculation

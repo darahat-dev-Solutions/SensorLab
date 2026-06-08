@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:sensorlab/src/features/accelerometer/presentation/screens/accelerometer_display_widget.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/accelerometer_display_widget.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/altimeter_display_widget.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/barometer_display_widget.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/compass_display_widget.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/gps_display_widget.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/heart_beat_display_widget.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/magnetometer_display_widget.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/noise_meter_display_widget.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/pedometer_display_widget.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/proximity_display_widget.dart';
-import 'package:sensorlab/src/features/custom_lab/presentation/widgets/recording_screen/sensor_widgets/speed_meter_display_widget.dart';
 import 'package:sensorlab/src/features/gyroscope/presentation/screens/gyroscope_display_widget.dart';
 import 'package:sensorlab/src/features/light_meter/presentation/screens/light_meter_display_widget.dart';
+import 'package:sensorlab/src/features/speed_meter/presentation/screens/speed_meter_display_widget.dart';
 
 /// Factory to create sensor-specific recording widgets
 /// This allows custom_lab to reuse existing sensor components from each feature
@@ -70,20 +66,13 @@ class SensorComponentFactory {
         return isAvailable
             ? const SizedBox.shrink() // Replace with HumidityDisplayWidget when ready
             : unavailableSensorWidget('Humidity');
-      case SensorType.barometer:
-        return const BarometerDisplayWidget();
-      case SensorType.pedometer:
-        return const PedometerDisplayWidget();
+
       case SensorType.compass:
         return const CompassDisplayWidget();
       case SensorType.altimeter:
         return const AltimeterDisplayWidget();
       case SensorType.speedMeter:
         return const SpeedMeterDisplayWidget();
-      case SensorType.heartBeat:
-        return const HeartBeatDisplayWidget();
-      case SensorType.proximity:
-        return const ProximityDisplayWidget();
       case SensorType.gps:
         return const GpsDisplayWidget();
     }

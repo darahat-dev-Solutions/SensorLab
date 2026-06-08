@@ -60,9 +60,7 @@ class QRScannerProvider extends StateNotifier<QRScannerData> {
 
   // Scanner control
   Future<void> startScanner() async {
-    if (!state.canScan || state.isScanning) {
-      return;
-    }
+    if (!state.canScan || state.isScanning) return;
 
     try {
       if (_controller == null) {
@@ -96,9 +94,7 @@ class QRScannerProvider extends StateNotifier<QRScannerData> {
   }
 
   Future<void> pauseScanner() async {
-    if (!state.isScanning) {
-      return;
-    }
+    if (!state.isScanning) return;
 
     try {
       await _controller?.stop();
@@ -109,9 +105,7 @@ class QRScannerProvider extends StateNotifier<QRScannerData> {
   }
 
   Future<void> resumeScanner() async {
-    if (state.scannerState != ScannerState.paused) {
-      return;
-    }
+    if (state.scannerState != ScannerState.paused) return;
 
     try {
       await _controller?.start();
@@ -132,9 +126,7 @@ class QRScannerProvider extends StateNotifier<QRScannerData> {
   }
 
   Future<void> setTorch(bool enabled) async {
-    if (state.isTorchOn == enabled) {
-      return;
-    }
+    if (state.isTorchOn == enabled) return;
 
     try {
       if (enabled) {
@@ -175,9 +167,7 @@ class QRScannerProvider extends StateNotifier<QRScannerData> {
 
   // Scan handling
   void handleBarcodeDetection(BarcodeCapture capture) {
-    if (capture.barcodes.isEmpty) {
-      return;
-    }
+    if (capture.barcodes.isEmpty) return;
 
     final scanResult = QRScanResult.fromCapture(capture);
 

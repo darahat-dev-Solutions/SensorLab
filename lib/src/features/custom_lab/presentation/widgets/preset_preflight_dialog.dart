@@ -121,9 +121,6 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
 
     for (final s in sensors) {
       switch (s) {
-        case SensorType.barometer:
-          await check(s, barometerEventStream().first);
-          break;
         case SensorType.compass:
           // If events is null, sensor not present
           final events = FlutterCompass.events;
@@ -144,14 +141,12 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
           await check(s, magnetometerEventStream().first);
           break;
         case SensorType.noiseMeter:
-        case SensorType.pedometer:
         case SensorType.gps:
         case SensorType.altimeter:
         case SensorType.speedMeter:
         case SensorType.temperature:
         case SensorType.humidity:
         case SensorType.proximity:
-        case SensorType.heartBeat:
           unchecked.add(s);
           break;
       }
@@ -172,15 +167,9 @@ class _PresetPreflightDialogState extends State<PresetPreflightDialog> {
         case SensorType.noiseMeter:
           set.add(Permission.microphone);
           break;
-        case SensorType.pedometer:
-          // Skip - handled via platform-specific mechanisms
-          break;
         case SensorType.gps:
         case SensorType.speedMeter:
           set.add(Permission.locationWhenInUse);
-          break;
-        case SensorType.heartBeat:
-          set.add(Permission.camera);
           break;
         default:
           break;

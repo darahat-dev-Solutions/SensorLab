@@ -656,12 +656,8 @@ class _FlashlightScreenState extends ConsumerState<FlashlightScreen> {
     FlashlightData flashlightData,
     AppLocalizations l10n,
   ) {
-    if (!flashlightData.isAvailable) {
-      return 'Flashlight not available';
-    }
-    if (!flashlightData.isInitialized) {
-      return 'Initializing...';
-    }
+    if (!flashlightData.isAvailable) return 'Flashlight not available';
+    if (!flashlightData.isInitialized) return 'Initializing...';
     return flashlightData.isOn ? l10n.flashlightOn : l10n.flashlightOff;
   }
 }

@@ -155,14 +155,10 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
 
   void _onQRCodeDetected(BarcodeCapture capture) {
     final barcodes = capture.barcodes;
-    if (barcodes.isEmpty) {
-      return;
-    }
+    if (barcodes.isEmpty) return;
 
     final barcode = barcodes.first;
-    if (barcode.rawValue == null || barcode.rawValue!.isEmpty) {
-      return;
-    }
+    if (barcode.rawValue == null || barcode.rawValue!.isEmpty) return;
 
     // Filter only QR-type codes
     final allowedFormats = [
@@ -172,9 +168,7 @@ class _QRScannerScreenState extends ConsumerState<QRScannerScreen> {
       BarcodeFormat.pdf417,
     ];
 
-    if (!allowedFormats.contains(barcode.format)) {
-      return;
-    }
+    if (!allowedFormats.contains(barcode.format)) return;
 
     // Stop scanning and navigate to result
     _controller.stop();

@@ -35,7 +35,9 @@ class AltimeterNotifier extends StateNotifier<AltimeterData> {
   }
 
   void _startGPSStream() {
-    const locationSettings = LocationSettings();
+    const locationSettings = LocationSettings(
+      distanceFilter: 0, // Get updates for any altitude change
+    );
 
     _gpsSubscription =
         Geolocator.getPositionStream(locationSettings: locationSettings).listen(

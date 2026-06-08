@@ -7,7 +7,6 @@ import 'package:sensorlab/src/features/custom_lab/domain/entities/lab.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/custom_labs_screen/error_labs_state.dart';
 import 'package:sensorlab/src/features/home/presentation/widgets/custom_lab_card.dart';
 import 'package:sensorlab/src/shared/models/sensor_card.dart';
-import 'package:sensorlab/src/shared/widgets/show_interstitial_ad_than_navigate.dart';
 
 import '../../../shared/widgets/sensors.dart';
 import '../provider/home_providers.dart';
@@ -167,7 +166,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _animationController.dispose();
-    ref.read(homeNotifierProvider.notifier).disposeAd();
     super.dispose();
   }
 
@@ -269,18 +267,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             selectedIndex: homeState.selectedTabIndex,
             l10n: l10n,
             onSensorTap: (sensor) {
-              showInterstitialAdThenNavigate(
-                context: context,
-                screen: sensor.screen,
-                interstitialAd: homeState.interstitialAd,
-                adsEnabled: homeState.adsEnabled,
-              );
+              _navigateToSensor(context, sensor.screen);
             },
             animationController: _animationController,
             scaleAnimation: _scaleAnimation,
             fadeAnimation: _fadeAnimation,
           ),
         ],
+      ),
+    );
+  }
+
+  void _navigateToSensor(BuildContext context, Widget screen) {
+    if (!mounted) {
+      return;
+    }
+    if (Navigator.of(context).canPop()) {
+      return;
+    }
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => screen,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.easeInOutQuart;
+          final tween = Tween(
+            begin: begin,
+            end: end,
+          ).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
       ),
     );
   }
@@ -661,7 +682,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           category: category,
           isDark: isDark,
           theme: theme,
-          onTap: () => context.pushNamed('lab-details', extra: lab),
+          onTap: () => context.pushNamed(
+            'lab-details',
+            pathParameters: {'labId': lab.id},
+          ),
         );
       },
     );

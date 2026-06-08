@@ -1,5 +1,7 @@
 // custom_labs_screen
+export '../../../accelerometer/presentation/screens/accelerometer_display_widget.dart';
 export '../../../gyroscope/presentation/screens/gyroscope_display_widget.dart';
+export '../../../speed_meter/presentation/screens/speed_meter_display_widget.dart';
 export 'create_lab_screen/sensor_selection_grid.dart';
 export 'custom_labs_screen/all_labs_tab.dart';
 export 'custom_labs_screen/empty_labs_state.dart';
@@ -11,17 +13,11 @@ export 'preset_preflight_dialog.dart';
 //recording screen
 export 'recording_screen/lab_monitoring_content.dart';
 export 'recording_screen/sensor_component_factory.dart';
-export 'recording_screen/sensor_widgets/accelerometer_display_widget.dart';
 export 'recording_screen/sensor_widgets/altimeter_display_widget.dart';
-export 'recording_screen/sensor_widgets/barometer_display_widget.dart';
 export 'recording_screen/sensor_widgets/compass_display_widget.dart';
 export 'recording_screen/sensor_widgets/gps_display_widget.dart';
-export 'recording_screen/sensor_widgets/heart_beat_display_widget.dart';
 export 'recording_screen/sensor_widgets/magnetometer_display_widget.dart';
 export 'recording_screen/sensor_widgets/noise_meter_display_widget.dart';
-export 'recording_screen/sensor_widgets/pedometer_display_widget.dart';
-export 'recording_screen/sensor_widgets/proximity_display_widget.dart';
-export 'recording_screen/sensor_widgets/speed_meter_display_widget.dart';
 export 'recording_screen/session_complete_dialog.dart';
 // Root widgets
 export 'sensor_line_chart.dart';

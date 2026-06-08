@@ -77,6 +77,8 @@ class _SpeedMeterScreenState extends ConsumerState<SpeedMeterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // SpeedMeterDisplayWidget(speedData),
+
                 // Main Speed Display (Speedometer)
                 _buildSpeedometer(colorScheme, speedData),
                 const SizedBox(height: 40),

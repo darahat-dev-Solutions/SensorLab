@@ -168,87 +168,69 @@ class SettingsPage extends ConsumerWidget {
                   const SizedBox(height: 24),
 
                   // Sensor Settings Section
-                  // SettingsSection(
-                  //   title: l10n.sensorSettings,
-                  //   icon: Iconsax.cpu,
-                  //   children: [
-                  //     SettingsItem(
-                  //       icon: Iconsax.scan,
-                  //       title: l10n.autoScan,
-                  //       subtitle: l10n.automaticallyScanWhenOpeningScanner,
-                  //       trailing: Switch(
-                  //         value: settings.autoScanEnabled,
-                  //         onChanged: (_) => ref
-                  //             .read(settingsControllerProvider.notifier)
-                  //             .toggleAutoScan(),
-                  //       ),
-                  //     ),
-                  //     SettingsItem(
-                  //       icon: Iconsax.speedometer,
-                  //       title: l10n.sensorUpdateFrequency,
-                  //       subtitle: l10n.sensorUpdateFrequencySubtitle(
-                  //         settings.sensorUpdateFrequency,
-                  //       ),
-                  //       onTap: () => _showFrequencyDialog(
-                  //         context,
-                  //         ref,
-                  //         settings.sensorUpdateFrequency,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 24),
-
-                  // Privacy & Data Section
-                  // SettingsSection(
-                  //   title: l10n.privacyAndData,
-                  //   icon: Iconsax.shield_security,
-                  //   children: [
-                  //     SettingsItem(
-                  //       icon: Iconsax.data,
-                  //       title: l10n.dataCollection,
-                  //       subtitle: l10n.allowAnonymousUsageAnalytics,
-                  //       trailing: Switch(
-                  //         value: settings.dataCollectionEnabled,
-                  //         onChanged: (_) => ref
-                  //             .read(settingsControllerProvider.notifier)
-                  //             .toggleDataCollection(),
-                  //       ),
-                  //     ),
-                  //     SettingsItem(
-                  //       icon: Iconsax.shield_tick,
-                  //       title: l10n.privacyMode,
-                  //       subtitle: l10n.enhancedPrivacyProtection,
-                  //       trailing: Switch(
-                  //         value: settings.privacyMode,
-                  //         onChanged: (_) => ref
-                  //             .read(settingsControllerProvider.notifier)
-                  //             .togglePrivacyMode(),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  const SizedBox(height: 24),
-
-                  // Monetization Section
                   SettingsSection(
-                    title: l10n.appSupport,
-                    icon: Iconsax.heart,
+                    title: l10n.sensorSettings,
+                    icon: Iconsax.cpu,
                     children: [
                       SettingsItem(
-                        icon: Iconsax.mobile,
-                        title: l10n.showAds,
-                        subtitle: l10n.supportAppDevelopment,
+                        icon: Iconsax.scan,
+                        title: l10n.autoScan,
+                        subtitle: l10n.automaticallyScanWhenOpeningScanner,
                         trailing: Switch(
-                          value: settings.adsEnabled,
+                          value: settings.autoScanEnabled,
                           onChanged: (_) => ref
                               .read(settingsControllerProvider.notifier)
-                              .toggleAds(),
+                              .toggleAutoScan(),
+                        ),
+                      ),
+                      SettingsItem(
+                        icon: Iconsax.speedometer,
+                        title: l10n.sensorUpdateFrequency,
+                        subtitle: l10n.sensorUpdateFrequencySubtitle(
+                          settings.sensorUpdateFrequency,
+                        ),
+                        onTap: () => _showFrequencyDialog(
+                          context,
+                          ref,
+                          settings.sensorUpdateFrequency,
                         ),
                       ),
                     ],
                   ),
 
+                  const SizedBox(height: 24),
+
+                  // Privacy & Data Section
+                  SettingsSection(
+                    title: l10n.privacyAndData,
+                    icon: Iconsax.shield_security,
+                    children: [
+                      SettingsItem(
+                        icon: Iconsax.data,
+                        title: l10n.dataCollection,
+                        subtitle: l10n.allowAnonymousUsageAnalytics,
+                        trailing: Switch(
+                          value: settings.dataCollectionEnabled,
+                          onChanged: (_) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .toggleDataCollection(),
+                        ),
+                      ),
+                      SettingsItem(
+                        icon: Iconsax.shield_tick,
+                        title: l10n.privacyMode,
+                        subtitle: l10n.enhancedPrivacyProtection,
+                        trailing: Switch(
+                          value: settings.privacyMode,
+                          onChanged: (_) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .togglePrivacyMode(),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
                   const SizedBox(height: 32),
 
                   // Reset Section
@@ -261,12 +243,12 @@ class SettingsPage extends ConsumerWidget {
                         children: [
                           Row(
                             children: [
-                              // Icon(
-                              //   Iconsax.refresh_square_2,
-                              //   color: colorScheme.error,
-                              //   size: 20,
-                              // ),
-                              // const SizedBox(width: 8),
+                              Icon(
+                                Iconsax.refresh_square_2,
+                                color: colorScheme.error,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
                               Text(
                                 l10n.resetSettings,
                                 style: TextStyle(
@@ -308,6 +290,55 @@ class SettingsPage extends ConsumerWidget {
           },
         );
       },
+    );
+  }
+
+  void _showFrequencyDialog(
+    BuildContext context,
+    WidgetRef ref,
+    int currentFrequency,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.sensorUpdateFrequency),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(l10n.chooseSensorUpdateFrequency),
+            const SizedBox(height: 16),
+            ...[
+              l10n.fastUpdate,
+              l10n.normalUpdate,
+              l10n.slowUpdate,
+              l10n.verySlowUpdate,
+            ].asMap().entries.map((entry) {
+              final frequencies = [50, 100, 200, 500];
+              final frequency = frequencies[entry.key];
+              return RadioListTile<int>(
+                title: Text(entry.value),
+                value: frequency,
+                groupValue: currentFrequency,
+                onChanged: (value) {
+                  if (value != null) {
+                    ref
+                        .read(settingsControllerProvider.notifier)
+                        .updateSensorFrequency(value);
+                    Navigator.pop(context);
+                  }
+                },
+              );
+            }),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
+        ],
+      ),
     );
   }
 

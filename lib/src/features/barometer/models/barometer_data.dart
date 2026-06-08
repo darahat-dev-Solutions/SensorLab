@@ -114,9 +114,7 @@ class BarometerData {
   /// Calculate altitude from pressure (assuming sea level pressure = 1013.25 hPa)
   /// Formula: h = 44330 * (1 - (P/P0)^0.1903)
   double get estimatedAltitude {
-    if (pressure <= 0) {
-      return 0;
-    }
+    if (pressure <= 0) return 0;
     const seaLevelPressure = 1013.25;
     return (44330 * (1 - math.pow(pressure / seaLevelPressure, 0.1903)))
         .toDouble();

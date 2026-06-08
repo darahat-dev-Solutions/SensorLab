@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
+
+import 'barcode_scanner_screen.dart';
+import 'qr_scanner_screen.dart';
 
 class ScannerMainScreen extends StatelessWidget {
   const ScannerMainScreen({super.key});
@@ -63,7 +65,12 @@ class ScannerMainScreen extends StatelessWidget {
                       l10n.calendarEvents,
                     ],
                     onTap: () {
-                      context.pushNamed('qr-scanner');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const QRScannerScreen(),
+                        ),
+                      );
                     },
                   ),
 
@@ -87,7 +94,12 @@ class ScannerMainScreen extends StatelessWidget {
                       l10n.code128_39,
                     ],
                     onTap: () {
-                      context.pushNamed('barcode-scanner');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BarcodeScannerScreen(),
+                        ),
+                      );
                     },
                   ),
 

@@ -97,7 +97,7 @@ Widget _buildLabCard(
       child: InkWell(
         borderRadius: BorderRadius.circular(24),
         onTap: () {
-          context.pushNamed('lab-detail', pathParameters: {'labId': lab.id});
+          context.pushNamed('lab-details', pathParameters: {'labId': lab.id});
         },
         child: Container(
           padding: const EdgeInsets.all(24),

@@ -6,4 +6,4 @@
 ADMOB_APP_ID=YOUR_ADMOB_APP_ID_HERE
 
 // For development/testing, use Google's test AdMob App ID:
-// ADMOB_APP_ID=ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX
+// ADMOB_APP_ID=ca-app-pub-3940256099942544~3347511713

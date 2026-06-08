@@ -25,7 +25,6 @@ analyzer:
     deprecated_member_use: ignore
     library_private_types_in_public_api: ignore
     avoid_print: warning
-    depend_on_referenced_packages: ignore
 
 linter:
   # The lint rules applied to this project can be customized in the

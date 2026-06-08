@@ -140,9 +140,7 @@ class ScanResult {
   }
 
   static ContentType _determineContentType(String data, ScanType scanType) {
-    if (data.isEmpty) {
-      return ContentType.text;
-    }
+    if (data.isEmpty) return ContentType.text;
 
     final lowerData = data.toLowerCase();
 
@@ -205,15 +203,9 @@ class ScanResult {
 
   static bool _isProductCode(String data) {
     // Check for common product code patterns
-    if (RegExp(r'^\d{8}$').hasMatch(data)) {
-      return true; // EAN-8
-    }
-    if (RegExp(r'^\d{12,13}$').hasMatch(data)) {
-      return true; // UPC/EAN-13
-    }
-    if (RegExp(r'^\d{14}$').hasMatch(data)) {
-      return true; // ITF-14
-    }
+    if (RegExp(r'^\d{8}$').hasMatch(data)) return true; // EAN-8
+    if (RegExp(r'^\d{12,13}$').hasMatch(data)) return true; // UPC/EAN-13
+    if (RegExp(r'^\d{14}$').hasMatch(data)) return true; // ITF-14
     return false;
   }
 
@@ -252,16 +244,12 @@ class ScanResult {
 
   // Formatted display properties
   String get displayData {
-    if (rawData.length <= 100) {
-      return rawData;
-    }
+    if (rawData.length <= 100) return rawData;
     return '${rawData.substring(0, 97)}...';
   }
 
   String get shortData {
-    if (rawData.length <= 50) {
-      return rawData;
-    }
+    if (rawData.length <= 50) return rawData;
     return '${rawData.substring(0, 47)}...';
   }
 
@@ -296,9 +284,7 @@ class ScanResult {
 
   Map<String, String> _parseWiFiData() {
     final result = <String, String>{};
-    if (!rawData.toLowerCase().startsWith('wifi:')) {
-      return result;
-    }
+    if (!rawData.toLowerCase().startsWith('wifi:')) return result;
 
     final data = rawData.substring(5);
     final parts = data.split(';');

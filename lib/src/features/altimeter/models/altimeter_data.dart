@@ -194,11 +194,9 @@ class AltimeterData {
 
   /// Calibrate sea level pressure based on known altitude
   AltimeterData calibrateSeaLevelPressure(double knownAltitude) {
-    if (pressure <= 0) {
-      return this;
-    }
+    if (pressure <= 0) return this;
 
-    // Reverse hypsometry formula: P0 = P / (1 - h/44330)^5.255
+    // Reverse hypsometric formula: P0 = P / (1 - h/44330)^5.255
     final newSeaLevelPressure =
         pressure / math.pow(1 - (knownAltitude / 44330), 5.255);
 
@@ -271,15 +269,9 @@ class AltimeterData {
 
   /// Get accuracy level description
   String get accuracyLevel {
-    if (accuracy < 5) {
-      return 'Excellent';
-    }
-    if (accuracy < 10) {
-      return 'Good';
-    }
-    if (accuracy < 20) {
-      return 'Fair';
-    }
+    if (accuracy < 5) return 'Excellent';
+    if (accuracy < 10) return 'Good';
+    if (accuracy < 20) return 'Fair';
     return 'Poor';
   }
 }

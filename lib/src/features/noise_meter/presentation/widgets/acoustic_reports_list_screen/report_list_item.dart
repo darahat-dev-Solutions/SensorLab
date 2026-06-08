@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sensorlab/src/features/noise_meter/domain/entities/acoustic_report_entity.dart';
+import 'package:sensorlab/src/features/noise_meter/presentation/screens/acoustic_report_detail_screen.dart';
 import 'package:sensorlab/src/features/noise_meter/presentation/widgets/widgets_index.dart';
 
 class ReportListItem extends StatelessWidget {
@@ -40,7 +40,13 @@ class ReportListItem extends StatelessWidget {
               if (isSelectionMode) {
                 onTap();
               } else {
-                context.pushNamed('acoustic-report-detail', extra: report);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        AcousticReportDetailScreen(report: report),
+                  ),
+                );
               }
             },
           ),

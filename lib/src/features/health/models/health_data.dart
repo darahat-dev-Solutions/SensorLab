@@ -237,15 +237,9 @@ class HealthData {
 
   int get achievedGoalsCount {
     int count = 0;
-    if (hasAchievedStepsGoal) {
-      count++;
-    }
-    if (hasAchievedCaloriesGoal) {
-      count++;
-    }
-    if (hasAchievedDurationGoal) {
-      count++;
-    }
+    if (hasAchievedStepsGoal) count++;
+    if (hasAchievedCaloriesGoal) count++;
+    if (hasAchievedDurationGoal) count++;
     return count;
   }
 
@@ -253,16 +247,12 @@ class HealthData {
 
   // Health metrics
   double get currentPace {
-    if (totalActiveTime.inMinutes == 0 || distance == 0) {
-      return 0.0;
-    }
+    if (totalActiveTime.inMinutes == 0 || distance == 0) return 0.0;
     return totalActiveTime.inMinutes / (distance / 1000); // minutes per km
   }
 
   String get formattedPace {
-    if (currentPace == 0) {
-      return '--:--';
-    }
+    if (currentPace == 0) return '--:--';
     final minutes = currentPace.floor();
     final seconds = ((currentPace - minutes) * 60).round();
     return '$minutes:${seconds.toString().padLeft(2, '0')} /km';
@@ -275,28 +265,16 @@ class HealthData {
   }
 
   String get intensityDescription {
-    if (averageIntensity < 0.2) {
-      return 'Low intensity';
-    }
-    if (averageIntensity < 0.5) {
-      return 'Moderate intensity';
-    }
-    if (averageIntensity < 0.8) {
-      return 'High intensity';
-    }
+    if (averageIntensity < 0.2) return 'Low intensity';
+    if (averageIntensity < 0.5) return 'Moderate intensity';
+    if (averageIntensity < 0.8) return 'High intensity';
     return 'Very high intensity';
   }
 
   int get intensityColor {
-    if (averageIntensity < 0.2) {
-      return 0xFF4CAF50; // Green
-    }
-    if (averageIntensity < 0.5) {
-      return 0xFFFF9800; // Orange
-    }
-    if (averageIntensity < 0.8) {
-      return 0xFFFF5722; // Deep Orange
-    }
+    if (averageIntensity < 0.2) return 0xFF4CAF50; // Green
+    if (averageIntensity < 0.5) return 0xFFFF9800; // Orange
+    if (averageIntensity < 0.8) return 0xFFFF5722; // Deep Orange
     return 0xFFE91E63; // Pink
   }
 }

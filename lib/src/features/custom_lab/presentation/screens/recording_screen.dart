@@ -8,15 +8,16 @@ import 'package:sensorlab/src/features/custom_lab/domain/entities/lab.dart';
 import 'package:sensorlab/src/features/custom_lab/domain/entities/sensor_type.dart';
 import 'package:sensorlab/src/features/custom_lab/presentation/widgets/widgets_index.dart';
 
-class RecordingScreen extends ConsumerWidget {
+class RecordingScreen extends ConsumerStatefulWidget {
   final Lab lab;
+  const RecordingScreen({super.key, required this.lab});
 
-  const RecordingScreen({required this.lab, super.key});
+  @override
+  ConsumerState<RecordingScreen> createState() => _RecordingScreenState();
+}
 
-  Future<bool?> _showExitConfirmation(
-    BuildContext context,
-    WidgetRef ref,
-  ) async {
+class _RecordingScreenState extends ConsumerState<RecordingScreen> {
+  Future<bool?> _showExitConfirmation(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     return showDialog<bool>(
       context: context,
@@ -47,30 +48,26 @@ class RecordingScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final monitoringState = ref.watch(labMonitoringNotifierProvider);
 
-    // Start session when the widget is first built
-    // This is a common pattern for ConsumerWidget to trigger actions once.
-    // Ensure this only runs once per widget lifecycle.
     ref.listen<LabMonitoringState>(labMonitoringNotifierProvider, (
       previous,
       next,
     ) {
       if (previous?.activeLab == null && next.activeLab != null) {
-        // Session started, do nothing here, content widget handles UI
+        // Session started
       }
     });
 
-    // Trigger start session only once when the screen is initialized
-    // This is a workaround for ConsumerWidget to mimic initState behavior
-    // for actions that should only happen once.
     if (!monitoringState.isRecording &&
         !monitoringState.isPaused &&
         monitoringState.activeLab == null) {
       Future.microtask(() {
-        ref.read(labMonitoringNotifierProvider.notifier).startSession(lab: lab);
-        if (lab.sensors.contains(SensorType.gps)) {
+        ref
+            .read(labMonitoringNotifierProvider.notifier)
+            .startSession(lab: widget.lab);
+        if (widget.lab.sensors.contains(SensorType.gps)) {
           ref.read(geolocatorProvider.notifier).initialize();
         }
       });
@@ -79,14 +76,14 @@ class RecordingScreen extends ConsumerWidget {
     return WillPopScope(
       onWillPop: () async {
         if (monitoringState.isRecording || monitoringState.isPaused) {
-          final shouldExit = await _showExitConfirmation(context, ref);
+          final shouldExit = await _showExitConfirmation(context);
           return shouldExit ?? false;
         }
         return true;
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(lab.name),
+          title: Text(widget.lab.name),
           actions: [
             if (monitoringState.activeSession != null)
               Center(
@@ -104,7 +101,7 @@ class RecordingScreen extends ConsumerWidget {
               ),
           ],
         ),
-        body: LabMonitoringContent(lab: lab),
+        body: LabMonitoringContent(lab: widget.lab),
       ),
     );
   }

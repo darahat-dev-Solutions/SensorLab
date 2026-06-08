@@ -34,8 +34,6 @@ class SensorChipList extends StatelessWidget {
         return Icons.screen_rotation;
       case SensorType.magnetometer:
         return Icons.explore;
-      case SensorType.barometer:
-        return Icons.compress;
       case SensorType.lightMeter:
         return Icons.light_mode;
       case SensorType.noiseMeter:
@@ -48,16 +46,12 @@ class SensorChipList extends StatelessWidget {
         return Icons.thermostat;
       case SensorType.humidity:
         return Icons.water_drop;
-      case SensorType.pedometer:
-        return Icons.directions_walk;
       case SensorType.compass:
         return Icons.compass_calibration;
       case SensorType.altimeter:
         return Icons.terrain;
       case SensorType.speedMeter:
         return Icons.speed;
-      case SensorType.heartBeat:
-        return Icons.favorite;
     }
   }
 }

@@ -119,16 +119,12 @@ class _SensorItem extends StatelessWidget {
         return Icons.rotate_right;
       case SensorType.magnetometer:
         return Icons.explore;
-      case SensorType.barometer:
-        return Icons.speed;
       case SensorType.compass:
         return Icons.explore;
       case SensorType.lightMeter:
         return Icons.lightbulb;
       case SensorType.noiseMeter:
         return Icons.volume_up;
-      case SensorType.pedometer:
-        return Icons.directions_walk;
       case SensorType.gps:
         return Icons.gps_fixed;
       case SensorType.altimeter:
@@ -141,8 +137,6 @@ class _SensorItem extends StatelessWidget {
         return Icons.water_drop;
       case SensorType.proximity:
         return Icons.sensors;
-      case SensorType.heartBeat:
-        return Icons.favorite;
     }
   }
 }

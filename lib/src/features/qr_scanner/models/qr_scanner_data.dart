@@ -285,16 +285,12 @@ class QRScanResult {
   }
 
   String get displayData {
-    if (rawData.length <= 100) {
-      return rawData;
-    }
+    if (rawData.length <= 100) return rawData;
     return '${rawData.substring(0, 97)}...';
   }
 
   String get shortData {
-    if (rawData.length <= 50) {
-      return rawData;
-    }
+    if (rawData.length <= 50) return rawData;
     return '${rawData.substring(0, 47)}...';
   }
 
@@ -328,9 +324,7 @@ class QRScanResult {
 
   // WiFi network parsing
   Map<String, String> get wifiInfo {
-    if (contentType != QRContentType.wifi) {
-      return {};
-    }
+    if (contentType != QRContentType.wifi) return {};
 
     final pattern = RegExp(r'WIFI:T:(.*?);S:(.*?);P:(.*?);H:(.*?);');
     final match = pattern.firstMatch(rawData);
@@ -349,9 +343,7 @@ class QRScanResult {
 
   // Contact info parsing
   Map<String, String> get contactInfo {
-    if (contentType != QRContentType.contact) {
-      return {};
-    }
+    if (contentType != QRContentType.contact) return {};
 
     final lines = rawData.split('\n');
     final info = <String, String>{};
@@ -381,9 +373,7 @@ class QRScanResult {
 
   // Product code validation
   bool get isValidProductCode {
-    if (contentType != QRContentType.product) {
-      return false;
-    }
+    if (contentType != QRContentType.product) return false;
 
     // Basic validation for UPC/EAN codes
     return RegExp(r'^\d{8}$|^\d{12}$|^\d{13}$').hasMatch(rawData);
@@ -524,25 +514,19 @@ class QRScannerData {
 
   QRContentType? get mostScannedContentType {
     final stats = contentTypeStats;
-    if (stats.isEmpty) {
-      return null;
-    }
+    if (stats.isEmpty) return null;
 
     return stats.entries.reduce((a, b) => a.value > b.value ? a : b).key;
   }
 
   double get scanSuccessRate {
-    if (totalScans == 0) {
-      return 0.0;
-    }
+    if (totalScans == 0) return 0.0;
     return scanHistory.length / totalScans;
   }
 
   // Session summary
   String get sessionSummary {
-    if (scanHistory.isEmpty) {
-      return 'No scans yet';
-    }
+    if (scanHistory.isEmpty) return 'No scans yet';
     return '$formattedTotalScans • $formattedUniqueScans • $formattedSessionDuration';
   }
 

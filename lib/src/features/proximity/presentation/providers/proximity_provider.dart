@@ -69,9 +69,7 @@ class ProximityNotifier extends StateNotifier<ProximityData> {
   Future<void> startMeasurement() async {
     if (!state.hasPermission || !state.hasSensor) {
       await checkPermissions();
-      if (!state.hasPermission || !state.hasSensor) {
-        return;
-      }
+      if (!state.hasPermission || !state.hasSensor) return;
     }
 
     try {
@@ -105,9 +103,7 @@ class ProximityNotifier extends StateNotifier<ProximityData> {
 
   /// Handle incoming proximity sensor data
   void _onProximityData(dynamic event) {
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     try {
       // proximity_sensor package returns int: 1 for near, 0 for far
@@ -151,9 +147,7 @@ class ProximityNotifier extends StateNotifier<ProximityData> {
 
   /// Handle proximity sensor errors
   void _onProximityError(dynamic error) {
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     state = state.copyWith(
       errorMessage: 'Proximity sensor error: $error',
@@ -197,9 +191,7 @@ class ProximityNotifier extends StateNotifier<ProximityData> {
   Future<void> getSingleReading() async {
     if (!state.hasPermission || !state.hasSensor) {
       await checkPermissions();
-      if (!state.hasPermission || !state.hasSensor) {
-        return;
-      }
+      if (!state.hasPermission || !state.hasSensor) return;
     }
 
     try {

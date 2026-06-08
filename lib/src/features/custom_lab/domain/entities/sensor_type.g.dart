@@ -20,29 +20,23 @@ class SensorTypeAdapter extends TypeAdapter<SensorType> {
       case 2:
         return SensorType.magnetometer;
       case 3:
-        return SensorType.barometer;
-      case 4:
         return SensorType.lightMeter;
-      case 5:
+      case 4:
         return SensorType.noiseMeter;
-      case 6:
+      case 5:
         return SensorType.gps;
-      case 7:
+      case 6:
         return SensorType.proximity;
-      case 8:
+      case 7:
         return SensorType.temperature;
-      case 9:
+      case 8:
         return SensorType.humidity;
-      case 10:
-        return SensorType.pedometer;
-      case 11:
+      case 9:
         return SensorType.compass;
-      case 12:
+      case 10:
         return SensorType.altimeter;
-      case 13:
+      case 11:
         return SensorType.speedMeter;
-      case 14:
-        return SensorType.heartBeat;
       default:
         return SensorType.accelerometer;
     }
@@ -60,41 +54,32 @@ class SensorTypeAdapter extends TypeAdapter<SensorType> {
       case SensorType.magnetometer:
         writer.writeByte(2);
         break;
-      case SensorType.barometer:
+      case SensorType.lightMeter:
         writer.writeByte(3);
         break;
-      case SensorType.lightMeter:
+      case SensorType.noiseMeter:
         writer.writeByte(4);
         break;
-      case SensorType.noiseMeter:
+      case SensorType.gps:
         writer.writeByte(5);
         break;
-      case SensorType.gps:
+      case SensorType.proximity:
         writer.writeByte(6);
         break;
-      case SensorType.proximity:
+      case SensorType.temperature:
         writer.writeByte(7);
         break;
-      case SensorType.temperature:
+      case SensorType.humidity:
         writer.writeByte(8);
         break;
-      case SensorType.humidity:
+      case SensorType.compass:
         writer.writeByte(9);
         break;
-      case SensorType.pedometer:
+      case SensorType.altimeter:
         writer.writeByte(10);
         break;
-      case SensorType.compass:
-        writer.writeByte(11);
-        break;
-      case SensorType.altimeter:
-        writer.writeByte(12);
-        break;
       case SensorType.speedMeter:
-        writer.writeByte(13);
-        break;
-      case SensorType.heartBeat:
-        writer.writeByte(14);
+        writer.writeByte(11);
         break;
     }
   }

@@ -1,86 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sensorlab/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/scan_result.dart';
+import 'scanner_main_screen.dart';
 
 class ScanResultScreen extends StatelessWidget {
-  void _performAction(BuildContext context, AppLocalizations l10n) async {
-    String? errorMessage;
-    try {
-      switch (result.contentType) {
-        case ContentType.url:
-          final uri = Uri.parse(result.rawData);
-          final canLaunch = await canLaunchUrl(uri);
-          if (canLaunch) {
-            await launchUrl(uri);
-          } else {
-            errorMessage = l10n.cannotOpenUrl;
-          }
-          break;
-
-        case ContentType.email:
-          String emailUrl = result.rawData;
-          if (!emailUrl.startsWith('mailto:')) {
-            emailUrl = 'mailto:$emailUrl';
-          }
-          final uri = Uri.parse(emailUrl);
-          final canLaunch = await canLaunchUrl(uri);
-          if (canLaunch) {
-            await launchUrl(uri);
-          } else {
-            errorMessage = 'Cannot open email app';
-          }
-          break;
-
-        case ContentType.phone:
-          String phoneUrl = result.rawData;
-          if (!phoneUrl.startsWith('tel:')) {
-            phoneUrl = 'tel:$phoneUrl';
-          }
-          final uri = Uri.parse(phoneUrl);
-          final canLaunch = await canLaunchUrl(uri);
-          if (canLaunch) {
-            await launchUrl(uri);
-          } else {
-            errorMessage = 'Cannot open phone app';
-          }
-          break;
-
-        case ContentType.location:
-          final parsedLocation = result.parsedContent;
-          if (parsedLocation.containsKey('Latitude') &&
-              parsedLocation.containsKey('Longitude')) {
-            final uri = Uri.parse(
-              'https://maps.google.com/maps?q=${parsedLocation['Latitude']},${parsedLocation['Longitude']}',
-            );
-            final canLaunch = await canLaunchUrl(uri);
-            if (canLaunch) {
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-            } else {
-              errorMessage = 'Cannot open maps';
-            }
-          }
-          break;
-
-        case ContentType.text:
-        default:
-          _copyToClipboard(context, l10n);
-          break;
-      }
-    } catch (e) {
-      errorMessage = 'Action failed: $e';
-    }
-    if (errorMessage != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showErrorSnackBar(context, errorMessage!);
-      });
-    }
-  }
-
   final ScanResult result;
 
   const ScanResultScreen({super.key, required this.result});
@@ -512,6 +439,67 @@ class ScanResultScreen extends StatelessWidget {
     );
   }
 
+  void _performAction(BuildContext context, AppLocalizations l10n) async {
+    try {
+      switch (result.contentType) {
+        case ContentType.url:
+          final uri = Uri.parse(result.rawData);
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri);
+          } else {
+            _showErrorSnackBar(context, l10n.cannotOpenUrl);
+          }
+          break;
+
+        case ContentType.email:
+          String emailUrl = result.rawData;
+          if (!emailUrl.startsWith('mailto:')) {
+            emailUrl = 'mailto:$emailUrl';
+          }
+          final uri = Uri.parse(emailUrl);
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri);
+          } else {
+            _showErrorSnackBar(context, 'Cannot open email app');
+          }
+          break;
+
+        case ContentType.phone:
+          String phoneUrl = result.rawData;
+          if (!phoneUrl.startsWith('tel:')) {
+            phoneUrl = 'tel:$phoneUrl';
+          }
+          final uri = Uri.parse(phoneUrl);
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri);
+          } else {
+            _showErrorSnackBar(context, 'Cannot open phone app');
+          }
+          break;
+
+        case ContentType.location:
+          final parsedLocation = result.parsedContent;
+          if (parsedLocation.containsKey('Latitude') &&
+              parsedLocation.containsKey('Longitude')) {
+            final lat = parsedLocation['Latitude'];
+            final lng = parsedLocation['Longitude'];
+            final uri = Uri.parse('https://maps.google.com/maps?q=$lat,$lng');
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            } else {
+              _showErrorSnackBar(context, 'Cannot open maps');
+            }
+          }
+          break;
+
+        default:
+          _copyToClipboard(context, l10n);
+      }
+    } catch (e) {
+      _showErrorSnackBar(context, 'Action failed: $e');
+    }
+  }
+
   void _showErrorSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), backgroundColor: Colors.red),
@@ -519,6 +507,10 @@ class ScanResultScreen extends StatelessWidget {
   }
 
   void _scanAnother(BuildContext context) {
-    context.goNamed('scanner');
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const ScannerMainScreen()),
+      (route) => route.isFirst,
+    );
   }
 }

@@ -95,15 +95,9 @@ class HeartBeatData {
 
   /// Get heart rate category
   String get rateCategory {
-    if (bpm == 0) {
-      return 'No reading';
-    }
-    if (bpm < 60) {
-      return 'Below normal';
-    }
-    if (bpm <= 100) {
-      return 'Normal';
-    }
+    if (bpm == 0) return 'No reading';
+    if (bpm < 60) return 'Below normal';
+    if (bpm <= 100) return 'Normal';
     return 'Above normal';
   }
 
@@ -132,9 +126,7 @@ class HeartBeatData {
 
   /// Get warning time remaining in seconds
   int get warningTimeRemaining {
-    if (warningStartTime == null) {
-      return 0;
-    }
+    if (warningStartTime == null) return 0;
     final elapsed = DateTime.now().difference(warningStartTime!).inSeconds;
     return (5 - elapsed).clamp(0, 5);
   }

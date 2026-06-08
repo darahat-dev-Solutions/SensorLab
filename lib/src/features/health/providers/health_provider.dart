@@ -105,9 +105,7 @@ class HealthProvider extends StateNotifier<HealthData> {
 
   // Session control
   Future<void> startTracking() async {
-    if (state.isTracking) {
-      return;
-    }
+    if (state.isTracking) return;
 
     try {
       final session = ActivitySession(
@@ -154,9 +152,7 @@ class HealthProvider extends StateNotifier<HealthData> {
   }
 
   Future<void> pauseTracking() async {
-    if (!state.isTracking) {
-      return;
-    }
+    if (!state.isTracking) return;
 
     _stopSensors();
     _sessionTimer?.cancel();
@@ -173,9 +169,7 @@ class HealthProvider extends StateNotifier<HealthData> {
   }
 
   Future<void> resumeTracking() async {
-    if (state.sessionState != HealthSessionState.paused) {
-      return;
-    }
+    if (state.sessionState != HealthSessionState.paused) return;
 
     final activeSession = await _activitySessionRepository.getActiveSession();
     if (activeSession != null) {
@@ -248,9 +242,7 @@ class HealthProvider extends StateNotifier<HealthData> {
   }
 
   void _handleAccelerometerData(UserAccelerometerEvent event) {
-    if (!state.isTracking) {
-      return;
-    }
+    if (!state.isTracking) return;
 
     // Calculate movement intensity
     final intensity = _calculateMovementIntensity(event);
@@ -299,9 +291,7 @@ class HealthProvider extends StateNotifier<HealthData> {
   }
 
   void _handleGyroscopeData(GyroscopeEvent event) {
-    if (!state.isTracking) {
-      return;
-    }
+    if (!state.isTracking) return;
 
     // Update current movement with gyroscope data
     // state = state.copyWith(
@@ -335,16 +325,12 @@ class HealthProvider extends StateNotifier<HealthData> {
   }
 
   double _calculateAverageIntensity() {
-    if (_intensityBuffer.isEmpty) {
-      return 0.0;
-    }
+    if (_intensityBuffer.isEmpty) return 0.0;
     return _intensityBuffer.reduce((a, b) => a + b) / _intensityBuffer.length;
   }
 
   double _calculatePeakIntensity() {
-    if (_intensityBuffer.isEmpty) {
-      return 0.0;
-    }
+    if (_intensityBuffer.isEmpty) return 0.0;
     return _intensityBuffer.reduce((a, b) => a > b ? a : b);
   }
 
@@ -374,9 +360,7 @@ class HealthProvider extends StateNotifier<HealthData> {
   }
 
   void _recalculateCalories() {
-    if (state.totalActiveTime.inMinutes == 0) {
-      return;
-    }
+    if (state.totalActiveTime.inMinutes == 0) return;
 
     // Calculate calories based on activity and user profile
     final activityFactor = state.selectedActivity.calorieFactor;

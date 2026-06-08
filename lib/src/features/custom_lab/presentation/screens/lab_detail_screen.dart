@@ -142,6 +142,16 @@ class LabDetailScreen extends ConsumerWidget {
           },
           tooltip: l10n.sessionHistory,
         ),
+        if (!lab.isPreset)
+          Consumer(
+            builder: (context, ref, _) {
+              return IconButton(
+                icon: const Icon(Icons.delete_outline),
+                onPressed: () => _showDeleteDialog(context, ref, lab, l10n),
+                tooltip: l10n.delete,
+              );
+            },
+          ),
       ],
     );
   }
@@ -290,5 +300,55 @@ class LabDetailScreen extends ConsumerWidget {
       default:
         return Icons.science;
     }
+  }
+
+  void _showDeleteDialog(
+    BuildContext context,
+    WidgetRef ref,
+    Lab lab,
+    AppLocalizations l10n,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(l10n.delete),
+          content: Text('${l10n.delete} "${lab.name}"?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(dialogContext).pop();
+
+                // Call deleteLab from labManagementProvider
+                final success = await ref
+                    .read(labManagementProvider.notifier)
+                    .deleteLab(lab.id);
+
+                if (success && context.mounted) {
+                  // Navigate to home after successful deletion
+                  context.go('/');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${l10n.delete} successful')),
+                  );
+                } else if (!success && context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${l10n.delete} failed'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: Text(l10n.delete),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

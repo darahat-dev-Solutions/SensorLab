@@ -72,7 +72,7 @@ class _GeolocatorPageState extends State<GeolocatorPage> {
         _longitude = position.longitude;
         _location =
             '${position.latitude.toStringAsFixed(6)}, ${position.longitude.toStringAsFixed(6)}';
-        _accuracy = '${position.accuracy.toStringAsFixed(2)} ${l10n.meters}';
+        _accuracy = "${position.accuracy.toStringAsFixed(2)} ${l10n.meters}";
       });
 
       // Get address from coordinates
@@ -109,9 +109,7 @@ class _GeolocatorPageState extends State<GeolocatorPage> {
   }
 
   Future<void> _openInMaps() async {
-    if (_latitude == null || _longitude == null) {
-      return;
-    }
+    if (_latitude == null || _longitude == null) return;
 
     final Uri url = Uri.parse(
       'https://www.google.com/maps/search/?api=1&query=$_latitude,$_longitude',

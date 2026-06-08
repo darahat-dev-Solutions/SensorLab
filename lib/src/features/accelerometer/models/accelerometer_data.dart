@@ -7,7 +7,11 @@ class AccelerometerData {
   final double maxX;
   final double maxY;
   final double maxZ;
+  final double minX;
+  final double minY;
+  final double minZ;
   final bool isActive;
+  final double magnitude;
 
   const AccelerometerData({
     this.x = 0,
@@ -16,7 +20,11 @@ class AccelerometerData {
     this.maxX = 0,
     this.maxY = 0,
     this.maxZ = 0,
+    this.minX = 0,
+    this.minY = 0,
+    this.minZ = 0,
     this.isActive = false,
+    this.magnitude = 0.0,
   });
 
   AccelerometerData copyWith({
@@ -26,7 +34,11 @@ class AccelerometerData {
     double? maxX,
     double? maxY,
     double? maxZ,
+    double? minX,
+    double? minY,
+    double? minZ,
     bool? isActive,
+    double? magnitude,
   }) {
     return AccelerometerData(
       x: x ?? this.x,
@@ -35,15 +47,19 @@ class AccelerometerData {
       maxX: maxX ?? this.maxX,
       maxY: maxY ?? this.maxY,
       maxZ: maxZ ?? this.maxZ,
+      minX: minX ?? this.minX,
+      minY: minY ?? this.minY,
+      minZ: minZ ?? this.minZ,
       isActive: isActive ?? this.isActive,
+      magnitude: magnitude ?? this.magnitude,
     );
   }
 
   /// Calculate the magnitude of acceleration vector
-  double get magnitude => math.sqrt(x * x + y * y + z * z);
 
   /// Calculate the maximum magnitude recorded
   double get maxMagnitude => math.sqrt(maxX * maxX + maxY * maxY + maxZ * maxZ);
+  double get minMagnitude => math.sqrt(minX * minX + minY * minY + minZ * minZ);
 
   /// Get formatted current values
   String get xFormatted => x.toStringAsFixed(2);
@@ -54,6 +70,11 @@ class AccelerometerData {
   String get maxXFormatted => maxX.toStringAsFixed(2);
   String get maxYFormatted => maxY.toStringAsFixed(2);
   String get maxZFormatted => maxZ.toStringAsFixed(2);
+
+  /// Get formatted min values
+  String get minXFormatted => minX.toStringAsFixed(2);
+  String get minYFormatted => minY.toStringAsFixed(2);
+  String get minZFormatted => minZ.toStringAsFixed(2);
 
   /// Get formatted magnitude
   String get magnitudeFormatted => magnitude.toStringAsFixed(2);
@@ -71,6 +92,11 @@ class AccelerometerData {
   /// Reset max values
   AccelerometerData resetMaxValues() {
     return copyWith(maxX: 0, maxY: 0, maxZ: 0);
+  }
+
+  /// Reset min values
+  AccelerometerData resetMinValues() {
+    return copyWith(minX: 0, minY: 0, minZ: 0);
   }
 }
 

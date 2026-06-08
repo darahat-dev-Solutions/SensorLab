@@ -96,13 +96,6 @@ class SettingsController extends AsyncNotifier<AppSettings> {
     );
   }
 
-  /// Toggle ads
-  Future<void> toggleAds() async {
-    await _updateSetting(
-      (settings) => settings.copyWith(adsEnabled: !settings.adsEnabled),
-    );
-  }
-
   /// Update language
   Future<void> updateLanguage(String languageCode) async {
     await _updateSetting(

@@ -143,87 +143,43 @@ class LocationData {
 
   // Cardinal direction from heading
   String get cardinalDirection {
-    if (heading >= 337.5 || heading < 22.5) {
-      return 'N';
-    }
-    if (heading >= 22.5 && heading < 67.5) {
-      return 'NE';
-    }
-    if (heading >= 67.5 && heading < 112.5) {
-      return 'E';
-    }
-    if (heading >= 112.5 && heading < 157.5) {
-      return 'SE';
-    }
-    if (heading >= 157.5 && heading < 202.5) {
-      return 'S';
-    }
-    if (heading >= 202.5 && heading < 247.5) {
-      return 'SW';
-    }
-    if (heading >= 247.5 && heading < 292.5) {
-      return 'W';
-    }
-    if (heading >= 292.5 && heading < 337.5) {
-      return 'NW';
-    }
+    if (heading >= 337.5 || heading < 22.5) return 'N';
+    if (heading >= 22.5 && heading < 67.5) return 'NE';
+    if (heading >= 67.5 && heading < 112.5) return 'E';
+    if (heading >= 112.5 && heading < 157.5) return 'SE';
+    if (heading >= 157.5 && heading < 202.5) return 'S';
+    if (heading >= 202.5 && heading < 247.5) return 'SW';
+    if (heading >= 247.5 && heading < 292.5) return 'W';
+    if (heading >= 292.5 && heading < 337.5) return 'NW';
     return 'Unknown';
   }
 
   // Accuracy level description
   String get accuracyDescription {
-    if (accuracy < 5) {
-      return 'Excellent';
-    }
-    if (accuracy < 10) {
-      return 'Good';
-    }
-    if (accuracy < 20) {
-      return 'Fair';
-    }
-    if (accuracy < 50) {
-      return 'Poor';
-    }
+    if (accuracy < 5) return 'Excellent';
+    if (accuracy < 10) return 'Good';
+    if (accuracy < 20) return 'Fair';
+    if (accuracy < 50) return 'Poor';
     return 'Very Poor';
   }
 
   int get accuracyColor {
-    if (accuracy < 5) {
-      return 0xFF4CAF50; // Green
-    }
-    if (accuracy < 10) {
-      return 0xFF8BC34A; // Light Green
-    }
-    if (accuracy < 20) {
-      return 0xFFFF9800; // Orange
-    }
-    if (accuracy < 50) {
-      return 0xFFFF5722; // Deep Orange
-    }
+    if (accuracy < 5) return 0xFF4CAF50; // Green
+    if (accuracy < 10) return 0xFF8BC34A; // Light Green
+    if (accuracy < 20) return 0xFFFF9800; // Orange
+    if (accuracy < 50) return 0xFFFF5722; // Deep Orange
     return 0xFFF44336; // Red
   }
 
   // Speed category
   String get speedCategory {
     final kmh = speed * 3.6;
-    if (kmh < 1) {
-      return 'Stationary';
-    }
-    if (kmh < 5) {
-      return 'Walking';
-    }
-    if (kmh < 15) {
-      return 'Jogging';
-    }
-    if (kmh < 30) {
-      return 'Cycling';
-    }
-    if (kmh < 50) {
-      return 'Driving (City)';
-    }
-    if (kmh < 80) {
-      return 'Driving (Highway)';
-    }
+    if (kmh < 1) return 'Stationary';
+    if (kmh < 5) return 'Walking';
+    if (kmh < 15) return 'Jogging';
+    if (kmh < 30) return 'Cycling';
+    if (kmh < 50) return 'Driving (City)';
+    if (kmh < 80) return 'Driving (Highway)';
     return 'High Speed';
   }
 
@@ -295,15 +251,9 @@ class AddressData {
 
   String get shortAddress {
     final parts = <String>[];
-    if (street.isNotEmpty) {
-      parts.add(street);
-    }
-    if (locality.isNotEmpty) {
-      parts.add(locality);
-    }
-    if (country.isNotEmpty) {
-      parts.add(country);
-    }
+    if (street.isNotEmpty) parts.add(street);
+    if (locality.isNotEmpty) parts.add(locality);
+    if (country.isNotEmpty) parts.add(country);
     return parts.take(2).join(', ');
   }
 }
@@ -403,56 +353,32 @@ class GeolocatorData {
 
   // Status indicators
   String get statusIcon {
-    if (!isInitialized) {
-      return '⏳';
-    }
-    if (!isServiceEnabled) {
-      return '📍';
-    }
-    if (!permissionStatus.isGranted) {
-      return '🔒';
-    }
-    if (isTracking) {
-      return '🎯';
-    }
-    if (currentLocation != null) {
-      return '📍';
-    }
+    if (!isInitialized) return '⏳';
+    if (!isServiceEnabled) return '📍';
+    if (!permissionStatus.isGranted) return '🔒';
+    if (isTracking) return '🎯';
+    if (currentLocation != null) return '📍';
     return '❓';
   }
 
   String get statusDescription {
-    if (!isInitialized) {
-      return 'Initializing...';
-    }
-    if (!isServiceEnabled) {
-      return 'Location Service Disabled';
-    }
+    if (!isInitialized) return 'Initializing...';
+    if (!isServiceEnabled) return 'Location Service Disabled';
     if (!permissionStatus.isGranted) {
       return 'Permission ${permissionStatus.displayName}';
     }
-    if (isTracking) {
-      return 'Tracking Location';
-    }
-    if (currentLocation != null) {
-      return 'Location Available';
-    }
+    if (isTracking) return 'Tracking Location';
+    if (currentLocation != null) return 'Location Available';
     return 'No Location Data';
   }
 
   int get statusColor {
-    if (!isInitialized || isLoadingLocation) {
-      return 0xFF2196F3; // Blue
-    }
+    if (!isInitialized || isLoadingLocation) return 0xFF2196F3; // Blue
     if (!isServiceEnabled || !permissionStatus.isGranted) {
       return 0xFFF44336; // Red
     }
-    if (isTracking) {
-      return 0xFF4CAF50; // Green
-    }
-    if (currentLocation != null) {
-      return 0xFF8BC34A; // Light Green
-    }
+    if (isTracking) return 0xFF4CAF50; // Green
+    if (currentLocation != null) return 0xFF8BC34A; // Light Green
     return 0xFFFF9800; // Orange
   }
 
@@ -502,9 +428,7 @@ class GeolocatorData {
 
   // Statistics summary
   String get sessionSummary {
-    if (!hasLocationHistory) {
-      return 'No tracking data';
-    }
+    if (!hasLocationHistory) return 'No tracking data';
     return '$formattedLocationUpdates • $formattedTotalDistance • $formattedTrackingDuration';
   }
 

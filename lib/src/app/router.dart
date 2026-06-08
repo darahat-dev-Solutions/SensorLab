@@ -36,8 +36,6 @@ import '../features/noise_meter/presentation/screens/custom_preset_creation_scre
 import '../features/noise_meter/presentation/screens/noise_meter_screen.dart';
 // Shared / Onboarding / Settings / Home / Splash
 import '../features/onboarding/presentation/screens/onboarding_screen.dart';
-import '../features/pedometer/presentation/screens/pedometer_screen.dart';
-import '../features/proximity/presentation/screens/proximity_screen.dart';
 // Scanner
 import '../features/scanner/models/scan_result.dart';
 import '../features/scanner/presentation/screens/barcode_scanner_screen.dart';
@@ -162,11 +160,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'magnetometer',
         builder: (c, s) => const MagnetometerScreen(),
       ),
-      GoRoute(
-        path: '/pedometer',
-        name: 'pedometer',
-        builder: (c, s) => const PedometerScreen(),
-      ),
+
       GoRoute(
         path: '/speed-meter',
         name: 'speed-meter',
@@ -182,12 +176,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'heart-beat',
         builder: (c, s) => const HeartRateScreen(),
       ),
-      GoRoute(
-        path: '/proximity',
-        name: 'proximity',
-        builder: (c, s) => const ProximityScreen(),
-      ),
-
       // === Noise Meter Routes ===
       GoRoute(
         path: '/noise-meter',
@@ -254,7 +242,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: 'lab/:labId',
-            name: 'lab-detail',
+            name: 'lab-details',
             builder: (c, s) {
               final labId = s.pathParameters['labId']!;
               return LabDetailScreen(labId: labId);

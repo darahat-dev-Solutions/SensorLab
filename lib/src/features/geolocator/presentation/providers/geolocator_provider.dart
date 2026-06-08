@@ -264,9 +264,7 @@ class GeolocatorProvider extends StateNotifier<GeolocatorData> {
   }
 
   bool _shouldUpdateAddress() {
-    if (_lastLocationUpdate == null) {
-      return true;
-    }
+    if (_lastLocationUpdate == null) return true;
 
     // Update address every 30 seconds or if moved significantly
     final timeSinceLastUpdate = DateTime.now().difference(_lastLocationUpdate!);
@@ -274,9 +272,7 @@ class GeolocatorProvider extends StateNotifier<GeolocatorData> {
   }
 
   Future<void> _getAddressForLocation(LocationData location) async {
-    if (state.isLoadingAddress) {
-      return;
-    }
+    if (state.isLoadingAddress) return;
 
     state = state.copyWith(isLoadingAddress: true);
 
@@ -318,8 +314,7 @@ class GeolocatorProvider extends StateNotifier<GeolocatorData> {
     final parts = <String>[];
 
     // Check if the street is a Plus Code and skip it if so.
-    if (placemark.street?.isNotEmpty == true &&
-        !placemark.street!.contains('+')) {
+    if (placemark.street?.isNotEmpty == true && !placemark.street!.contains('+')) {
       parts.add(placemark.street!);
     }
 
@@ -366,9 +361,7 @@ class GeolocatorProvider extends StateNotifier<GeolocatorData> {
   }
 
   double _calculateAverageSpeed(List<LocationData> history) {
-    if (history.isEmpty) {
-      return 0.0;
-    }
+    if (history.isEmpty) return 0.0;
 
     final speeds = history.map((location) => location.speed).toList();
     final totalSpeed = speeds.reduce((a, b) => a + b);
@@ -377,9 +370,7 @@ class GeolocatorProvider extends StateNotifier<GeolocatorData> {
   }
 
   void _updateTrackingDuration() {
-    if (!state.isTracking) {
-      return;
-    }
+    if (!state.isTracking) return;
 
     final duration = DateTime.now().difference(state.sessionStartTime);
     state = state.copyWith(trackingDuration: duration);

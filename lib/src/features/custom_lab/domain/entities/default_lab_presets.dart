@@ -15,7 +15,6 @@ class DefaultLabPresets {
       indoorQuality(),
       outdoorExplorer(),
       vehicleDynamics(),
-      healthTracker(),
     ];
   }
 
@@ -31,7 +30,6 @@ class DefaultLabPresets {
         SensorType.humidity,
         SensorType.lightMeter,
         SensorType.noiseMeter,
-        SensorType.barometer,
       ],
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -96,7 +94,6 @@ class DefaultLabPresets {
         SensorType.gps,
         SensorType.altimeter,
         SensorType.speedMeter,
-        SensorType.barometer,
         SensorType.compass,
       ],
       createdAt: DateTime.now(),
@@ -127,27 +124,6 @@ class DefaultLabPresets {
       iconName: 'vehicle',
       colorValue: Colors.red.value,
       recordingInterval: 500, // 500ms for vehicle data
-    );
-  }
-
-  /// Health Tracker - Pedometer, Heart Rate
-  static Lab healthTracker() {
-    return Lab(
-      id: _uuid.v4(),
-      name: 'Health Tracker',
-      description:
-          'Monitor health metrics including step count and heart rate during activities.',
-      sensors: const [
-        SensorType.pedometer,
-        SensorType.heartBeat,
-        SensorType.accelerometer,
-      ],
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      isPreset: true,
-      iconName: 'health',
-      colorValue: Colors.pink.value,
-      recordingInterval: 1000, // 1 second
     );
   }
 }

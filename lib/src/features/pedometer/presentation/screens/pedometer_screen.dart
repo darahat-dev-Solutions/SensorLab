@@ -36,8 +36,8 @@ class _PedometerScreenState extends ConsumerState<PedometerScreen>
   @override
   Widget build(BuildContext context) {
     final pedometerData = ref.watch(pedometerProvider);
-    final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     // Animate when steps change
     if (pedometerData.isActive && pedometerData.isWalking) {
@@ -104,6 +104,8 @@ class _PedometerScreenState extends ConsumerState<PedometerScreen>
 
                 // Stats Grid
                 _buildStatsGrid(colorScheme, pedometerData, l10n),
+                const SizedBox(height: 20),
+
                 // Additional Metrics
                 _buildMetricsGrid(colorScheme, pedometerData, l10n),
               ],
@@ -493,6 +495,7 @@ class _PedometerScreenState extends ConsumerState<PedometerScreen>
 
   void _showGoalDialog(BuildContext context, int currentGoal) {
     final controller = TextEditingController(text: currentGoal.toString());
+    final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
     showDialog(

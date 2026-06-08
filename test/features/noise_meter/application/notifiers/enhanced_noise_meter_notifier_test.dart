@@ -1,16 +1,15 @@
-import 'dart:async'; // For StreamController
-
-import 'package:flutter/foundation.dart'; // For debugPrint
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sensorlab/src/features/noise_meter/application/notifiers/enhanced_noise_meter_notifier.dart';
-import 'package:sensorlab/src/features/noise_meter/application/providers/enhanced_noise_meter_provider.dart'; // Import the provider
 import 'package:sensorlab/src/features/noise_meter/application/state/enhanced_noise_data.dart';
 import 'package:sensorlab/src/features/noise_meter/domain/entities/acoustic_report_entity.dart';
 import 'package:sensorlab/src/features/noise_meter/domain/entities/noise_data.dart';
 import 'package:sensorlab/src/features/noise_meter/domain/repositories/acoustic_repository.dart';
+import 'dart:async'; // For StreamController
+import 'package:flutter/foundation.dart'; // For debugPrint
+import 'package:sensorlab/src/features/noise_meter/application/providers/enhanced_noise_meter_provider.dart'; // Import the provider
 
 import 'enhanced_noise_meter_notifier_test.mocks.dart';
 
@@ -55,9 +54,7 @@ void main() {
 
       // Mock noise stream
       final noiseStreamController = StreamController<NoiseData>();
-      when(
-        mockRepository.noiseStream,
-      ).thenAnswer((_) => noiseStreamController.stream);
+      when(mockRepository.noiseStream).thenAnswer((_) => noiseStreamController.stream);
 
       await notifier.startRecordingWithPreset(RecordingPreset.custom);
 
@@ -73,111 +70,78 @@ void main() {
     });
 
     test('startRecordingWithPreset requests permission if not granted', () async {
-      debugPrint(
-        'Test: startRecordingWithPreset requests permission if not granted',
-      );
+      debugPrint('Test: startRecordingWithPreset requests permission if not granted');
       when(mockRepository.checkPermission()).thenAnswer((_) async => false);
       when(mockRepository.requestPermission()).thenAnswer((_) async => true);
 
       final notifier = container.read(enhancedNoiseMeterProvider.notifier);
       final noiseStreamController = StreamController<NoiseData>();
-      when(
-        mockRepository.noiseStream,
-      ).thenAnswer((_) => noiseStreamController.stream);
+      when(mockRepository.noiseStream).thenAnswer((_) => noiseStreamController.stream);
 
       await notifier.startRecordingWithPreset(RecordingPreset.work);
 
       verify(mockRepository.requestPermission()).called(1);
       expect(container.read(enhancedNoiseMeterProvider).hasPermission, true);
-      debugPrint(
-        'State after permission request: ${container.read(enhancedNoiseMeterProvider)}',
-      );
+      debugPrint('State after permission request: ${container.read(enhancedNoiseMeterProvider)}');
 
       await noiseStreamController.close();
     });
 
-    test(
-      'startRecordingWithPreset sets error message if permission denied',
-      () async {
-        debugPrint(
-          'Test: startRecordingWithPreset sets error message if permission denied',
-        );
-        when(mockRepository.checkPermission()).thenAnswer((_) async => false);
-        when(mockRepository.requestPermission()).thenAnswer((_) async => false);
+    test('startRecordingWithPreset sets error message if permission denied', () async {
+      debugPrint('Test: startRecordingWithPreset sets error message if permission denied');
+      when(mockRepository.checkPermission()).thenAnswer((_) async => false);
+      when(mockRepository.requestPermission()).thenAnswer((_) async => false);
 
-        final notifier = container.read(enhancedNoiseMeterProvider.notifier);
-        await notifier.startRecordingWithPreset(RecordingPreset.focus);
+      final notifier = container.read(enhancedNoiseMeterProvider.notifier);
+      await notifier.startRecordingWithPreset(RecordingPreset.focus);
 
-        expect(
-          container.read(enhancedNoiseMeterProvider).errorMessage,
-          'Microphone permission required',
-        );
-        expect(container.read(enhancedNoiseMeterProvider).hasPermission, false);
-        debugPrint(
-          'State after permission denied: ${container.read(enhancedNoiseMeterProvider)}',
-        );
-      },
-    );
+      expect(container.read(enhancedNoiseMeterProvider).errorMessage, 'Microphone permission required');
+      expect(container.read(enhancedNoiseMeterProvider).hasPermission, false);
+      debugPrint('State after permission denied: ${container.read(enhancedNoiseMeterProvider)}');
+    });
 
-    test(
-      'noise readings update current, min, max, and average decibels',
-      () async {
-        debugPrint(
-          'Test: noise readings update current, min, max, and average decibels',
-        );
-        final notifier = container.read(enhancedNoiseMeterProvider.notifier);
-        final noiseStreamController = StreamController<NoiseData>();
-        when(
-          mockRepository.noiseStream,
-        ).thenAnswer((_) => noiseStreamController.stream);
-
-        await notifier.startRecordingWithPreset(RecordingPreset.custom);
-
-        // Simulate noise readings
-        noiseStreamController.add(const NoiseData(meanDecibel: 50.0));
-        await Future.delayed(
-          const Duration(milliseconds: 150),
-        ); // Allow UI update throttle
-        noiseStreamController.add(const NoiseData(meanDecibel: 60.0));
-        await Future.delayed(const Duration(milliseconds: 150));
-        noiseStreamController.add(const NoiseData(meanDecibel: 40.0));
-        await Future.delayed(const Duration(milliseconds: 150));
-
-        final state = container.read(enhancedNoiseMeterProvider);
-        expect(state.currentDecibels, closeTo(40.0, 0.1));
-        expect(state.minDecibels, closeTo(40.0, 0.1));
-        expect(state.maxDecibels, closeTo(60.0, 0.1));
-        expect(state.averageDecibels, closeTo(50.0, 0.1)); // (50+60+40)/3
-        expect(state.totalReadings, 3);
-        debugPrint('State after noise readings: $state');
-
-        await noiseStreamController.close();
-      },
-    );
-
-    test('noise readings handle infinite or NaN values gracefully', () async {
-      debugPrint(
-        'Test: noise readings handle infinite or NaN values gracefully',
-      );
+    test('noise readings update current, min, max, and average decibels', () async {
+      debugPrint('Test: noise readings update current, min, max, and average decibels');
       final notifier = container.read(enhancedNoiseMeterProvider.notifier);
       final noiseStreamController = StreamController<NoiseData>();
-      when(
-        mockRepository.noiseStream,
-      ).thenAnswer((_) => noiseStreamController.stream);
+      when(mockRepository.noiseStream).thenAnswer((_) => noiseStreamController.stream);
+
+      await notifier.startRecordingWithPreset(RecordingPreset.custom);
+
+      // Simulate noise readings
+      noiseStreamController.add(const NoiseData(meanDecibel: 50.0));
+      await Future.delayed(const Duration(milliseconds: 150)); // Allow UI update throttle
+      noiseStreamController.add(const NoiseData(meanDecibel: 60.0));
+      await Future.delayed(const Duration(milliseconds: 150));
+      noiseStreamController.add(const NoiseData(meanDecibel: 40.0));
+      await Future.delayed(const Duration(milliseconds: 150));
+
+      final state = container.read(enhancedNoiseMeterProvider);
+      expect(state.currentDecibels, closeTo(40.0, 0.1));
+      expect(state.minDecibels, closeTo(40.0, 0.1));
+      expect(state.maxDecibels, closeTo(60.0, 0.1));
+      expect(state.averageDecibels, closeTo(50.0, 0.1)); // (50+60+40)/3
+      expect(state.totalReadings, 3);
+      debugPrint('State after noise readings: $state');
+
+      await noiseStreamController.close();
+    });
+
+    test('noise readings handle infinite or NaN values gracefully', () async {
+      debugPrint('Test: noise readings handle infinite or NaN values gracefully');
+      final notifier = container.read(enhancedNoiseMeterProvider.notifier);
+      final noiseStreamController = StreamController<NoiseData>();
+      when(mockRepository.noiseStream).thenAnswer((_) => noiseStreamController.stream);
 
       await notifier.startRecordingWithPreset(RecordingPreset.custom);
 
       noiseStreamController.add(const NoiseData(meanDecibel: 50.0));
       await Future.delayed(const Duration(milliseconds: 150));
-      noiseStreamController.add(
-        const NoiseData(meanDecibel: double.infinity),
-      ); // Invalid reading
+      noiseStreamController.add(const NoiseData(meanDecibel: double.infinity)); // Invalid reading
       await Future.delayed(const Duration(milliseconds: 150));
       noiseStreamController.add(const NoiseData(meanDecibel: 60.0));
       await Future.delayed(const Duration(milliseconds: 150));
-      noiseStreamController.add(
-        const NoiseData(meanDecibel: double.nan),
-      ); // Invalid reading
+      noiseStreamController.add(const NoiseData(meanDecibel: double.nan)); // Invalid reading
       await Future.delayed(const Duration(milliseconds: 150));
       noiseStreamController.add(const NoiseData(meanDecibel: 40.0));
       await Future.delayed(const Duration(milliseconds: 150));
@@ -198,9 +162,7 @@ void main() {
       debugPrint('Test: stopRecording generates and saves report');
       final notifier = container.read(enhancedNoiseMeterProvider.notifier);
       final noiseStreamController = StreamController<NoiseData>();
-      when(
-        mockRepository.noiseStream,
-      ).thenAnswer((_) => noiseStreamController.stream);
+      when(mockRepository.noiseStream).thenAnswer((_) => noiseStreamController.stream);
 
       await notifier.startRecordingWithPreset(RecordingPreset.work);
       noiseStreamController.add(const NoiseData(meanDecibel: 50.0));
@@ -216,9 +178,7 @@ void main() {
       expect(container.read(enhancedNoiseMeterProvider).isAnalyzing, false);
       verify(mockRepository.saveReport(any)).called(1);
       debugPrint('Report generated: ${report.toString()}');
-      debugPrint(
-        'State after stopRecording: ${container.read(enhancedNoiseMeterProvider)}',
-      );
+      debugPrint('State after stopRecording: ${container.read(enhancedNoiseMeterProvider)}');
 
       await noiseStreamController.close();
     });
@@ -247,12 +207,8 @@ void main() {
 
       await notifier.loadSavedReports();
 
-      expect(container.read(enhancedNoiseMeterProvider).savedReports, [
-        mockReport,
-      ]);
-      debugPrint(
-        'Saved reports loaded: ${container.read(enhancedNoiseMeterProvider).savedReports}',
-      );
+      expect(container.read(enhancedNoiseMeterProvider).savedReports, [mockReport]);
+      debugPrint('Saved reports loaded: ${container.read(enhancedNoiseMeterProvider).savedReports}');
     });
 
     test('deleteReport removes report from savedReports state', () async {
@@ -292,37 +248,26 @@ void main() {
         qualityScore: 50,
         interruptionCount: 0,
       );
-      when(
-        mockRepository.getReports(),
-      ).thenAnswer((_) async => [mockReport1, mockReport2]);
+      when(mockRepository.getReports()).thenAnswer((_) async => [mockReport1, mockReport2]);
       when(mockRepository.deleteReport('1')).thenAnswer((_) async => {});
 
       await notifier.loadSavedReports(); // Load initial reports
       expect(container.read(enhancedNoiseMeterProvider).savedReports.length, 2);
-      debugPrint(
-        'Reports before deletion: ${container.read(enhancedNoiseMeterProvider).savedReports}',
-      );
+      debugPrint('Reports before deletion: ${container.read(enhancedNoiseMeterProvider).savedReports}');
 
       await notifier.deleteReport('1');
 
       expect(container.read(enhancedNoiseMeterProvider).savedReports.length, 1);
-      expect(
-        container.read(enhancedNoiseMeterProvider).savedReports.first.id,
-        '2',
-      );
+      expect(container.read(enhancedNoiseMeterProvider).savedReports.first.id, '2');
       verify(mockRepository.deleteReport('1')).called(1);
-      debugPrint(
-        'Reports after deletion: ${container.read(enhancedNoiseMeterProvider).savedReports}',
-      );
+      debugPrint('Reports after deletion: ${container.read(enhancedNoiseMeterProvider).savedReports}');
     });
 
     test('session timer stops recording after preset duration', () async {
       debugPrint('Test: session timer stops recording after preset duration');
       final notifier = container.read(enhancedNoiseMeterProvider.notifier);
       final noiseStreamController = StreamController<NoiseData>();
-      when(
-        mockRepository.noiseStream,
-      ).thenAnswer((_) => noiseStreamController.stream);
+      when(mockRepository.noiseStream).thenAnswer((_) => noiseStreamController.stream);
 
       // Use a short custom duration for testing
       await notifier.startRecordingWithPreset(
@@ -331,17 +276,13 @@ void main() {
       );
 
       expect(container.read(enhancedNoiseMeterProvider).isRecording, true);
-      debugPrint(
-        'Recording started. State: ${container.read(enhancedNoiseMeterProvider)}',
-      );
+      debugPrint('Recording started. State: ${container.read(enhancedNoiseMeterProvider)}');
 
       // Wait for the duration to pass
       await Future.delayed(const Duration(seconds: 3));
 
       expect(container.read(enhancedNoiseMeterProvider).isRecording, false);
-      debugPrint(
-        'Recording stopped by timer. State: ${container.read(enhancedNoiseMeterProvider)}',
-      );
+      debugPrint('Recording stopped by timer. State: ${container.read(enhancedNoiseMeterProvider)}');
 
       await noiseStreamController.close();
     });
@@ -350,17 +291,13 @@ void main() {
       debugPrint('Test: event detection works correctly');
       final notifier = container.read(enhancedNoiseMeterProvider.notifier);
       final noiseStreamController = StreamController<NoiseData>();
-      when(
-        mockRepository.noiseStream,
-      ).thenAnswer((_) => noiseStreamController.stream);
+      when(mockRepository.noiseStream).thenAnswer((_) => noiseStreamController.stream);
 
       await notifier.startRecordingWithPreset(RecordingPreset.custom);
 
       // Simulate quiet period
       noiseStreamController.add(const NoiseData(meanDecibel: 40.0));
-      await Future.delayed(
-        const Duration(milliseconds: 600),
-      ); // Pass event detection timer interval
+      await Future.delayed(const Duration(milliseconds: 600)); // Pass event detection timer interval
 
       // Simulate loud event (above 65dB for >3 seconds)
       noiseStreamController.add(const NoiseData(meanDecibel: 70.0));
@@ -371,18 +308,13 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 1000)); // 3.0s
       noiseStreamController.add(const NoiseData(meanDecibel: 68.0));
       await Future.delayed(const Duration(milliseconds: 500)); // 3.5s
-      noiseStreamController.add(
-        const NoiseData(meanDecibel: 60.0),
-      ); // Below threshold, event ends
+      noiseStreamController.add(const NoiseData(meanDecibel: 60.0)); // Below threshold, event ends
       await Future.delayed(const Duration(milliseconds: 600));
 
       final state = container.read(enhancedNoiseMeterProvider);
       expect(state.events.length, 1);
       expect(state.events.first.peakDecibels, closeTo(75.0, 0.1));
-      expect(
-        state.events.first.eventType,
-        'intermittent',
-      ); // Duration was ~1.8s, so intermittent
+      expect(state.events.first.eventType, 'intermittent'); // Duration was ~1.8s, so intermittent
       debugPrint('Events detected: ${state.events}');
 
       await noiseStreamController.close();

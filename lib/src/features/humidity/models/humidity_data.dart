@@ -119,18 +119,10 @@ class HumidityData {
 
   /// Calculate humidity level based on percentage
   static HumidityLevel getHumidityLevel(double humidity) {
-    if (humidity >= 70) {
-      return HumidityLevel.veryHumid;
-    }
-    if (humidity >= 60) {
-      return HumidityLevel.humid;
-    }
-    if (humidity >= 40) {
-      return HumidityLevel.comfortable;
-    }
-    if (humidity >= 30) {
-      return HumidityLevel.dry;
-    }
+    if (humidity >= 70) return HumidityLevel.veryHumid;
+    if (humidity >= 60) return HumidityLevel.humid;
+    if (humidity >= 40) return HumidityLevel.comfortable;
+    if (humidity >= 30) return HumidityLevel.dry;
     return HumidityLevel.veryDry;
   }
 

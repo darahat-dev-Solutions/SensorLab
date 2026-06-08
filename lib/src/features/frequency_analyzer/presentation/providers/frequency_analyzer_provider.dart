@@ -148,9 +148,7 @@ class FrequencyAnalyzerNotifier extends StateNotifier<FrequencyData> {
 
     // Apply log scale for better visualization
     final logMagnitudes = magnitudes.map((mag) {
-      if (mag <= 0) {
-        return 0.0;
-      }
+      if (mag <= 0) return 0.0;
       // Convert to dB scale
       final db = 20 * math.log(mag) / math.ln10;
       // Normalize to 0-1 range (assuming -60dB to 0dB range)

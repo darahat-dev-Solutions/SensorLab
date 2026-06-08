@@ -21,6 +21,7 @@ class FlashlightNotifier extends StateNotifier<FlashlightData> {
   Timer? _sosTimer;
   // Removed unused field to satisfy analyzer
   int _sosStep = 0;
+  bool _sosState = false;
 
   @override
   void dispose() {
@@ -65,9 +66,7 @@ class FlashlightNotifier extends StateNotifier<FlashlightData> {
   Future<void> toggleFlashlight() async {
     if (!state.isInitialized || !state.isAvailable) {
       await initialize();
-      if (!state.isInitialized) {
-        return;
-      }
+      if (!state.isInitialized) return;
     }
 
     try {
@@ -143,9 +142,7 @@ class FlashlightNotifier extends StateNotifier<FlashlightData> {
 
   /// Set flashlight mode
   Future<void> setMode(FlashlightMode mode) async {
-    if (!state.isInitialized || !state.isAvailable) {
-      return;
-    }
+    if (!state.isInitialized || !state.isAvailable) return;
 
     try {
       // Stop current special modes
@@ -195,6 +192,7 @@ class FlashlightNotifier extends StateNotifier<FlashlightData> {
   /// Start SOS mode (... --- ...)
   void _startSOS() {
     _sosStep = 0;
+    _sosState = false;
     _nextSOSStep();
   }
 
@@ -271,12 +269,8 @@ class FlashlightNotifier extends StateNotifier<FlashlightData> {
 
   /// Quick flash (brief on/off)
   Future<void> quickFlash({int durationMs = 100}) async {
-    if (!state.isInitialized || !state.isAvailable) {
-      return;
-    }
-    if (state.isOn) {
-      return; // Don't flash if already on
-    }
+    if (!state.isInitialized || !state.isAvailable) return;
+    if (state.isOn) return; // Don't flash if already on
 
     try {
       // Turn on

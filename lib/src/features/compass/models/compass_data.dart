@@ -42,9 +42,7 @@ class CompassData {
 
   /// Calculate direction from heading
   static String calculateDirection(double? heading) {
-    if (heading == null) {
-      return 'N';
-    }
+    if (heading == null) return 'N';
     final index = ((heading + 22.5) % 360) ~/ 45;
     return directions[index];
   }

@@ -159,9 +159,7 @@ class VibrationData {
 
   /// Estimate dominant frequency using zero-crossing method
   static double _estimateFrequency(List<double> magnitudes) {
-    if (magnitudes.length < 10) {
-      return 0;
-    }
+    if (magnitudes.length < 10) return 0;
 
     // Count zero crossings
     int crossings = 0;
@@ -182,24 +180,12 @@ class VibrationData {
 
   /// Determine vibration level based on RMS
   static VibrationLevel _determineLevel(double rms) {
-    if (rms < 0.01) {
-      return VibrationLevel.none;
-    }
-    if (rms < 0.05) {
-      return VibrationLevel.minimal;
-    }
-    if (rms < 0.2) {
-      return VibrationLevel.light;
-    }
-    if (rms < 0.5) {
-      return VibrationLevel.moderate;
-    }
-    if (rms < 1.0) {
-      return VibrationLevel.strong;
-    }
-    if (rms < 2.0) {
-      return VibrationLevel.severe;
-    }
+    if (rms < 0.01) return VibrationLevel.none;
+    if (rms < 0.05) return VibrationLevel.minimal;
+    if (rms < 0.2) return VibrationLevel.light;
+    if (rms < 0.5) return VibrationLevel.moderate;
+    if (rms < 1.0) return VibrationLevel.strong;
+    if (rms < 2.0) return VibrationLevel.severe;
     return VibrationLevel.extreme;
   }
 
@@ -209,9 +195,7 @@ class VibrationData {
     double frequency,
     double crestFactor,
   ) {
-    if (magnitudes.length < 10) {
-      return VibrationPattern.stable;
-    }
+    if (magnitudes.length < 10) return VibrationPattern.stable;
 
     // Calculate variance
     final mean = magnitudes.reduce((a, b) => a + b) / magnitudes.length;
@@ -221,24 +205,16 @@ class VibrationData {
     final stdDev = math.sqrt(variance);
 
     // Low variance = stable
-    if (stdDev < 0.05) {
-      return VibrationPattern.stable;
-    }
+    if (stdDev < 0.05) return VibrationPattern.stable;
 
     // High crest factor = pulsing
-    if (crestFactor > 3) {
-      return VibrationPattern.pulsing;
-    }
+    if (crestFactor > 3) return VibrationPattern.pulsing;
 
     // Frequency detection = rhythmic
-    if (frequency > 1 && frequency < 20) {
-      return VibrationPattern.rhythmic;
-    }
+    if (frequency > 1 && frequency < 20) return VibrationPattern.rhythmic;
 
     // High variance, low frequency = irregular
-    if (stdDev > 0.2 && frequency < 1) {
-      return VibrationPattern.irregular;
-    }
+    if (stdDev > 0.2 && frequency < 1) return VibrationPattern.irregular;
 
     // Default = continuous
     return VibrationPattern.continuous;

@@ -13,8 +13,7 @@ class InitializationService {
     try {
       await dotenv.load();
     } catch (e) {
-      // TODO: Replace with logger
-      // print('No .env file found, continuing without environment variables');
+      print('No .env file found, continuing without environment variables');
     }
 
     await Hive.initFlutter();
@@ -32,33 +31,30 @@ class InitializationService {
       await notifier.checkInitialization();
       final currentState = ref.read(presetsInitializationProvider);
 
-      // TODO: Replace with logger
-      // print(
-      // (print statement commented out)
+      print(
+        'Presets initialization check: IsInitialized = ${currentState.isInitialized}',
+      );
 
       // Always try to initialize if not initialized
       if (!currentState.isInitialized) {
-        // TODO: Replace with logger
-        // print('Initializing presets...');
+        print('Initializing presets...');
         await notifier.initializePresets();
 
         // Verify after initialization
         await notifier.checkInitialization();
         final finalState = ref.read(presetsInitializationProvider);
-        // TODO: Replace with logger
-        // print(
-        // (print statement commented out)
+        print(
+          'Presets initialization completed: IsInitialized = ${finalState.isInitialized}',
+        );
 
         if (!finalState.isInitialized) {
           throw Exception('Presets failed to initialize after attempt');
         }
       } else {
-        // TODO: Replace with logger
-        // print('Presets were already initialized');
+        print('Presets were already initialized');
       }
     } catch (e) {
-      // TODO: Replace with logger
-      // print('Error in presets initialization: $e');
+      print('Error in presets initialization: $e');
       // Re-throw to handle in main
       throw Exception('Presets initialization failed: $e');
     }

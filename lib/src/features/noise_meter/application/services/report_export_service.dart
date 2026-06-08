@@ -53,7 +53,7 @@ class ReportExportService {
     buffer.writeln('Peak dB,${report.maxDecibels.toStringAsFixed(1)}');
     buffer.writeln('Events,${report.interruptionCount}');
     buffer.writeln('Quality Score,${report.qualityScore}');
-    buffer.writeln();
+    buffer.writeln('');
     if (report.events.isNotEmpty) {
       buffer.writeln('Events');
       buffer.writeln('Time,Peak (dB)');

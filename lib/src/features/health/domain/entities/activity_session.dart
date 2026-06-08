@@ -109,18 +109,14 @@ class ActivitySession {
 
   /// Business Logic: Calculate pace (minutes per km)
   double get pace {
-    if (distance == 0 || activeDuration.inMinutes == 0) {
-      return 0.0;
-    }
+    if (distance == 0 || activeDuration.inMinutes == 0) return 0.0;
     final distanceKm = distance / 1000;
     return activeDuration.inMinutes / distanceKm;
   }
 
   /// Business Logic: Calculate average speed (km/h)
   double get averageSpeed {
-    if (distance == 0 || activeDuration.inHours == 0) {
-      return 0.0;
-    }
+    if (distance == 0 || activeDuration.inHours == 0) return 0.0;
     return (distance / 1000) / activeDuration.inHours;
   }
 
@@ -137,30 +133,22 @@ class ActivitySession {
 
     if (goals.targetSteps > 0) {
       totalGoals++;
-      if (hasAchievedStepsGoal) {
-        achievedGoals++;
-      }
+      if (hasAchievedStepsGoal) achievedGoals++;
     }
 
     if (goals.targetCalories > 0) {
       totalGoals++;
-      if (hasAchievedCaloriesGoal) {
-        achievedGoals++;
-      }
+      if (hasAchievedCaloriesGoal) achievedGoals++;
     }
 
     if (goals.targetDuration.inSeconds > 0) {
       totalGoals++;
-      if (hasAchievedDurationGoal) {
-        achievedGoals++;
-      }
+      if (hasAchievedDurationGoal) achievedGoals++;
     }
 
     if (goals.targetDistance > 0) {
       totalGoals++;
-      if (hasAchievedDistanceGoal) {
-        achievedGoals++;
-      }
+      if (hasAchievedDistanceGoal) achievedGoals++;
     }
 
     return totalGoals > 0 ? achievedGoals / totalGoals : 0.0;

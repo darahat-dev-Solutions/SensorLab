@@ -1,10 +1,11 @@
 class SpeedData {
-  final double currentSpeed; // Current speed in m/s
-  final double maxSpeed; // Maximum speed recorded in m/s
-  final double avgSpeed; // Average speed in m/s
-  final double distance; // Total distance traveled in meters
+  final double currentSpeed; // m/s
+  final double maxSpeed; // m/s
+  final double avgSpeed; // m/s
+  final double distance; // meters
   final bool isActive;
-  final int sampleCount; // Number of speed samples collected
+  final int sampleCount;
+  final List<double> speedHistory;
 
   const SpeedData({
     this.currentSpeed = 0,
@@ -13,7 +14,30 @@ class SpeedData {
     this.distance = 0,
     this.isActive = false,
     this.sampleCount = 0,
+    this.speedHistory = const [],
   });
+
+  // Speed conversions
+  double get speedKmh => currentSpeed * 3.6;
+  double get speedMph => currentSpeed * 2.23694;
+  double get maxSpeedKmh => maxSpeed * 3.6;
+  double get maxSpeedMph => maxSpeed * 2.23694;
+  double get avgSpeedKmh => avgSpeed * 3.6;
+  double get avgSpeedMph => avgSpeed * 2.23694;
+
+  // Distance conversions
+  double get distanceKm => distance / 1000.0;
+  double get distanceMiles => distance / 1609.34;
+
+  // Formatted strings
+  String get speedKmhFormatted => speedKmh.toStringAsFixed(1);
+  String get speedMphFormatted => speedMph.toStringAsFixed(1);
+  String get maxSpeedKmhFormatted => maxSpeedKmh.toStringAsFixed(1);
+  String get maxSpeedMphFormatted => maxSpeedMph.toStringAsFixed(1);
+  String get avgSpeedKmhFormatted => avgSpeedKmh.toStringAsFixed(1);
+  String get avgSpeedMphFormatted => avgSpeedMph.toStringAsFixed(1);
+  String get distanceKmFormatted => distanceKm.toStringAsFixed(2);
+  String get distanceMilesFormatted => distanceMiles.toStringAsFixed(2);
 
   SpeedData copyWith({
     double? currentSpeed,
@@ -22,6 +46,7 @@ class SpeedData {
     double? distance,
     bool? isActive,
     int? sampleCount,
+    List<double>? speedHistory,
   }) {
     return SpeedData(
       currentSpeed: currentSpeed ?? this.currentSpeed,
@@ -30,70 +55,16 @@ class SpeedData {
       distance: distance ?? this.distance,
       isActive: isActive ?? this.isActive,
       sampleCount: sampleCount ?? this.sampleCount,
+      speedHistory: speedHistory ?? this.speedHistory,
     );
   }
 
-  /// Reset all values
-  SpeedData reset() {
-    return const SpeedData();
-  }
-
-  /// Reset max and average values, keep current speed
-  SpeedData resetStats() {
-    return SpeedData(currentSpeed: currentSpeed, isActive: isActive);
-  }
-
-  // Speed conversions
-  /// Get current speed in kilometers per hour
-  double get speedKmh => currentSpeed * 3.6;
-
-  /// Get current speed in miles per hour
-  double get speedMph => currentSpeed * 2.23694;
-
-  /// Get max speed in kilometers per hour
-  double get maxSpeedKmh => maxSpeed * 3.6;
-
-  /// Get max speed in miles per hour
-  double get maxSpeedMph => maxSpeed * 2.23694;
-
-  /// Get average speed in kilometers per hour
-  double get avgSpeedKmh => avgSpeed * 3.6;
-
-  /// Get average speed in miles per hour
-  double get avgSpeedMph => avgSpeed * 2.23694;
-
-  // Distance conversions
-  /// Get distance in kilometers
-  double get distanceKm => distance / 1000;
-
-  /// Get distance in miles
-  double get distanceMiles => distance / 1609.34;
-
-  // Formatted values
-  /// Get formatted current speed (m/s)
-  String get currentSpeedFormatted => currentSpeed.toStringAsFixed(2);
-
-  /// Get formatted current speed in km/h
-  String get speedKmhFormatted => speedKmh.toStringAsFixed(1);
-
-  /// Get formatted current speed in mph
-  String get speedMphFormatted => speedMph.toStringAsFixed(1);
-
-  /// Get formatted max speed in km/h
-  String get maxSpeedKmhFormatted => maxSpeedKmh.toStringAsFixed(1);
-
-  /// Get formatted max speed in mph
-  String get maxSpeedMphFormatted => maxSpeedMph.toStringAsFixed(1);
-
-  /// Get formatted average speed in km/h
-  String get avgSpeedKmhFormatted => avgSpeedKmh.toStringAsFixed(1);
-
-  /// Get formatted average speed in mph
-  String get avgSpeedMphFormatted => avgSpeedMph.toStringAsFixed(1);
-
-  /// Get formatted distance in km
-  String get distanceKmFormatted => distanceKm.toStringAsFixed(2);
-
-  /// Get formatted distance in miles
-  String get distanceMilesFormatted => distanceMiles.toStringAsFixed(2);
+  SpeedData resetStats() => copyWith(
+    currentSpeed: 0,
+    maxSpeed: 0,
+    avgSpeed: 0,
+    distance: 0,
+    sampleCount: 0,
+    speedHistory: [],
+  );
 }

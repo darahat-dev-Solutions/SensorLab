@@ -24,7 +24,6 @@ class InitializePresetsUseCase {
       DefaultLabPresets.indoorQuality(),
       DefaultLabPresets.outdoorExplorer(),
       DefaultLabPresets.vehicleDynamics(),
-      DefaultLabPresets.healthTracker(),
     ];
 
     for (final preset in presets) {

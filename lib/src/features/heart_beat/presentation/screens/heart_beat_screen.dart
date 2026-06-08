@@ -88,9 +88,7 @@ class HeartRateScreen extends ConsumerWidget {
     HeartBeatNotifier notifier,
     AppLocalizations l10n,
   ) {
-    if (!data.showSoundWarning) {
-      return const SizedBox.shrink();
-    }
+    if (!data.showSoundWarning) return const SizedBox.shrink();
 
     final remaining = data.warningTimeRemaining;
 

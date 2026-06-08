@@ -85,12 +85,8 @@ class FlashlightData {
 
   /// Get current status description
   String get statusDescription {
-    if (!isAvailable) {
-      return 'Flashlight not available';
-    }
-    if (!isInitialized) {
-      return 'Initializing...';
-    }
+    if (!isAvailable) return 'Flashlight not available';
+    if (!isInitialized) return 'Initializing...';
     return isOn ? 'Flashlight ON' : 'Flashlight OFF';
   }
 
@@ -118,20 +114,14 @@ class FlashlightData {
 
   /// Get color for current state
   int get stateColor {
-    if (!isAvailable || !isInitialized) {
-      return 0xFF9E9E9E; // Grey
-    }
+    if (!isAvailable || !isInitialized) return 0xFF9E9E9E; // Grey
     return isOn ? 0xFFFFEB3B : 0xFF424242; // Yellow when on, dark grey when off
   }
 
   /// Get icon for current state
   String get stateIcon {
-    if (!isAvailable) {
-      return '🚫';
-    }
-    if (!isInitialized) {
-      return '⏳';
-    }
+    if (!isAvailable) return '🚫';
+    if (!isInitialized) return '⏳';
     return isOn ? '🔦' : '💡';
   }
 
@@ -140,15 +130,9 @@ class FlashlightData {
 
   /// Get battery usage level
   BatteryUsageLevel get batteryUsageLevel {
-    if (totalOnTime < 60) {
-      return BatteryUsageLevel.low;
-    }
-    if (totalOnTime < 180) {
-      return BatteryUsageLevel.medium;
-    }
-    if (totalOnTime < 300) {
-      return BatteryUsageLevel.high;
-    }
+    if (totalOnTime < 60) return BatteryUsageLevel.low;
+    if (totalOnTime < 180) return BatteryUsageLevel.medium;
+    if (totalOnTime < 300) return BatteryUsageLevel.high;
     return BatteryUsageLevel.critical;
   }
 
@@ -182,9 +166,7 @@ class FlashlightData {
 
   /// Calculate session duration in seconds
   int get sessionDuration {
-    if (sessionStartTime == null) {
-      return 0;
-    }
+    if (sessionStartTime == null) return 0;
     return DateTime.now().difference(sessionStartTime!).inSeconds;
   }
 

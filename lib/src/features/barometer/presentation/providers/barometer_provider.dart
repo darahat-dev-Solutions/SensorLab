@@ -59,9 +59,7 @@ class BarometerNotifier extends StateNotifier<BarometerData> {
 
   /// Get the current pressure trend
   PressureTrend? getPressureTrend() {
-    if (_previousPressure == null) {
-      return null;
-    }
+    if (_previousPressure == null) return null;
     return state.getPressureTrend(_previousPressure!);
   }
 

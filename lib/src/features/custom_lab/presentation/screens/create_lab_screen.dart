@@ -29,18 +29,15 @@ class _CreateLabScreenState extends ConsumerState<CreateLabScreen> {
     SensorType.accelerometer: 'Measures acceleration forces.',
     SensorType.gyroscope: 'Measures rotation rate.',
     SensorType.magnetometer: 'Detects magnetic field strength.',
-    SensorType.barometer: 'Measures atmospheric pressure.',
     SensorType.compass: 'Shows direction relative to North.',
     SensorType.lightMeter: 'Measures ambient light.',
     SensorType.noiseMeter: 'Measures sound level.',
-    SensorType.pedometer: 'Counts steps.',
     SensorType.gps: 'Tracks location.',
     SensorType.altimeter: 'Measures altitude.',
     SensorType.speedMeter: 'Measures speed.',
     SensorType.temperature: 'Measures temperature.',
     SensorType.humidity: 'Measures humidity.',
     SensorType.proximity: 'Detects nearby objects.',
-    SensorType.heartBeat: 'Measures heart rate.',
   };
   @override
   void initState() {

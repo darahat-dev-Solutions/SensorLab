@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sensorlab/src/core/providers.dart'; // Import core sensor providers
 import 'package:sensorlab/src/core/utils/logger.dart';
+import 'package:sensorlab/src/features/accelerometer/application/providers/accelerometer_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/recording_session_provider.dart';
 import 'package:sensorlab/src/features/custom_lab/application/providers/sensor_data_providers.dart';
 import 'package:sensorlab/src/features/custom_lab/application/state/lab_monitoring_state.dart';
@@ -142,7 +143,6 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
     const heavySensors = {
       SensorType.noiseMeter, // Uses microphone constantly
       SensorType.gps, // GPS drains battery
-      SensorType.heartBeat, // Uses camera + flashlight
     };
 
     for (final sensor in sensors) {
@@ -196,11 +196,6 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
               now,
             );
             break;
-          case SensorType.barometer:
-            // Barometer uses altimeter data
-            final altimeter = _ref.read(altimeterProvider);
-            _processSensorValue(sensor, 'barometer', altimeter.pressure, now);
-            break;
           case SensorType.compass:
             sensorData = _ref.read(compassProvider);
             final headingValue = sensorData.heading ?? 0.0;
@@ -212,24 +207,6 @@ class LabMonitoringNotifier extends StateNotifier<LabMonitoringState> {
               sensor,
               'proximity',
               sensorData.isNear ? 1.0 : 0.0,
-              now,
-            );
-            break;
-          case SensorType.pedometer:
-            sensorData = _ref.read(pedometerProvider);
-            _processSensorValue(
-              sensor,
-              'pedometer',
-              sensorData.steps.toDouble(),
-              now,
-            );
-            break;
-          case SensorType.heartBeat:
-            sensorData = _ref.read(heartBeatProvider);
-            _processSensorValue(
-              sensor,
-              'heartBeat',
-              sensorData.currentBPM.toDouble(),
               now,
             );
             break;
