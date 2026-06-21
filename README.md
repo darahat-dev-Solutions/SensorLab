@@ -42,35 +42,35 @@ Below is an overview of the core application layouts, highlighting the modern Ma
   <table border="0">
     <tr>
       <td width="33%" align="center">
-        <b>Main Lab Hub</b><br>
-        <img src="WhatsApp Image 2025-11-12 at 2.32.11 PM (1).jpeg" width="100%" alt="Main Hub View"/><br>
-        <em>Custom Dashboard Setup</em>
+        <b>Dashboard</b><br>
+        <img src="https://github.com/darahat-dev-Solutions/SensorLab/blob/main/blob/Dashboard.jpeg" width="100%" alt="SensorLab Dashboard View"/><br>
+        <em>SensorLab Dashboard</em>
       </td>
       <td width="33%" align="center">
         <b>Sensor Multiplexing</b><br>
-        <img src="WhatsApp Image 2025-11-12 at 3.07.24 PM (3).jpeg" width="100%" alt="Sensor Selection"/><br>
+        <img src="https://github.com/darahat-dev-Solutions/SensorLab/blob/main/blob/create-lab.jpeg" width="100%" alt="Sensor Selection"/><br>
         <em>Toggle Active Hardware</em>
       </td>
       <td width="33%" align="center">
         <b>Lab Configuration</b><br>
-        <img src="WhatsApp Image 2025-11-12 at 3.07.25 PM (6).jpeg" width="100%" alt="Lab Details"/><br>
+        <img src="https://github.com/darahat-dev-Solutions/SensorLab/blob/main/blob/custom-lab-details.jpeg" width="100%" alt="Lab Details"/><br>
         <em>Sampling Interval Controls</em>
       </td>
     </tr>
     <tr>
       <td width="33%" align="center">
         <b>Real-Time Execution</b><br>
-        <img src="WhatsApp Image 2025-11-12 at 3.07.24 PM (4).jpeg" width="100%" alt="Active Recording Graph"/><br>
+        <img src="https://github.com/darahat-dev-Solutions/SensorLab/blob/main/blob/monitor-custom-lab.jpeg" width="100%" alt="Active Recording Graph"/><br>
         <em>Waveform & Lux Metrics</em>
       </td>
       <td width="33%" align="center">
         <b>Session Analytics</b><br>
-        <img src="WhatsApp Image 2025-11-12 at 3.07.25 PM (5).jpeg" width="100%" alt="Session Breakdown"/><br>
+        <img src="https://github.com/darahat-dev-Solutions/SensorLab/blob/main/blob/session-details.jpeg" width="100%" alt="Session Breakdown"/><br>
         <em>Historical Log Details</em>
       </td>
       <td width="33%" align="center">
         <b>Speed & Kinematics</b><br>
-        <img src="WhatsApp Image 2025-11-12 at 3.07.23 PM (1).jpeg" width="100%" alt="Speedometer Dashboard"/><br>
+        <img src="https://github.com/darahat-dev-Solutions/SensorLab/blob/main/blob/session-list.jpeg" width="100%" alt="Speedometer Dashboard"/><br>
         <em>Live GPS Speed Metrics</em>
       </td>
     </tr>
