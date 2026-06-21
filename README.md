@@ -23,7 +23,7 @@
 ![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
-_An advanced all-in-one Sensor Box and raw sensor data logger built with Flutter. Turn your smartphone into a comprehensive physics experiment lab with a GPS Speedometer, Decibel Meter, Accelerometer, Gyroscope Tester, and more._
+_An advanced all-in-one SensorLab and raw sensor data logger built with Flutter. Turn your smartphone into a comprehensive physics experiment lab with a GPS Speedometer, Decibel Meter, Accelerometer, Gyroscope Tester, and more._
 
 [🚀 App Features](#-features) • [📋 Requirements](#-requirements) • [⚙️ Setup](#️-setup) • [🏗️ Architecture](#️-architecture) • [📚 Sensor Modules](#-modules) • [🤝 Contributing](#-contributing)
 
@@ -33,7 +33,7 @@ _An advanced all-in-one Sensor Box and raw sensor data logger built with Flutter
 
 ## 🚀 Features
 
-### 🧪 **Custom Sensor Lab Builder & Data Logger**
+### 🧪 **Custom SensorLab Builder & Data Logger**
 
 - **Create Your Own Lab:** Easily stack multiple device hardware sensors together inside a custom user dashboard.
 - **Raw Sensor Data Recording:** Start and stop real-time background recording sessions seamlessly.
@@ -50,7 +50,7 @@ _An advanced all-in-one Sensor Box and raw sensor data logger built with Flutter
 - **500+ Localized Strings**: Complete internationalization setup.
 - **Dynamic Language Switching**: Toggle system languages instantly on-the-fly.
 
-### 📊 **Comprehensive All-In-One Sensor Box Suite**
+### 📊 **Comprehensive All-In-One SensorLab Suite**
 
 - **Motion & Acceleration Sensors**: 3-Axis Accelerometer sensor, Gyroscope calibration monitor, Magnetometer sensor (magnetic field detector).
 - **Environmental Instruments**: Lux Light Meter (with custom indoor plant light meter capabilities), Humidity sensor, Noise Meter (Decibel measurement tool), and Proximity detection.
