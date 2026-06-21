@@ -1,3 +1,4 @@
+````markdown
 # SensorLab - Sensor Box, Sensor Data Logger, GPS Speedometer, Decibel Meter & Physics Toolbox
 
 <div align="center">
@@ -27,6 +28,16 @@ _An advanced all-in-one SensorLab and raw sensor data logger built with Flutter.
 
 [🚀 App Features](#-features) • [📋 Requirements](#-requirements) • [⚙️ Setup](#️-setup) • [🏗️ Architecture](#️-architecture) • [📚 Sensor Modules](#-modules) • [🤝 Contributing](#-contributing)
 
+</div>
+
+---
+
+## 📱 App Icon
+
+<div align="center">
+    <img src="https://raw.githubusercontent.com/darahat-dev-Solutions/SensorLab/main/assets/icons/icon.png" alt="SensorLab App Icon" width="200"/>
+    <br/>
+    <em>SensorLab App Icon</em>
 </div>
 
 ---
@@ -119,4 +130,154 @@ export PATH="$PATH:`pwd`/flutter/bin"
 
 # Verify your framework installation
 flutter doctor
+```
+````
+
+### **2. Clone & Setup Project**
+
+```bash
+# Clone the repository
+git clone https://github.com/darahat-dev-Solutions/SensorLab.git
+
+# Navigate to project directory
+cd SensorLab
+
+# Install dependencies
+flutter pub get
+
+# Run the app
+flutter run
+```
+
+---
+
+## 🏗️ Architecture
+
+### **Project Structure**
+
+```
+SensorLab/
+├── lib/
+│   ├── main.dart                 # App entry point
+│   ├── models/                   # Data models
+│   │   ├── sensor_data.dart
+│   │   └── session.dart
+│   ├── providers/               # State management
+│   │   ├── sensor_provider.dart
+│   │   └── settings_provider.dart
+│   ├── screens/                 # UI screens
+│   │   ├── home_screen.dart
+│   │   ├── dashboard_screen.dart
+│   │   └── session_history.dart
+│   ├── services/                # Business logic
+│   │   ├── sensor_service.dart
+│   │   ├── gps_service.dart
+│   │   └── csv_export_service.dart
+│   ├── widgets/                 # Reusable components
+│   │   ├── sensor_card.dart
+│   │   └── custom_button.dart
+│   └── utils/                   # Helper functions
+│       ├── permissions.dart
+│       └── constants.dart
+├── assets/
+│   ├── icons/
+│   │   └── icon.png             # App icon
+│   └── translations/            # Localization files
+│       ├── en.json
+│       ├── es.json
+│       ├── ja.json
+│       └── km.json
+├── pubspec.yaml                 # Dependencies
+└── README.md
+```
+
+### **Tech Stack**
+
+| Layer                | Technology                    |
+| -------------------- | ----------------------------- |
+| **Framework**        | Flutter 3.x                   |
+| **Language**         | Dart 3.x                      |
+| **State Management** | Provider / Riverpod           |
+| **Sensors**          | sensors_plus, flutter_sensors |
+| **GPS**              | geolocator, location          |
+| **Database**         | sqflite (SQLite)              |
+| **CSV Export**       | csv, path_provider            |
+| **Permissions**      | permission_handler            |
+| **Localization**     | flutter_localizations, intl   |
+| **Logging**          | logger                        |
+
+---
+
+## 📚 Modules
+
+### **Sensor Modules**
+
+| Module                  | Package/Dependency                    | Description                       |
+| ----------------------- | ------------------------------------- | --------------------------------- |
+| **Accelerometer**       | `sensors_plus`                        | 3-axis acceleration monitoring    |
+| **Gyroscope**           | `sensors_plus`                        | Rotation tracking and calibration |
+| **Magnetometer**        | `sensors_plus`                        | Magnetic field detection          |
+| **GPS Speedometer**     | `geolocator`                          | Speed and location tracking       |
+| **Decibel Meter**       | `sound_level_meter` / `flutter_sound` | Noise level measurement           |
+| **Lux Light Meter**     | `light_sensor` / `sensors_plus`       | Ambient light intensity           |
+| **Barometer/Altimeter** | `sensors_plus`                        | Atmospheric pressure & altitude   |
+| **Heart Rate Monitor**  | `camera` + image processing           | Heart rate via camera flash       |
+| **Step Tracker**        | `step_counter` / `sensors_plus`       | Pedometer and activity tracking   |
+| **QR Scanner**          | `mobile_scanner`                      | QR and barcode scanning           |
+| **Flashlight**          | `flutter_phone_direct_caller`         | LED flashlight toggle             |
+| **Compass**             | `sensors_plus`                        | Digital compass heading           |
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions to SensorLab! Here's how you can help:
+
+### **Ways to Contribute**
+
+- 🐛 **Report bugs**: Open an issue describing the problem
+- 💡 **Suggest features**: Share your ideas for new sensors or features
+- 🔧 **Submit PRs**: Fix bugs or implement new features
+- 🌍 **Add translations**: Help localize the app to more languages
+- 📝 **Improve documentation**: Update README, add examples, or write tutorials
+
+### **Development Setup**
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### **Code Style**
+
+- Follow the [Flutter style guide](https://dart.dev/guides/language/effective-dart/style)
+- Use meaningful variable and function names
+- Add comments for complex logic
+- Write tests for new features
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📞 Contact & Support
+
+- **GitHub**: [github.com/darahat-dev-Solutions/SensorLab](https://github.com/darahat-dev-Solutions/SensorLab)
+- **Google Play**: [Download SensorLab](https://play.google.com/store/apps/details?id=com.darahat.sensorlab)
+- **YouTube**: [Watch Demo](https://youtube.com/shorts/Cg61mOv7f5E)
+- **Email**: [support@sensorlab.com](mailto:support@sensorlab.com)
+
+---
+
+<div align="center">
+
+**⭐ Star us on GitHub** — It helps others discover the project!
+
+**Made with ❤️ by Darahat Dev Solutions**
+
+</div>
 ```
